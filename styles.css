@@ -1,0 +1,174 @@
+/* styles.css */
+
+/* Reset default margin and padding */
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Style the header */
+header {
+    background-color: #292929;
+    padding: 20px 0;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+header p {
+    text-align: right;
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+    margin-right: 20px;
+    vertical-align: middle;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #b5b5b5;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+nav ul li a:hover {
+    color: #92D1F4;
+}
+
+nav ul li .active {
+    color: #ffffff;
+}
+
+/* Style the hero section */
+.hero {
+    background-image: url('media/green.png');
+    background-size: cover;
+    color: #555;
+    text-align: center;
+    padding: 100px 0;
+    position: relative;
+    padding-bottom: 20%;
+    font-weight: bolder;
+    background-attachment: fixed;
+}
+
+.hero h1 {
+    font-size: 36px;
+}
+
+
+/* Style the about section */
+.about {
+    background-color: #ffffff;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 24px;
+}
+
+/* Style the footer */
+footer {
+    background-color: #292929;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Style the contact section */
+.contact {
+    background-size: cover;
+    background-image: url('media/blue.png');
+    padding: 40px 0;
+    background-attachment: fixed;
+}
+
+.contact-content {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 10%;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: -40px;
+    margin-bottom: -40px;
+}
+
+
+.contact h2 {
+    font-size: 24px;
+    color: #1a1a1a;
+}
+
+.contact p {
+    font-size: 18px;
+    color: #555;
+}
+
+.contact a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contact a:hover {
+    text-decoration: underline;
+}
+
+.portfolio {
+    background-size: cover;
+    background-image: url('media/red.png');
+    padding: 40px 0;
+    background-attachment: fixed;
+}
+ 
+.portfolio-content {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    padding-bottom: 100%;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: -40px;
+    margin-bottom: -40px;
+}
+
+.portfolio h1 {
+    font-size: 36px;
+    color: #555;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.portfolio h3 {
+    
+    font-size: 26px;
+    color: #555;
+}
+
+.portfolio p {
+    
+    font-size: 18px;
+    color: #555;
+}
+
+.left{
+    text-align: left;
+}
+
+.right{
+    text-align: right;
+}
