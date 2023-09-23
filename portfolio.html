@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Portfolio | Ruaridh Murdoch</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
@@ -19,22 +20,137 @@
     <section class="portfolio">
         <div class="portfolio-content">
             <h1>My Portfolio</h1>
-            <h3>Duck Jam</h3>
-            <p>[Project Description]</p>
+            <div> <!-- Duck Jam -->
+                <div class = "leftNoPadding">
+                    <hr>
+                </div>
+                <!-- Thumbnail -->
+                <a href="duckJam.html"><img src="media/duckJam/presentation.png" alt="Duck Jam Thumbnail"  class = "galleryRight"></a>
+                <p class = "thumbnailText" >Click<br> for<br> more<br>--></p>
+                <div class = "left">
+                    <h3>Duck Jam</h3>
+                    <div class="read-more-content">
+                        <!-- Short Description of Duck Jam -->
+                        <p class="short-description">Development of a 2-dimensional computer game, developed during a time-constrained themed game jam.
+                            <br>
+                            <i>"Sail your boat along a flowing river labyrinth while playing music and saving ducks along the way. Each duck you save adds a new layer to your song, concluding with 5 ducks and a beautiful melody"</i>
+                        </p>
+                        <p class="read-more-toggle" onclick="toggleReadMore(this)">Read More</p>
+                        <!-- Full Description of Duck Jam -->
+                        <p class="full-description" style="display: none;">
+                            Keen to develop new skills, I discovered a game jam, <a href=" https://www.ducksauce.games/duck-sauce-jam-2023">Duck Sauce Game Jam</a>, where you and your team have 45 hours to develop a computer game to a specific brief given on the day. I entered with only a few weeks to go and decided to teach myself game development. Installing Unity and downloading Visual Studio Code for C#, I created some basic projects as building blocks; this was mainly a learning experience. <a href=" https://www.ducksauce.games/duck-sauce-jam-2023">Duck Sauce Game Jam</a> was my first game jam, and when the jam started, the theme was revealed as "Flow". <br><br>
+                                Our team of three decided to write down everything we knew relating to flow and came up with multiple ideas. Selecting the one we thought would be achievable in the relatively short time frame. We assigned roles and created a rough timeline and project plan, allowing us to focus. We opted for a game where you row a boat following the flow of the river, picking up ducks. Each duck you pick up adds another layer of music to the game. Once you reach the bottom of the river, the game finishes, taking you to another level. Each level was going to have its own unique music. It is to be a 2D pixel art game, as that was the easiest to create graphics for. One essential element we agreed on was that the game needed to feel polished; anything clunky would ruin the element of flow we worked hard on. The game was fittingly named <a href="https://ruaridhm16.itch.io/duck-jam">Duck Jam</a>. <br><br>
+                                Once we settled on the idea, we started coding a basic driving system; the boat always moves forward. Pressing A/D will change the rotation, so you move in a different direction. We then developed a camera system to follow the boat up and down with dampening to keep with the theme of flow, with an option for zoom and an option to center the boat on the screen. Each level had a slightly different camera system in the end. We created a small collision system so if the boat intersects with the duck. It will add 1 to a counter, and then it will eventually add to the music. The movement script would also check to see if the y value of the boat was after a specific limit; if it were, then the game would finish as you have reached the end of the river. <br><br>
+                                The art was one of the most enjoyable aspects of the development as we got to experiment with different designs and themes. Due to time constraints, we downloaded a pixel art pack for the land texture. We animated pixel art water and created the boat, ducks, user interface, and map design with <a href="https://www.piskelapp.com/">Piskel</a>. Each level had to be different from the last while still being very easy to grasp. We didn't want to make a difficult and frustrating game as we felt "Flow," characterized by relaxation and a calming vibe. We drew out each level on paper, refining each design until we came to a design we liked. <br><br>
+                                The music was an arduous process for us. We wanted the music to play on start, and each duck you collected would add a new "layer" to the music, eventually forming a complete melody. Unity's sound system made it so you cannot sync up sounds to start at a particular time with others. So, we came up with an intuitive system to prevent users from hearing any discrepancies in the music, such as stops/starts or slightly off-timed layers. For each level, we created six melodies, each with a different number of layers of music (For example, melody 1 has layer 1; melody 2 has layers 1 and 2; melody 3 has layers 1, 2, and 3, and so on). Then, play them all at the start, muting all but one each time. This system came from lots of trial and error. Then, a simple main menu and level select system will load a new scene for each level. <br><br>
+                                We completed Duck Jam in time for submission, presenting it to every other competitor and talking through our development. Despite being the youngest and least experienced participants, we won the competition clearly a very successful first game. <br><br>
+                                In my experience with the <a href=" https://www.ducksauce.games/duck-sauce-jam-2023">Duck Sauce Game Jam</a> I've come to realize how challenging it can be to develop a game within a limited time frame. However, it has also taught me the importance of teamwork and communication in such situations. Brainstorming, prototyping, and iterating on game ideas have also been valuable skills that I've gained through this experience. <br><br>
+        </p>
+                    </div>
+                    <hr>
+                </div>
+                
+                
+            </div>
 
-            <h3>Dodgy Double Decker</h3>
-            <p>[Project Description]</p>
+            <div> <!-- Dodgy Double Decker -->
+                <div class = "rightNoPadding">
+                    <hr>
+                </div>
+                <!-- Thumbnail -->
+                <img src="media/blue.png" alt="Dodgy Double Decker Thumbnail"  class = "galleryLeft">
+                <div class = "right">
+                    <h3>Dodgy Double Decker</h3>
+                    <div class="read-more-content">
+                        <!-- Short Description of Dodgy Double Decker -->
+                        <p class="short-description">Development of a 3-dimensional computer bus driving game, for Advanced Higher Computing project <br><b>//WIP//</b></p>
 
-            <h3>Website</h3>
-            <p>[Project Description]</p>
+                        <p class="read-more-toggle" onclick="toggleReadMore(this)">Read More</p>
+                        <!-- Full Description of Dodgy Double Decker -->
+                        <p class="full-description" style="display: none;">
+                            A 3D bus driving game with 1 pre-designed level. This game will be able to calculate movement from the keyboard and each wheel, taking into consideration gravity and other objects, while inside the level. The user must be shown the game through a camera which hovers over the bus in 2 different ways depending on a toggle. When the bus enters a bus stop the game must allow the user to pick up passengers and add their destinations to an array. The user must be shown an arrow, pointing to the direction of the bus stop with the most destinations. The game must calculate money based on the distance between the passengers' collection point and the passengers' destination. The game must count down from 3 minutes and when it finishes it will end the game, displaying the final score and a leaderboard of everyone who has played the game. The leaderboard must display a name and their fares along with bonus values [insert]. The game must have a main screen with play, quit, and leader board buttons. During the game, the user must be able to exit to the main menu; the user must be able to change the camera view from a racing perspective to a top-down arcade perspective. The user must also be able to see the time ticking down, the money they have, and the list of destinations that the passengers want to go to. Along with all of this, some constraints of my project include that:
+                            <br>
+                            - I do not have any funds to spend on this project so all assets or resources I use must be either free, already owned or made by me. <br>
+                            - I am the only person working on the project and I have less than 7 months to finish the project as it must be completed by the end of May 2024.<br>
+                            - I cannot spend all my free time on the project. I must avoid student exams and prelims and holidays. <br>
+                            - I must be aware that there might be unforeseen events or illness. I need to teach myself all of the coding concepts that are outside of the advanced higher course, this will include Unity and C sharp. Documentation for unity, blender and c sharp are all available online for free through their own websites, forums or videos. <br>
+                            - The game must be playable on a keyboard and mouse but also a controller so a limited number of inputs is available. <br>
+                            - The game must be able to play on lower end devices as the school computers are not very powerful and they need to be able to run the game at least 20 frames per second for it to be playable, and it must run on Windows. <br>
+                            - No asset must violate the "The Copyright, Designs and Patents Act 1988". The files for my project must be less than my available storage space. <br>
+                        </p>
+                    </div>
+                    <hr>
+                </div>
 
-            <h3>[Project Name]</h3>
-            <p>[Project Description]</p>
+                
+
+            </div>
+
+            <!-- Website -->
+            <div class = "leftNoPadding">
+                <hr>
+            </div>
+            <!-- Thumbnail -->
+            <img src="media/blue.png" alt="Website Thumbnail"  class = "galleryRight">
+            <div class = "left">
+                <h3>This Website</h3>
+                <div class="read-more-content">
+                    <!-- Short Description of Website -->
+                    <p class="short-description">Short description</p>
+
+                    <p class="read-more-toggle" onclick="toggleReadMore(this)">Read More</p>
+                    <!-- Full Description of Dodgy Double Decker -->
+                    <p class="full-description" style="display: none;">
+                        Full description
+                    </p>
+                </div>
+                
+                <hr>
+            </div>
+            
+            <!-- Project Name -->
+            <div class = "rightNoPadding">
+                <hr>
+            </div>
+            <!-- Thumbnail -->
+            <img src="media/blue.png" alt="Project Thumbnail"  class = "galleryLeft">
+            <div class = "right">
+                <h3>Project Name</h3>
+                <div class="read-more-content">
+                    <!-- Short Description of Project -->
+                    <p class="short-description">Short description</p>
+
+                    <p class="read-more-toggle" onclick="toggleReadMore(this)">Read More</p>
+                    <!-- Full Description of Project -->
+                    <p class="full-description" style="display: none;">
+                        Full description
+                    </p>
+                </div>
+                
+                <hr>
+            </div>
         </div>
     </section>
 
     <footer>
         <p>2023 - Ruaridh Murdoch</p>
     </footer>
+
+    <script>
+        // Read more javascript
+        function toggleReadMore(button) {
+            var content = button.parentElement;
+            var fullDescription = content.querySelector(".full-description");
+
+            if (fullDescription.style.display === "none" || fullDescription.style.display === "") {
+                fullDescription.style.display = "block";
+                button.innerText = "Read Less";
+            } else {
+                fullDescription.style.display = "none";
+                button.innerText = "Read More";
+            }
+        }
+    </script>
+
 </body>
 </html>

@@ -1,19 +1,23 @@
-/* styles.css */
-
-/* Reset default margin and padding */
+/* Default*/
 body {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    
 }
 
-/* Style the header */
+p{
+    font-size: 18px;
+}
+
+/*Nav Bar*/
 header {
     background-color: #292929;
     padding: 20px 0;
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
+
 }
 
 header p {
@@ -52,7 +56,7 @@ nav ul li .active {
     color: #ffffff;
 }
 
-/* Style the hero section */
+/*Index Page*/
 .hero {
     background-image: url('media/green.png');
     background-size: cover;
@@ -70,7 +74,6 @@ nav ul li .active {
 }
 
 
-/* Style the about section */
 .about {
     background-color: #ffffff;
     padding: 40px 0;
@@ -89,7 +92,7 @@ footer {
     padding: 10px 0;
 }
 
-/* Style the contact section */
+/*Contact Page*/
 .contact {
     background-size: cover;
     background-image: url('media/blue.png');
@@ -128,22 +131,38 @@ footer {
     text-decoration: underline;
 }
 
+
+/*Portfolio Page*/
 .portfolio {
     background-size: cover;
     background-image: url('media/red.png');
     padding: 40px 0;
     background-attachment: fixed;
 }
- 
-.portfolio-content {
+ .portfolio-content-images
+  {
     text-align: center;
     background-color: #ffffff;
-    padding: 20px;
-    padding-bottom: 100%;
+    padding-top:10px;
+    padding-left: 200px;
+    padding-right: 200px;
     margin-left: 20%;
     margin-right: 20%;
     margin-top: -40px;
     margin-bottom: -40px;
+    color: #555;
+}
+
+.portfolio-content {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    padding-bottom: 10%;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: -40px;
+    margin-bottom: -40px;
+    color: #555;
 }
 
 .portfolio h1 {
@@ -154,21 +173,166 @@ footer {
 }
 
 .portfolio h3 {
-    
+    text-transform: uppercase;
     font-size: 26px;
-    color: #555;
-}
-
-.portfolio p {
-    
-    font-size: 18px;
-    color: #555;
 }
 
 .left{
     text-align: left;
+    padding-right: 40%;
+    padding-bottom: 100px;
+}
+
+.leftNoPadding{
+    text-align: left;
+    padding-right: 40%;
 }
 
 .right{
-    text-align: right;
+    text-align: left;
+    padding-left: 40%;
+    padding-bottom: 100px;
+}
+
+.rightNoPadding{
+    text-align: left;
+    padding-left: 40%;
+}
+
+
+.read-more-toggle {
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.read-more-toggle:hover {
+    color: #292929;
+}
+
+/* Images CSS */
+.galleryRight{
+    margin-top:-10px;
+    padding-left: 1%;
+    padding-right: 5%;
+    float: right;
+    height: 200px;
+    display: inline;
+}
+
+.galleryLeft{
+    margin-top:-10px;
+    padding-left: 5%;
+    padding-right: 1%;
+    float: left;
+    height: 200px;
+    display: inline;
+}
+
+
+.thumbnailText{
+    float: right;
+    display: inline;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+
+@media screen and (max-width:1600px){
+    .galleryRight{
+        display:none;
+    }
+    .galleryLeft{
+        display:none;
+    }
+    
+    .left{
+        text-align: left;
+        padding-right: 0%;
+        padding-bottom: 100px;
+    }
+
+    .left h3{
+        text-align: center;
+        padding-right: 0%;
+    }
+    
+    .leftNoPadding{
+        text-align: center;
+        padding-right: 0%;
+    }
+    
+    .right{
+        text-align: left;
+        padding-left: 0%;
+        padding-bottom: 100px;
+    }
+    .right h3{
+        text-align: center;
+        padding-left: 0%;
+    }
+    
+    .rightNoPadding{
+        text-align: center;
+        padding-left: 0%;
+    }
+}
+    
+.full-description a{
+    font-weight: bold;
+    text-decoration: none;
+    color:#555;
+}
+
+/*Portfolio Extra Images*/
+div.gallery {
+   float: center;
+  border: 1px solid #ccc;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+
+div.desc {
+  padding: 15px;
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.responsive {
+  display:inline;
+  padding: 0 6px;
+  float: center;
+  width: 24.99999%;
+}
+
+@media only screen and (max-width: 700px) {
+  .responsive {
+    width: 49.99999%;
+    margin: 6px 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .responsive {
+    width: 100%;
+  }
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 }
