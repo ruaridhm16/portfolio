@@ -1,0 +1,141 @@
+.stirling-engine-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+}
+.stirling-engine-navbar {
+  width: 100%;
+  display: flex;
+  z-index: 100;
+  position: fixed;
+  align-items: center;
+  flex-direction: column;
+  background-color: #151515;
+}
+.stirling-engine-navbar-interactive {
+  width: 100%;
+  height: 66px;
+  display: flex;
+  max-width: 1280px;
+  transition: 0.3s;
+  align-items: center;
+  padding-top: var(--dl-space-space-unit);
+  border-color: var(--dl-color-gray-black);
+  border-width: 0px;
+  padding-left: var(--dl-space-space-oneandhalfunits);
+  margin-bottom: 11px;
+  padding-right: var(--dl-space-space-oneandhalfunits);
+  justify-content: space-between;
+}
+
+.stirling-engine-container1 {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: space-between;
+  flex-direction: column;
+}
+.stirling-engine-company {
+  color: rgb(255, 255, 255);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 500;
+}
+.stirling-engine-items {
+  gap: var(--dl-space-space-threeunits);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.stirling-engine-links {
+  gap: var(--dl-space-space-threeunits);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.stirling-engine-navlink {
+  text-decoration: none;
+}
+.stirling-engine-burger-menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.stirling-engine-navlink1 {
+  text-decoration: none;
+}
+.stirling-engine-mobile-menu {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 353px;
+  display: flex;
+  padding: 32px;
+  z-index: 100;
+  position: fixed;
+  transform: translateX(100%);
+  transition: 0.5s;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #151515;
+}
+@media(max-width: 991px) {
+  .stirling-engine-navbar-interactive {
+    padding-top: var(--dl-space-space-unit);
+    border-width: 0px;
+  }
+  .stirling-engine-navlink1 {
+    font-size: 18px;
+    text-decoration: none;
+  }
+  .stirling-engine-mobile-menu {
+    height: 368px;
+  }
+}
+@media(max-width: 767px) {
+  .stirling-engine-navbar-interactive {
+    padding-top: var(--dl-space-space-unit);
+  }
+  .stirling-engine-company {
+    font-size: 18px;
+    line-height: 20px;
+  }
+  .stirling-engine-items {
+    display: none;
+  }
+  .stirling-engine-burger-menu {
+    display: flex;
+  }
+  .stirling-engine-navlink1 {
+    font-size: 18px;
+    text-decoration: none;
+  }
+  .stirling-engine-mobile-menu {
+    height: 324px;
+    align-self: flex-start;
+  }
+}
+@media(max-width: 479px) {
+  .stirling-engine-navbar-interactive {
+    border-width: 0px;
+  }
+  .stirling-engine-company {
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+  }
+  .stirling-engine-navlink1 {
+    font-size: 18px;
+    text-decoration: none;
+  }
+  .stirling-engine-mobile-menu {
+    height: 366px;
+    padding: 16px;
+  }
+}
