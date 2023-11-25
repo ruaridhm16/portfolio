@@ -158,30 +158,7 @@
   max-width: 800px;
   line-height: 36px;
 }
-.duck-jam-text06 {
-  width: 100%;
-  max-width: 800px;
-}
-.duck-jam-text11 {
-  width: 100%;
-  max-width: 800px;
-}
-.duck-jam-text16 {
-  width: 100%;
-  max-width: 800px;
-}
-.duck-jam-text21 {
-  width: 100%;
-  max-width: 800px;
-}
-.duck-jam-text26 {
-  width: 100%;
-  max-width: 800px;
-}
-.duck-jam-text31 {
-  width: 100%;
-  max-width: 800px;
-}
+
 .duck-jam-links1 {
   display: flex;
   align-self: stretch;
@@ -207,30 +184,13 @@
   border-left-width: 0px;
   border-right-width: 0px;
 }
-.duck-jam-text34 {
-  color: rgb(255, 255, 255);
-  font-size: 24px;
-  font-weight: 900;
-}
-.duck-jam-text38 {
+
+.duck-jam-links {
   font-style: normal;
   font-weight: 900;
   text-decoration: none;
 }
-.duck-jam-text39 {
-  color: #ffffff;
-}
-.duck-jam-text41 {
-  font-weight: 800;
-  text-decoration: none;
-}
-.duck-jam-text42 {
-  color: #ffffff;
-  font-weight: 900;
-}
-.duck-jam-text43 {
-  font-style: normal;
-}
+ 
 .duck-jam-footer {
   display: flex;
   align-self: stretch;
@@ -242,7 +202,7 @@
   padding-bottom: var(--dl-space-space-twounits);
   background-color: #151515;
 }
-.duck-jam-text45 {
+.duck-jam-footer-text {
   color: #ffffff;
 }
 @media(max-width: 1200px) {
@@ -255,11 +215,7 @@
     color: rgb(255, 255, 255);
     height: 306px;
   }
-  .duck-jam-text03 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
+  
   .duck-jam-portfolio {
     height: auto;
     padding-bottom: 0px;
@@ -274,129 +230,7 @@
     max-width: 1280px;
     line-height: 36px;
   }
-  .duck-jam-text06 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text07 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text08 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text09 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text10 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text11 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text12 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text13 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text14 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text15 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text16 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text17 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text18 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text19 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text20 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text21 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text22 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text23 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text24 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text25 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text26 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text27 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text28 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text29 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text30 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text31 {
-    width: 70%;
-    max-width: 1280px;
-  }
-  .duck-jam-text32 {
-    color: #ffffff;
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text33 {
-    width: 70%;
-    max-width: 1280px;
-  }
+  
   .duck-jam-links1 {
     border-color: #000000;
   }
@@ -413,30 +247,7 @@
     border-right-width: 0px;
     border-bottom-width: 1px;
   }
-  .duck-jam-text34 {
-    font-size: 24px;
-  }
-  .duck-jam-text35 {
-    color: #ffffff;
-    font-style: normal;
-    font-weight: 900;
-    text-transform: uppercase;
-  }
-  .duck-jam-text39 {
-    color: #ffffff;
-    font-style: normal;
-    font-weight: 900;
-    text-transform: capitalize;
-  }
-  .duck-jam-text42 {
-    color: #ffffff;
-    font-style: normal;
-    font-weight: 900;
-    text-transform: uppercase;
-  }
-  .duck-jam-text45 {
-    color: #ffffff;
-  }
+  
 }
 @media(max-width: 991px) {
   .duck-jam-navbar-interactive {
@@ -463,20 +274,7 @@
     font-size: 24px;
     line-height: 36px;
   }
-  .duck-jam-text02 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text04 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text05 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
+  
   }
   .duck-jam-portfolio {
     height: auto;
@@ -491,92 +289,7 @@
     font-size: 24px;
     line-height: 36px;
   }
-  .duck-jam-text06 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text08 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text10 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text11 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text13 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text15 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text16 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text18 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text20 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text21 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text23 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text25 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text26 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text28 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text30 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text31 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  .duck-jam-text33 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-}
+
 @media(max-width: 767px) {
   .duck-jam-navbar-interactive {
     padding-top: var(--dl-space-space-unit);

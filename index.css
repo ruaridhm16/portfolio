@@ -431,7 +431,6 @@
   font-size: 20px;
   align-self: flex-start;
   padding-top: var(--dl-space-space-halfunit);
-  text-transform: capitalize;
 }
 .index-image4 {
   top: 0px;
@@ -463,7 +462,7 @@
   border-right-width: 0px;
   border-bottom-width: 5px;
 }
-.index-text38 {
+.contact-info {
   color: rgb(255, 255, 255);
   font-size: 20px;
   text-align: center;
@@ -494,7 +493,7 @@
   padding-bottom: var(--dl-space-space-twounits);
   background-color: #151515;
 }
-.index-text48 {
+.index-footer {
   color: #ffffff;
 }
 @media(max-width: 991px) {
