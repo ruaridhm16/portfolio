@@ -66,37 +66,7 @@
 .index-link2 {
   text-decoration: none;
 }
-.index-burger-menu {
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-.index-button {
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  padding-top: 20px;
-  padding-left: var(--dl-space-space-oneandhalfunits);
-  border-radius: 56px;
-  padding-right: var(--dl-space-space-oneandhalfunits);
-  padding-bottom: 20px;
-  background-color: #235536;
-}
-.index-mobile-menu {
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 353px;
-  display: flex;
-  padding: 32px;
-  z-index: 100;
-  position: fixed;
-  transform: translateX(100%);
-  transition: 0.5s;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: #151515;
-}
+
 .index-nav {
   display: flex;
   align-items: flex-start;
@@ -165,7 +135,7 @@
   padding-right: var(--dl-space-space-oneandhalfunits);
   flex-direction: column;
   background-size: cover;
-  background-image: url("public/untitled%20design-1100h.png");
+  background-image: url("public/stirlingcastle.png");
 }
 .index-header {
   gap: var(--dl-space-space-twounits);
@@ -501,15 +471,6 @@
     padding-top: var(--dl-space-space-unit);
     border-width: 0px;
   }
-  .index-button {
-    padding-top: var(--dl-space-space-unit);
-    padding-left: var(--dl-space-space-unit);
-    padding-right: var(--dl-space-space-unit);
-    padding-bottom: var(--dl-space-space-unit);
-  }
-  .index-mobile-menu {
-    height: 368px;
-  }
   .index-header {
     height: 100%;
     padding-bottom: var(--dl-space-space-fiveunits);
@@ -555,31 +516,15 @@
     font-size: 18px;
     line-height: 20px;
   }
-  .index-items {
+  .index-company {
     display: none;
   }
-  .index-burger-menu {
-    display: flex;
-  }
-  .index-button {
-    width: 84px;
-    padding: 0px;
-    padding-top: 12px;
-    padding-left: 12px;
-    border-radius: var(--dl-radius-radius-radius8);
-    margin-bottom: 0px;
-    padding-right: 12px;
-    padding-bottom: 12px;
-    background-color: transparent;
-  }
+
   .index-text {
     color: rgb(255, 255, 255);
     font-size: 18px;
   }
-  .index-mobile-menu {
-    height: 324px;
-    align-self: flex-start;
-  }
+
   .index-header {
     padding-bottom: var(--dl-space-space-fiveunits);
   }
@@ -637,10 +582,7 @@
     font-weight: 500;
     line-height: 20px;
   }
-  .index-mobile-menu {
-    height: 366px;
-    padding: 16px;
-  }
+
   .index-title {
     color: rgb(255, 255, 255);
     font-size: 40px;

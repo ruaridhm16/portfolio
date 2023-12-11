@@ -63,29 +63,10 @@
 .duck-jam-navlink {
   text-decoration: none;
 }
-.duck-jam-burger-menu {
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
 .duck-jam-navlink1 {
   text-decoration: none;
 }
-.duck-jam-mobile-menu {
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 353px;
-  display: flex;
-  padding: 32px;
-  z-index: 100;
-  position: fixed;
-  transform: translateX(100%);
-  transition: 0.5s;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: #151515;
-}
+
 .duck-jam-hero {
   width: 100%;
   height: 1079px;
@@ -258,9 +239,6 @@
     font-size: 18px;
     text-decoration: none;
   }
-  .duck-jam-mobile-menu {
-    height: 368px;
-  }
   .duck-jam-header {
     height: 100%;
     padding-bottom: var(--dl-space-space-fiveunits);
@@ -298,19 +276,9 @@
     font-size: 18px;
     line-height: 20px;
   }
-  .duck-jam-items {
-    display: none;
-  }
-  .duck-jam-burger-menu {
-    display: flex;
-  }
   .duck-jam-navlink1 {
     font-size: 18px;
     text-decoration: none;
-  }
-  .duck-jam-mobile-menu {
-    height: 324px;
-    align-self: flex-start;
   }
   .duck-jam-header {
     padding-bottom: var(--dl-space-space-fiveunits);
@@ -341,10 +309,7 @@
     font-size: 18px;
     text-decoration: none;
   }
-  .duck-jam-mobile-menu {
-    height: 366px;
-    padding: 16px;
-  }
+
   .duck-jam-title {
     color: rgb(255, 255, 255);
     font-size: 40px;
