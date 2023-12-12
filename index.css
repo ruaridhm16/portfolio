@@ -137,6 +137,8 @@
   background-size: cover;
   background-image: url("public/stirlingcastle.png");
   background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .index-header {
   gap: var(--dl-space-space-twounits);

@@ -81,6 +81,8 @@
   background-size: cover;
   background-image: url("public/stirlingenginehero.png");
   background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .stirling-engine-header {
   gap: var(--dl-space-space-twounits);

@@ -81,6 +81,8 @@
   background-size: cover;
   background-image: url("public/windturbinehero.png");
   background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .wind-turbine-header {
   gap: var(--dl-space-space-twounits);
@@ -141,6 +143,7 @@
   line-height: 36px;
 }
 
+
 .wind-turbine-links1 {
   display: flex;
   align-self: stretch;
@@ -187,7 +190,23 @@
 .wind-turbine-footer-text {
   color: #ffffff;
 }
+.wind-turbine-image{
+  width: 50%;
+  float:left;
+  max-width: 200%;
+  margin: 30px;
+  margin-bottom: var(--dl-space-space-twounits);
+  border-radius: 30px;
+}
+.wind-turbine-image-container{
+  display:flex;
+}
+
 @media(max-width: 1200px) {
+ 
+  .wind-turbine-image-container{
+    display:block;
+  }
   .wind-turbine-navbar {
     top: 0px;
     left: 0px;

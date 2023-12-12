@@ -81,6 +81,8 @@
   background-size: cover;
   background-image: url("public/dodgydoubledeckerhero.png");
   background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .dodgy-double-decker-header {
   gap: var(--dl-space-space-twounits);
