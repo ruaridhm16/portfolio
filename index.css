@@ -136,6 +136,7 @@
   flex-direction: column;
   background-size: cover;
   background-image: url("public/stirlingcastle.png");
+  background-attachment: fixed;
 }
 .index-header {
   gap: var(--dl-space-space-twounits);
@@ -592,5 +593,15 @@
   }
   .index-company2 {
     color: rgb(255, 255, 255);
+  }
+  .index-description {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 36px;
+  }
+  .index-description {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 36px;
   }
 }

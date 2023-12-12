@@ -80,6 +80,7 @@
   flex-direction: column;
   background-size: cover;
   background-image: url("public/duckjamhero.png");
+  background-attachment: fixed;
 }
 .duck-jam-header {
   gap: var(--dl-space-space-twounits);
@@ -247,13 +248,6 @@
   .duck-jam-title {
     color: rgb(255, 255, 255);
   }
-  .duck-jam-description {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
-  
-  }
   .duck-jam-portfolio {
     height: auto;
     padding-top: var(--dl-space-space-fourunits);
@@ -267,7 +261,11 @@
     font-size: 24px;
     line-height: 36px;
   }
-
+  .duck-jam-description {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    line-height: 36px;
+  }}
 @media(max-width: 767px) {
   .duck-jam-navbar-interactive {
     padding-top: var(--dl-space-space-unit);
@@ -292,6 +290,16 @@
   }
   .duck-jam-portfolio {
     padding-top: 120px;
+  }
+  .duck-jam-description1 {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 36px;
+  }
+  .duck-jam-description {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 36px;
   }
 }
 @media(max-width: 479px) {

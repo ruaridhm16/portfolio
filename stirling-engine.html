@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Stirling-Engine - Ruaridh Murdoch</title>
-    <meta
-      property="og:title"
-      content="Stirling-Engine"
-    />
+    <title>Stirling Engine - Ruaridh Murdoch</title>
+    <meta property="og:title" content="Stirling-Engine" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
+
 
     <style data-tag="reset-style-sheet">
       html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
@@ -35,8 +33,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
       data-tag="font"
     />
-    <!--This is the head section-->
-    <!-- <style> ... </style> -->
+
   </head>
   <body>
     <link rel="stylesheet" href="./style.css" />
@@ -45,36 +42,73 @@
 
       <div class="stirling-engine-container">
         <div class="stirling-engine-navbar">
-          <header
-            data-thq="thq-navbar"
-            class="stirling-engine-navbar-interactive"
-          >
+          <header data-thq="thq-navbar" class="stirling-engine-navbar-interactive">
             <div class="stirling-engine-container1">
               <span class="stirling-engine-company">STIRLING ENGINE</span>
             </div>
             <div class="stirling-engine-items">
               <div class="stirling-engine-links">
-                <a href="index.html" class="stirling-engine-navlink nav-link">
-                  BACK
-                </a>
+                <a href="index.html" class="stirling-engine-navlink nav-link">BACK</a>
               </div>
             </div>
-            <div data-thq="thq-burger-menu" class="stirling-engine-burger-menu">
-              <a href="index.html" class="stirling-engine-navlink1 nav-link">
-                BACK
-              </a>
-            </div>
-            <div
-              data-thq="thq-mobile-menu"
-              class="stirling-engine-mobile-menu"
-            ></div>
           </header>
+        </div>
+        <header class="stirling-engine-hero">
+          <div class="stirling-engine-header">
+            <h1 class="stirling-engine-title">
+              <span>stirling engine</span>
+              <br />
+            </h1>
+            <p class="stirling-engine-description">
+              <span>
+               After reading about the Stirling engine, I became quickly fascinated with how it works. The specialty was that it worked based on a constant temperature difference. This was my first project incorporating 3D design and printing using Fusion360.
+                <br><br><br>           
+              </span>
+            </p>
+          </div>
+        </header>
+        <div class="stirling-engine-portfolio">
+          <div class="stirling-engine-container2">
+            <p class="stirling-engine-description1">
+              <span>
+                After much research, this is the explanation of how the engine works: 
+There is a displacer in an airtight body that has a piston connected to it. The piston and displacer are both connected to a crankshaft, but their connection has a 90-degree phase shift; when one is at the extreme, the other is in the middle. The top of the body should be cold and the bottom hot.
+When the bottom is heated, the air inside the body gets heated, and the pressure increases, which moves the piston up. Simultaneously, the displacer also moves up and supports the additional heat from the bottom. Now that the displacer is at the top, it prevents the cold heat transfer from the top. The pressure keeps increasing, and the piston extracts the energy. When the piston reaches the top, the displacer will be dropped to the middle, allowing the cold heat transfer, and lowering the pressure. Allowing the piston to drop to the bottom. Then it all repeats. It will all work the same even if it is colder at the bottom than the top, although the crankshaft will spin in the opposite direction. 
+              </span>
+              <br/><br/>
+              <span>
+               The higher the temperature difference, the greater the power output.
+Initially tried to replicate the engine using a tin can, a balloon, and a wire coat hanger. The balloon would act as my airtight piston, and the wire would be bent into the crankshaft.
+
+              </span>
+              <br/><br/>
+              <span>
+                Unfortunately, after assembly, it did not work. This was just my first attempt, though. I packed it up and learned from it.
+              </span>
+              <br/><br/>
+              <span>
+                My understanding of why it did not work was that there was too much friction on all the parts, the balloon was not airtight, the displacer was too heavy, and the balloon was too tight. I decided to use my 3D printer to start again. I had never used any 3D modelling application other than Blender for game models, so I had to learn Fusion360 for printing. It went through 11 iterations before I got to the design I wanted. Here is my sketch and my 3D model:
+              </span> 
+              <br/><br/>
+              <span>
+                Each colour is a different body, as they were printed separately. The piston and displacer would be connected to the crankshaft using the coat-hanger wire again, as that system was simple and worked last time. The four circles on the crankshaft are necessary for the 90-degree phase shift; they have a small rod in between each pair where the wire would wrap around. The holes in the piston and displacer are where the wire would be inserted, and a stopper bend would be necessary to prevent it from falling out. The holes on the sides of the top and bottom of the base are for zip ties to be inserted and pulled tight, making it airtight if the print is perfect. The reasoning for one of the stands to be printed separately so that the crankshaft can be inserted.
+              </span>
+              <br/><br/>
+              <span>
+                Once again, this did not work. I believe this is because PLA plastic does not conduct heat as well as a metal plate would and there was not enough momentum on the crankshaft. I am currently (As of latest update) working on a new design involving two glass syringes as the bodies of air, with airtight pistons in both.
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="stirling-engine-footer">
+          <span>
+            <span class="stirling-engine-footer-text">
+              Last Updated - 12/12/23 - Ruaridh Murdoch
+            </span>
+            <br/>
+          </span>
         </div>
       </div>
     </div>
-    <script
-      data-section-id="navbar"
-      src="https://unpkg.com/@teleporthq/teleport-custom-scripts"
-    ></script>
   </body>
 </html>

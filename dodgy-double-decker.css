@@ -80,6 +80,7 @@
   flex-direction: column;
   background-size: cover;
   background-image: url("public/dodgydoubledeckerhero.png");
+  background-attachment: fixed;
 }
 .dodgy-double-decker-header {
   gap: var(--dl-space-space-twounits);
@@ -298,6 +299,16 @@
   }
   .dodgy-double-decker-portfolio {
     padding-top: 120px;
+  }
+  .dodgy-double-decker-description {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 36px;
+  }
+  .dodgy-double-decker-description {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 36px;
   }
 }
 @media(max-width: 479px) {
