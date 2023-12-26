@@ -7,6 +7,7 @@
   flex-direction: column;
   justify-content: center;
 }
+
 .this-website-navbar {
   top: 0px;
   left: 0px;
@@ -18,6 +19,7 @@
   flex-direction: column;
   background-color: #151515;
 }
+
 .this-website-navbar-interactive {
   width: 100%;
   height: 66px;
@@ -42,27 +44,32 @@
   align-items: space-between;
   flex-direction: column;
 }
+
 .this-website-company {
   color: rgb(255, 255, 255);
   font-size: 32px;
   font-style: normal;
   font-weight: 500;
 }
+
 .this-website-items {
   gap: var(--dl-space-space-threeunits);
   display: flex;
   align-items: center;
   flex-direction: row;
 }
+
 .this-website-links {
   gap: var(--dl-space-space-threeunits);
   display: flex;
   align-items: center;
   flex-direction: row;
 }
+
 .this-website-navlink {
   text-decoration: none;
 }
+
 .this-website-navlink1 {
   text-decoration: none;
 }
@@ -81,7 +88,10 @@
   background-size: cover;
   background-image: url("public/thiswebsitehero.png");
   background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
 }
+
 .this-website-header {
   gap: var(--dl-space-space-twounits);
   width: 100%;
@@ -94,6 +104,7 @@
   flex-direction: column;
   padding-bottom: var(--dl-space-space-fiveunits);
 }
+
 .this-website-title {
   color: rgb(255, 255, 255);
   width: 100%;
@@ -103,6 +114,7 @@
   line-height: 36px;
   text-transform: uppercase;
 }
+
 .this-website-description {
   color: rgb(255, 255, 255);
   width: 70%;
@@ -111,6 +123,7 @@
   max-width: 1280px;
   line-height: 36px;
 }
+
 .this-website-portfolio {
   width: 100%;
   height: auto;
@@ -122,6 +135,7 @@
   flex-direction: column;
   background-color: #151515;
 }
+
 .this-website-container2 {
   width: 100%;
   height: auto;
@@ -133,6 +147,7 @@
   padding-bottom: var(--dl-space-space-sixunits);
   justify-content: flex-start;
 }
+
 .this-website-description1 {
   color: rgb(255, 255, 255);
   width: 100%;
@@ -140,6 +155,7 @@
   max-width: 800px;
   line-height: 36px;
 }
+
 .this-website-list {
   color: rgb(188, 188, 188);
   width: 100%;
@@ -159,6 +175,7 @@
   padding-bottom: var(--dl-space-space-twounits);
   background-color: #151515;
 }
+
 .this-website-container3 {
   display: flex;
   align-self: stretch;
@@ -179,7 +196,7 @@
   font-weight: 900;
   text-decoration: none;
 }
- 
+
 .this-website-footer {
   display: flex;
   align-self: stretch;
@@ -191,27 +208,32 @@
   padding-bottom: var(--dl-space-space-twounits);
   background-color: #151515;
 }
+
 .this-website-footer-text {
   color: #ffffff;
 }
+
 @media(max-width: 1200px) {
   .this-website-navbar {
     top: 0px;
     left: 0px;
     position: absolute;
   }
+
   .this-website-description {
     color: rgb(255, 255, 255);
     height: 306px;
   }
-  
+
   .this-website-portfolio {
     height: auto;
     padding-bottom: 0px;
   }
+
   .this-website-container2 {
     height: auto;
   }
+
   .this-website-description1 {
     color: rgb(255, 255, 255);
     width: 70%;
@@ -219,10 +241,11 @@
     max-width: 1280px;
     line-height: 36px;
   }
-  
+
   .this-website-links1 {
     border-color: #000000;
   }
+
   .this-website-container3 {
     align-self: stretch;
     margin-left: var(--dl-space-space-threeunits);
@@ -236,60 +259,72 @@
     border-right-width: 0px;
     border-bottom-width: 1px;
   }
-  
+
 }
+
 @media(max-width: 991px) {
   .this-website-navbar-interactive {
     padding-top: var(--dl-space-space-unit);
     border-width: 0px;
   }
+
   .this-website-navlink1 {
     font-size: 18px;
     text-decoration: none;
   }
+
   .this-website-header {
     height: 100%;
     padding-bottom: var(--dl-space-space-fiveunits);
     justify-content: flex-start;
   }
+
   .this-website-title {
     color: rgb(255, 255, 255);
   }
+
   .this-website-description {
     color: rgb(255, 255, 255);
     font-size: 24px;
     line-height: 36px;
   }
-  }
-  .this-website-portfolio {
-    height: auto;
-    padding-top: var(--dl-space-space-fourunits);
-    padding-bottom: var(--dl-space-space-fourunits);
-  }
-  .this-website-container2 {
-    height: auto;
-  }
-  .this-website-description1 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
+}
+
+.this-website-portfolio {
+  height: auto;
+  padding-top: var(--dl-space-space-fourunits);
+  padding-bottom: var(--dl-space-space-fourunits);
+}
+
+.this-website-container2 {
+  height: auto;
+}
+
+.this-website-description1 {
+  color: rgb(255, 255, 255);
+  font-size: 24px;
+  line-height: 36px;
+}
 
 @media(max-width: 767px) {
   .this-website-navbar-interactive {
     padding-top: var(--dl-space-space-unit);
   }
+
   .this-website-company {
     font-size: 18px;
     line-height: 20px;
   }
+
   .this-website-navlink1 {
     font-size: 18px;
     text-decoration: none;
   }
+
   .this-website-header {
     padding-bottom: var(--dl-space-space-fiveunits);
   }
+
   .this-website-title {
     color: rgb(255, 255, 255);
     font-size: 40px;
@@ -297,24 +332,29 @@
     line-height: 36px;
     text-transform: uppercase;
   }
+
   .this-website-portfolio {
     padding-top: 120px;
   }
+
   .this-website-description {
     color: rgb(255, 255, 255);
     font-size: 16px;
     line-height: 36px;
   }
+
   .this-website-description {
     color: rgb(255, 255, 255);
     font-size: 16px;
     line-height: 36px;
   }
 }
+
 @media(max-width: 479px) {
   .this-website-navbar-interactive {
     border-width: 0px;
   }
+
   .this-website-company {
     color: rgb(255, 255, 255);
     font-size: 18px;
@@ -322,6 +362,7 @@
     font-weight: 500;
     line-height: 20px;
   }
+
   .this-website-navlink1 {
     font-size: 18px;
     text-decoration: none;

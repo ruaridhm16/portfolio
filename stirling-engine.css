@@ -7,6 +7,7 @@
   flex-direction: column;
   justify-content: center;
 }
+
 .stirling-engine-navbar {
   top: 0px;
   left: 0px;
@@ -18,6 +19,7 @@
   flex-direction: column;
   background-color: #151515;
 }
+
 .stirling-engine-navbar-interactive {
   width: 100%;
   height: 66px;
@@ -42,27 +44,32 @@
   align-items: space-between;
   flex-direction: column;
 }
+
 .stirling-engine-company {
   color: rgb(255, 255, 255);
   font-size: 32px;
   font-style: normal;
   font-weight: 500;
 }
+
 .stirling-engine-items {
   gap: var(--dl-space-space-threeunits);
   display: flex;
   align-items: center;
   flex-direction: row;
 }
+
 .stirling-engine-links {
   gap: var(--dl-space-space-threeunits);
   display: flex;
   align-items: center;
   flex-direction: row;
 }
+
 .stirling-engine-navlink {
   text-decoration: none;
 }
+
 .stirling-engine-navlink1 {
   text-decoration: none;
 }
@@ -84,6 +91,7 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
 .stirling-engine-header {
   gap: var(--dl-space-space-twounits);
   width: 100%;
@@ -96,6 +104,7 @@
   flex-direction: column;
   padding-bottom: var(--dl-space-space-fiveunits);
 }
+
 .stirling-engine-title {
   color: rgb(255, 255, 255);
   width: 100%;
@@ -105,6 +114,7 @@
   line-height: 36px;
   text-transform: uppercase;
 }
+
 .stirling-engine-description {
   color: rgb(255, 255, 255);
   width: 70%;
@@ -113,6 +123,7 @@
   max-width: 1280px;
   line-height: 36px;
 }
+
 .stirling-engine-portfolio {
   width: 100%;
   height: auto;
@@ -124,6 +135,7 @@
   flex-direction: column;
   background-color: #151515;
 }
+
 .stirling-engine-container2 {
   width: 100%;
   height: auto;
@@ -135,6 +147,7 @@
   padding-bottom: var(--dl-space-space-sixunits);
   justify-content: flex-start;
 }
+
 .stirling-engine-description1 {
   color: rgb(255, 255, 255);
   width: 100%;
@@ -154,6 +167,7 @@
   padding-bottom: var(--dl-space-space-twounits);
   background-color: #151515;
 }
+
 .stirling-engine-container3 {
   display: flex;
   align-self: stretch;
@@ -174,7 +188,7 @@
   font-weight: 900;
   text-decoration: none;
 }
- 
+
 .stirling-engine-footer {
   display: flex;
   align-self: stretch;
@@ -186,27 +200,32 @@
   padding-bottom: var(--dl-space-space-twounits);
   background-color: #151515;
 }
+
 .stirling-engine-footer-text {
   color: #ffffff;
 }
+
 @media(max-width: 1200px) {
   .stirling-engine-navbar {
     top: 0px;
     left: 0px;
     position: absolute;
   }
+
   .stirling-engine-description {
     color: rgb(255, 255, 255);
     height: 306px;
   }
-  
+
   .stirling-engine-portfolio {
     height: auto;
     padding-bottom: 0px;
   }
+
   .stirling-engine-container2 {
     height: auto;
   }
+
   .stirling-engine-description1 {
     color: rgb(255, 255, 255);
     width: 70%;
@@ -214,10 +233,11 @@
     max-width: 1280px;
     line-height: 36px;
   }
-  
+
   .stirling-engine-links1 {
     border-color: #000000;
   }
+
   .stirling-engine-container3 {
     align-self: stretch;
     margin-left: var(--dl-space-space-threeunits);
@@ -231,58 +251,72 @@
     border-right-width: 0px;
     border-bottom-width: 1px;
   }
-  
+
 }
+
 @media(max-width: 991px) {
   .stirling-engine-navbar-interactive {
     padding-top: var(--dl-space-space-unit);
     border-width: 0px;
   }
+
   .stirling-engine-navlink1 {
     font-size: 18px;
     text-decoration: none;
   }
+
   .stirling-engine-header {
     height: 100%;
     padding-bottom: var(--dl-space-space-fiveunits);
     justify-content: flex-start;
   }
+
   .stirling-engine-title {
     color: rgb(255, 255, 255);
   }
+
   .stirling-engine-portfolio {
     height: auto;
     padding-top: var(--dl-space-space-fourunits);
     padding-bottom: var(--dl-space-space-fourunits);
   }
+
   .stirling-engine-container2 {
     height: auto;
   }
+
   .stirling-engine-description1 {
     color: rgb(255, 255, 255);
     font-size: 24px;
     line-height: 36px;
   }
+
   .stirling-engine-description {
     color: rgb(255, 255, 255);
     font-size: 24px;
     line-height: 36px;
-  }}
+  }
+}
+
 @media(max-width: 767px) {
   .stirling-engine-navbar-interactive {
     padding-top: var(--dl-space-space-unit);
   }
+
   .stirling-engine-company {
     font-size: 18px;
     line-height: 20px;
   }
+
   .stirling-engine-navlink1 {
     font-size: 18px;
     text-decoration: none;
   }
+
   .stirling-engine-header {
     padding-bottom: var(--dl-space-space-fiveunits);
   }
+
   .stirling-engine-title {
     color: rgb(255, 255, 255);
     font-size: 40px;
@@ -290,24 +324,29 @@
     line-height: 36px;
     text-transform: uppercase;
   }
+
   .stirling-engine-portfolio {
     padding-top: 120px;
   }
+
   .stirling-engine-description1 {
     color: rgb(255, 255, 255);
     font-size: 16px;
     line-height: 36px;
   }
+
   .stirling-engine-description {
     color: rgb(255, 255, 255);
     font-size: 16px;
     line-height: 36px;
   }
 }
+
 @media(max-width: 479px) {
   .stirling-engine-navbar-interactive {
     border-width: 0px;
   }
+
   .stirling-engine-company {
     color: rgb(255, 255, 255);
     font-size: 18px;
@@ -315,6 +354,7 @@
     font-weight: 500;
     line-height: 20px;
   }
+
   .stirling-engine-navlink1 {
     font-size: 18px;
     text-decoration: none;
