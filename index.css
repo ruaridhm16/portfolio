@@ -194,6 +194,7 @@
 .index-text09 {
   font-style: black;
   font-weight: 100;
+  text-transform:none;
 }
 
 .index-portfolio {

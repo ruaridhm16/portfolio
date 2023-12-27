@@ -204,8 +204,24 @@
 .stirling-engine-footer-text {
   color: #ffffff;
 }
+.stirling-engine-image {
+  width: 50%;
+  float: left;
+  max-width: 200%;
+  margin: 30px;
+  margin-bottom: var(--dl-space-space-twounits);
+  border-radius: 30px;
+}
+
+.stirling-enginee-image-container {
+  display: flex;
+}
 
 @media(max-width: 1200px) {
+
+  .stirling-engine-image-container {
+    display: block;
+  }
   .stirling-engine-navbar {
     top: 0px;
     left: 0px;

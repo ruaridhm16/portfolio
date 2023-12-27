@@ -212,8 +212,25 @@
 .this-website-footer-text {
   color: #ffffff;
 }
+.this-website-image {
+  width: 50%;
+  float: left;
+  max-width: 200%;
+  margin: 30px;
+  margin-bottom: var(--dl-space-space-twounits);
+  border-radius: 30px;
+}
+
+.this-website-image-container {
+  display: flex;
+}
 
 @media(max-width: 1200px) {
+
+  .this-website-image-container {
+    display: block;
+  }
+
   .this-website-navbar {
     top: 0px;
     left: 0px;

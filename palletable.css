@@ -218,8 +218,25 @@
 .palletable-footer-text {
   color: #ffffff;
 }
+.palletable-image {
+  width: 50%;
+  float: left;
+  max-width: 200%;
+  margin: 30px;
+  margin-bottom: var(--dl-space-space-twounits);
+  border-radius: 30px;
+}
+
+.palletable-image-container {
+  display: flex;
+}
 
 @media(max-width: 1200px) {
+
+  .palletable-image-container {
+    display: block;
+  }
+
   .palletable-navbar {
     top: 0px;
     left: 0px;

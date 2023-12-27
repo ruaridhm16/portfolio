@@ -7,6 +7,7 @@
   flex-direction: column;
   justify-content: center;
 }
+
 .dodgy-double-decker-navbar {
   top: 0px;
   left: 0px;
@@ -18,6 +19,7 @@
   flex-direction: column;
   background-color: #151515;
 }
+
 .dodgy-double-decker-navbar-interactive {
   width: 100%;
   height: 66px;
@@ -42,27 +44,32 @@
   align-items: space-between;
   flex-direction: column;
 }
+
 .dodgy-double-decker-company {
   color: rgb(255, 255, 255);
   font-size: 32px;
   font-style: normal;
   font-weight: 500;
 }
+
 .dodgy-double-decker-items {
   gap: var(--dl-space-space-threeunits);
   display: flex;
   align-items: center;
   flex-direction: row;
 }
+
 .dodgy-double-decker-links {
   gap: var(--dl-space-space-threeunits);
   display: flex;
   align-items: center;
   flex-direction: row;
 }
+
 .dodgy-double-decker-navlink {
   text-decoration: none;
 }
+
 .dodgy-double-decker-navlink1 {
   text-decoration: none;
 }
@@ -84,6 +91,7 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
 .dodgy-double-decker-header {
   gap: var(--dl-space-space-twounits);
   width: 100%;
@@ -96,6 +104,7 @@
   flex-direction: column;
   padding-bottom: var(--dl-space-space-fiveunits);
 }
+
 .dodgy-double-decker-title {
   color: rgb(255, 255, 255);
   width: 100%;
@@ -105,6 +114,7 @@
   line-height: 36px;
   text-transform: uppercase;
 }
+
 .dodgy-double-decker-description {
   color: rgb(255, 255, 255);
   width: 70%;
@@ -113,6 +123,7 @@
   max-width: 1280px;
   line-height: 36px;
 }
+
 .dodgy-double-decker-portfolio {
   width: 100%;
   height: auto;
@@ -124,6 +135,7 @@
   flex-direction: column;
   background-color: #151515;
 }
+
 .dodgy-double-decker-container2 {
   width: 100%;
   height: auto;
@@ -135,6 +147,7 @@
   padding-bottom: var(--dl-space-space-sixunits);
   justify-content: flex-start;
 }
+
 .dodgy-double-decker-description1 {
   color: rgb(255, 255, 255);
   width: 100%;
@@ -142,6 +155,7 @@
   max-width: 800px;
   line-height: 36px;
 }
+
 .dodgy-double-decker-list {
   color: rgb(188, 188, 188);
   width: 100%;
@@ -161,6 +175,7 @@
   padding-bottom: var(--dl-space-space-twounits);
   background-color: #151515;
 }
+
 .dodgy-double-decker-container3 {
   display: flex;
   align-self: stretch;
@@ -181,7 +196,7 @@
   font-weight: 900;
   text-decoration: none;
 }
- 
+
 .dodgy-double-decker-footer {
   display: flex;
   align-self: stretch;
@@ -193,27 +208,49 @@
   padding-bottom: var(--dl-space-space-twounits);
   background-color: #151515;
 }
+
 .dodgy-double-decker-footer-text {
   color: #ffffff;
 }
+
+.dodgy-double-decker-image {
+  width: 50%;
+  float: left;
+  max-width: 200%;
+  margin: 30px;
+  margin-bottom: var(--dl-space-space-twounits);
+  border-radius: 30px;
+}
+
+.dodgy-double-decker-image-container {
+  display: flex;
+}
+
 @media(max-width: 1200px) {
+
+  .dodgy-double-decker-image-container {
+    display: block;
+  }
   .dodgy-double-decker-navbar {
     top: 0px;
     left: 0px;
     position: absolute;
   }
+
   .dodgy-double-decker-description {
     color: rgb(255, 255, 255);
     height: 306px;
   }
-  
+
   .dodgy-double-decker-portfolio {
     height: auto;
     padding-bottom: 0px;
   }
+
   .dodgy-double-decker-container2 {
     height: auto;
   }
+
   .dodgy-double-decker-description1 {
     color: rgb(255, 255, 255);
     width: 70%;
@@ -221,10 +258,11 @@
     max-width: 1280px;
     line-height: 36px;
   }
-  
+
   .dodgy-double-decker-links1 {
     border-color: #000000;
   }
+
   .dodgy-double-decker-container3 {
     align-self: stretch;
     margin-left: var(--dl-space-space-threeunits);
@@ -238,60 +276,72 @@
     border-right-width: 0px;
     border-bottom-width: 1px;
   }
-  
+
 }
+
 @media(max-width: 991px) {
   .dodgy-double-decker-navbar-interactive {
     padding-top: var(--dl-space-space-unit);
     border-width: 0px;
   }
+
   .dodgy-double-decker-navlink1 {
     font-size: 18px;
     text-decoration: none;
   }
+
   .dodgy-double-decker-header {
     height: 100%;
     padding-bottom: var(--dl-space-space-fiveunits);
     justify-content: flex-start;
   }
+
   .dodgy-double-decker-title {
     color: rgb(255, 255, 255);
   }
+
   .dodgy-double-decker-description {
     color: rgb(255, 255, 255);
     font-size: 24px;
     line-height: 36px;
   }
-  }
-  .dodgy-double-decker-portfolio {
-    height: auto;
-    padding-top: var(--dl-space-space-fourunits);
-    padding-bottom: var(--dl-space-space-fourunits);
-  }
-  .dodgy-double-decker-container2 {
-    height: auto;
-  }
-  .dodgy-double-decker-description1 {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    line-height: 36px;
-  }
+}
+
+.dodgy-double-decker-portfolio {
+  height: auto;
+  padding-top: var(--dl-space-space-fourunits);
+  padding-bottom: var(--dl-space-space-fourunits);
+}
+
+.dodgy-double-decker-container2 {
+  height: auto;
+}
+
+.dodgy-double-decker-description1 {
+  color: rgb(255, 255, 255);
+  font-size: 24px;
+  line-height: 36px;
+}
 
 @media(max-width: 767px) {
   .dodgy-double-decker-navbar-interactive {
     padding-top: var(--dl-space-space-unit);
   }
+
   .dodgy-double-decker-company {
     font-size: 18px;
     line-height: 20px;
   }
+
   .dodgy-double-decker-navlink1 {
     font-size: 18px;
     text-decoration: none;
   }
+
   .dodgy-double-decker-header {
     padding-bottom: var(--dl-space-space-fiveunits);
   }
+
   .dodgy-double-decker-title {
     color: rgb(255, 255, 255);
     font-size: 40px;
@@ -299,24 +349,29 @@
     line-height: 36px;
     text-transform: uppercase;
   }
+
   .dodgy-double-decker-portfolio {
     padding-top: 120px;
   }
+
   .dodgy-double-decker-description {
     color: rgb(255, 255, 255);
     font-size: 16px;
     line-height: 36px;
   }
+
   .dodgy-double-decker-description {
     color: rgb(255, 255, 255);
     font-size: 16px;
     line-height: 36px;
   }
 }
+
 @media(max-width: 479px) {
   .dodgy-double-decker-navbar-interactive {
     border-width: 0px;
   }
+
   .dodgy-double-decker-company {
     color: rgb(255, 255, 255);
     font-size: 18px;
@@ -324,6 +379,7 @@
     font-weight: 500;
     line-height: 20px;
   }
+
   .dodgy-double-decker-navlink1 {
     font-size: 18px;
     text-decoration: none;
