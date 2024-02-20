@@ -1,0 +1,389 @@
+.wind-turbine-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.wind-turbine-navbar {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  display: flex;
+  z-index: 100;
+  position: fixed;
+  align-items: center;
+  flex-direction: column;
+  background-color: #151515;
+}
+
+.wind-turbine-navbar-interactive {
+  width: 100%;
+  height: 66px;
+  display: flex;
+  max-width: 1280px;
+  transition: 0.3s;
+  align-items: center;
+  padding-top: var(--dl-space-space-unit);
+  border-color: var(--dl-color-gray-black);
+  border-width: 0px;
+  padding-left: var(--dl-space-space-oneandhalfunits);
+  margin-bottom: 11px;
+  padding-right: var(--dl-space-space-oneandhalfunits);
+  justify-content: space-between;
+}
+
+.wind-turbine-container1 {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: space-between;
+  flex-direction: column;
+}
+
+.wind-turbine-company {
+  color: rgb(255, 255, 255);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.wind-turbine-items {
+  gap: var(--dl-space-space-threeunits);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.wind-turbine-links {
+  gap: var(--dl-space-space-threeunits);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.wind-turbine-navlink {
+  text-decoration: none;
+}
+
+.wind-turbine-navlink1 {
+  text-decoration: none;
+}
+
+.wind-turbine-hero {
+  width: 100%;
+  height: 1079px;
+  display: flex;
+  opacity: 1;
+  position: relative;
+  align-items: center;
+  padding-top: var(--dl-space-space-fiveunits);
+  padding-left: var(--dl-space-space-oneandhalfunits);
+  padding-right: var(--dl-space-space-oneandhalfunits);
+  flex-direction: column;
+  background-size: cover;
+  background-image: url("public/windturbinehero.png");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.wind-turbine-header {
+  gap: var(--dl-space-space-twounits);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  max-width: 1280px;
+  align-items: flex-start;
+  padding-top: var(--dl-space-space-fiveunits);
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-fiveunits);
+}
+
+.wind-turbine-title {
+  color: rgb(255, 255, 255);
+  width: 100%;
+  font-size: 80px;
+  max-width: 895px;
+  font-weight: normal;
+  line-height: 36px;
+  text-transform: uppercase;
+}
+
+.wind-turbine-description {
+  color: rgb(255, 255, 255);
+  width: 70%;
+  height: 2511px;
+  font-size: 24px;
+  max-width: 1280px;
+  line-height: 36px;
+}
+
+.wind-turbine-portfolio {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  padding-top: 120px;
+  padding-left: var(--dl-space-space-oneandhalfunits);
+  padding-right: var(--dl-space-space-oneandhalfunits);
+  flex-direction: column;
+  background-color: #151515;
+}
+
+.wind-turbine-container2 {
+  width: 100%;
+  height: auto;
+  display: flex;
+  position: relative;
+  max-width: 1280px;
+  align-items: flex-start;
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-sixunits);
+  justify-content: flex-start;
+}
+
+.wind-turbine-description1 {
+  color: rgb(255, 255, 255);
+  width: 100%;
+  font-size: 24px;
+  max-width: 800px;
+  line-height: 36px;
+}
+
+
+.wind-turbine-links1 {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  padding-top: var(--dl-space-space-twounits);
+  border-color: var(--dl-color-gray-black);
+  border-width: 0px;
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-twounits);
+  background-color: #151515;
+}
+
+.wind-turbine-container3 {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  margin-left: var(--dl-space-space-threeunits);
+  padding-top: var(--dl-space-space-oneandhalfunits);
+  border-color: #ffffff;
+  border-width: 1px;
+  margin-right: var(--dl-space-space-threeunits);
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-oneandhalfunits);
+  border-left-width: 0px;
+  border-right-width: 0px;
+}
+
+.wind-turbine-links {
+  font-style: normal;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.wind-turbine-footer {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  padding-top: var(--dl-space-space-twounits);
+  border-color: var(--dl-color-gray-black);
+  border-width: 0px;
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-twounits);
+  background-color: #151515;
+}
+
+.wind-turbine-footer-text {
+  color: #ffffff;
+}
+
+.wind-turbine-image {
+  width: 50%;
+  float: left;
+  max-width: 200%;
+  margin: 30px;
+  margin-bottom: var(--dl-space-space-twounits);
+  border-radius: 30px;
+}
+
+.wind-turbine-image-container {
+  display: flex;
+}
+
+@media(max-width: 1200px) {
+
+  .wind-turbine-image-container {
+    display: block;
+  }
+
+  .wind-turbine-navbar {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+  }
+
+  .wind-turbine-description {
+    color: rgb(255, 255, 255);
+    height: 306px;
+  }
+
+  .wind-turbine-portfolio {
+    height: auto;
+    padding-bottom: 0px;
+  }
+
+  .wind-turbine-container2 {
+    height: auto;
+  }
+
+  .wind-turbine-description1 {
+    color: rgb(255, 255, 255);
+    width: 70%;
+    font-size: 24px;
+    max-width: 1280px;
+    line-height: 36px;
+  }
+
+  .wind-turbine-links1 {
+    border-color: #000000;
+  }
+
+  .wind-turbine-container3 {
+    align-self: stretch;
+    margin-left: var(--dl-space-space-threeunits);
+    padding-top: var(--dl-space-space-oneandhalfunits);
+    border-color: #ffffff;
+    border-width: 1px;
+    margin-right: var(--dl-space-space-threeunits);
+    padding-bottom: var(--dl-space-space-oneandhalfunits);
+    border-top-width: 1px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+  }
+
+}
+
+@media(max-width: 991px) {
+  .wind-turbine-navbar-interactive {
+    padding-top: var(--dl-space-space-unit);
+    border-width: 0px;
+  }
+
+  .wind-turbine-navlink1 {
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .wind-turbine-header {
+    height: 100%;
+    padding-bottom: var(--dl-space-space-fiveunits);
+    justify-content: flex-start;
+  }
+
+  .wind-turbine-title {
+    color: rgb(255, 255, 255);
+  }
+
+  .wind-turbine-portfolio {
+    height: auto;
+    padding-top: var(--dl-space-space-fourunits);
+    padding-bottom: var(--dl-space-space-fourunits);
+  }
+
+  .wind-turbine-container2 {
+    height: auto;
+  }
+
+  .wind-turbine-description1 {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    line-height: 36px;
+  }
+
+  .wind-turbine-description {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    line-height: 36px;
+  }
+}
+
+@media(max-width: 767px) {
+  .wind-turbine-navbar-interactive {
+    padding-top: var(--dl-space-space-unit);
+  }
+
+  .wind-turbine-company {
+    font-size: 18px;
+    line-height: 20px;
+  }
+
+  .wind-turbine-navlink1 {
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .wind-turbine-header {
+    padding-bottom: var(--dl-space-space-fiveunits);
+  }
+
+  .wind-turbine-title {
+    color: rgb(255, 255, 255);
+    font-size: 40px;
+    font-weight: normal;
+    line-height: 36px;
+    text-transform: uppercase;
+  }
+
+  .wind-turbine-portfolio {
+    padding-top: 120px;
+  }
+
+  .wind-turbine-description1 {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 36px;
+  }
+
+  .wind-turbine-description {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 36px;
+  }
+}
+
+@media(max-width: 479px) {
+  .wind-turbine-navbar-interactive {
+    border-width: 0px;
+  }
+
+  .wind-turbine-company {
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  .wind-turbine-navlink1 {
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .wind-turbine-title {
+    color: rgb(255, 255, 255);
+    font-size: 40px;
+    font-weight: normal;
+    line-height: 36px;
+    text-transform: uppercase;
+  }
+}

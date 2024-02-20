@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Desk Lamp - Ruaridh Murdoch</title>
+  <meta property="og:title" content="Desk-Lamp" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+
+
+  <style data-tag="reset-style-sheet">
+    html {
+      line-height: 1.15;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      border-width: 0;
+      border-style: solid;
+    }
+
+    p,
+    li,
+    ul,
+    pre,
+    div,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    figure,
+    blockquote,
+    figcaption {
+      margin: 0;
+      padding: 0;
+    }
+
+    button {
+      background-color: transparent;
+    }
+
+    button,
+    input,
+    optgroup,
+    select,
+    textarea {
+      font-family: inherit;
+      font-size: 100%;
+      line-height: 1.15;
+      margin: 0;
+    }
+
+    button,
+    select {
+      text-transform: none;
+    }
+
+    button,
+    [type="button"],
+    [type="reset"],
+    [type="submit"] {
+      -webkit-appearance: button;
+    }
+
+    button::-moz-focus-inner,
+    [type="button"]::-moz-focus-inner,
+    [type="reset"]::-moz-focus-inner,
+    [type="submit"]::-moz-focus-inner {
+      border-style: none;
+      padding: 0;
+    }
+
+    button:-moz-focus,
+    [type="button"]:-moz-focus,
+    [type="reset"]:-moz-focus,
+    [type="submit"]:-moz-focus {
+      outline: 1px dotted ButtonText;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    input {
+      padding: 2px 4px;
+    }
+
+    img {
+      display: block;
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+  </style>
+  <style data-tag="default-style-sheet">
+    html {
+      font-family: Noto Sans;
+      font-size: 16px;
+    }
+
+    body {
+      font-weight: 400;
+      font-style: normal;
+      text-decoration: none;
+      text-transform: none;
+      letter-spacing: normal;
+      line-height: 1.15;
+      color: var(--dl-color-gray-black);
+      background-color: var(--dl-color-gray-white);
+
+    }
+  </style>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+    data-tag="font" />
+
+</head>
+
+<body>
+  <link rel="stylesheet" href="./style.css" />
+  <div>
+    <link href="./desk-lamp.css" rel="stylesheet" />
+
+    <div class="desk-lamp-container">
+      <div class="desk-lamp-navbar">
+        <header data-thq="thq-navbar" class="desk-lamp-navbar-interactive">
+          <div class="desk-lamp-container1">
+            <span class="desk-lamp-company">DESK LAMP</span>
+          </div>
+          <div class="desk-lamp-items">
+            <div class="desk-lamp-links">
+              <a href="index.html" class="desk-lamp-navlink nav-link">BACK</a>
+            </div>
+          </div>
+        </header>
+      </div>
+      <header class="desk-lamp-hero">
+        <div class="desk-lamp-header">
+          <h1 class="desk-lamp-title">
+            <span>desk lamp</span>
+            <br />
+          </h1>
+          <p class="desk-lamp-description">
+            <span>
+              I wanted a very durable and stable LED lamp, for my garage for doing late night woodworking for my young enterprise business, Palatable Products, and for my desk for soldering. I was competent with Fusion 360 so I thought I would build one. I wanted it to be powered with a USB C cable, have a simple switch, and have a long and articulated arm.<br><br><br>
+            </span>
+          </p>
+        </div>
+      </header>
+      <div class="desk-lamp-portfolio">
+        <div class="desk-lamp-container2">
+          <p class="desk-lamp-description1">
+            <span>
+              I came up with a design that would involve a metal gooseneck so that it would be fully adjustable to any orientation. Though the problem with a gooseneck is that it can flex and slowly droop downwards, so I needed a high-quality arm that wouldn’t. I settled on a gooseneck made for a microphone, which was a much heavier weight than an LED with a small aluminium heatsink. </span>
+            <br /><br />
+          </p>
+          <img alt="image" src="public/smallpics/desklamp/sketch.png" loading="eager"
+            class="desk-lamp-image" />
+          <p class="desk-lamp-description1">
+            <span>
+              I would also need a method to get power from a USB C cable. I got a USB C breakout board and after a lot of time-consuming research figured out to get power from it you need to connect two 5.1k resistors from CC1 & CC2 to Ground and then the Ground is the negative terminal and the VBUS is the positive. This gives around 5V.</span>
+            </span>
+            <br /><br />
+          </p>
+          <img alt="image" src="public/smallpics/desklamp/USBC.jpg" loading="eager"
+            class="desk-lamp-image" />
+          <p class="desk-lamp-description1">
+            <span>
+              Connecting that to a rocker switch will then turn on the LED. I volunteer at Recyke-A-Bike, a local bike recycling shop, and I was allowed to take one of the bike headlights, which are extremely bright. It is a thin white COB LED.</span>
+            <br /><br />
+          </p>
+          <img alt="image" src="public/smallpics/desklamp/LED.jpg" loading="eager"
+            class="desk-lamp-image" />
+          <p class="desk-lamp-description1">
+            <span>
+              I then got a small aluminium heatsink that I still need to cut down to size.</span>
+            <br /><br />
+            <span>
+              Next was the issue of how I will attach either end of the gooseneck to components. I found I could 3D print pretty durable screw threading and after a lot of trial and error found one that fits the gooseneck.
+            </span> <br /><br />
+          </p>
+          <img alt="image" src="public/smallpics/desklamp/screw.jpg" loading="eager" class="desk-lamp-image" />
+          <p class="desk-lamp-description1">
+            <span>
+              I then designed an LED holder that would connect onto a thread joint so I can put the LED into the holder then melt the plastic together to shut it together and then screw the head onto the gooseneck. This was a fairly complex part to design it had to fit very tightly around the LED and it was all in a very small space so there were lots of things to consider.
+            </span> <br /><br />
+          </p>
+          <div class="desk-lamp-image-container">
+            <img alt="image" src="public/smallpics/desklamp/model1.png" loading="eager"
+              class="desk-lamp-image" />
+            <img alt="image" src="public/smallpics/desklamp/model2.png" loading="eager"
+              class="desk-lamp-image" ; />
+          </div>
+          <p class="desk-lamp-description1">
+            <span>
+              Then I researched into PLA smoothing to avoid the layer lines that naturally come with filament 3D printing. Using all-purpose wood filler mixed with acetone, sanding, and then using auto-primer should make the prints look a lot more finished and professional. This is as far as I have got to so far. 
+            </span> <br /><br />
+          </p>
+          
+        </div>
+      </div>
+      <div class="desk-lamp-footer">
+        <span>
+          <span class="desk-lamp-footer-text">
+            Last Updated - 20/02/23 - Ruaridh Murdoch
+          </span>
+          <br />
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

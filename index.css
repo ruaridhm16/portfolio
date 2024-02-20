@@ -283,7 +283,8 @@
   align-self: flex-start;
   text-align: left;
   padding-top: var(--dl-space-space-halfunit);
-  text-transform: capitalize;
+  width:50%
+
 }
 
 .index-image {
@@ -329,7 +330,8 @@
   align-self: flex-end;
   text-align: left;
   padding-top: var(--dl-space-space-halfunit);
-  text-transform: capitalize;
+  text-transform: none;
+  width:50%
 }
 
 .index-image1 {
@@ -373,7 +375,8 @@
   align-self: flex-start;
   text-align: left;
   padding-top: var(--dl-space-space-halfunit);
-  text-transform: capitalize;
+  text-transform: none;
+  width:50%
 }
 
 .index-image2 {
@@ -415,9 +418,11 @@
   color: rgb(255, 255, 255);
   font-size: 20px;
   align-self: flex-end;
-  text-align: left;
+  text-align: right;
   padding-top: var(--dl-space-space-halfunit);
-  text-transform: capitalize;
+  text-transform: none;
+  width:50%
+  
 }
 
 .index-image3 {
@@ -460,6 +465,8 @@
   font-size: 20px;
   align-self: flex-start;
   padding-top: var(--dl-space-space-halfunit);
+  width:50%;
+  
 }
 
 .index-image4 {

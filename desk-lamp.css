@@ -1,0 +1,389 @@
+.desk-lamp-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.desk-lamp-navbar {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  display: flex;
+  z-index: 100;
+  position: fixed;
+  align-items: center;
+  flex-direction: column;
+  background-color: #151515;
+}
+
+.desk-lamp-navbar-interactive {
+  width: 100%;
+  height: 66px;
+  display: flex;
+  max-width: 1280px;
+  transition: 0.3s;
+  align-items: center;
+  padding-top: var(--dl-space-space-unit);
+  border-color: var(--dl-color-gray-black);
+  border-width: 0px;
+  padding-left: var(--dl-space-space-oneandhalfunits);
+  margin-bottom: 11px;
+  padding-right: var(--dl-space-space-oneandhalfunits);
+  justify-content: space-between;
+}
+
+.desk-lamp-container1 {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: space-between;
+  flex-direction: column;
+}
+
+.desk-lamp-company {
+  color: rgb(255, 255, 255);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.desk-lamp-items {
+  gap: var(--dl-space-space-threeunits);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.desk-lamp-links {
+  gap: var(--dl-space-space-threeunits);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.desk-lamp-navlink {
+  text-decoration: none;
+}
+
+.desk-lamp-navlink1 {
+  text-decoration: none;
+}
+
+.desk-lamp-hero {
+  width: 100%;
+  height: 1079px;
+  display: flex;
+  opacity: 1;
+  position: relative;
+  align-items: center;
+  padding-top: var(--dl-space-space-fiveunits);
+  padding-left: var(--dl-space-space-oneandhalfunits);
+  padding-right: var(--dl-space-space-oneandhalfunits);
+  flex-direction: column;
+  background-size: cover;
+  background-image: url("public/desklamphero.png");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.desk-lamp-header {
+  gap: var(--dl-space-space-twounits);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  max-width: 1280px;
+  align-items: flex-start;
+  padding-top: var(--dl-space-space-fiveunits);
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-fiveunits);
+}
+
+.desk-lamp-title {
+  color: rgb(255, 255, 255);
+  width: 100%;
+  font-size: 80px;
+  max-width: 895px;
+  font-weight: normal;
+  line-height: 36px;
+  text-transform: uppercase;
+}
+
+.desk-lamp-description {
+  color: rgb(255, 255, 255);
+  width: 70%;
+  height: 2511px;
+  font-size: 24px;
+  max-width: 1280px;
+  line-height: 36px;
+}
+
+.desk-lamp-portfolio {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  padding-top: 120px;
+  padding-left: var(--dl-space-space-oneandhalfunits);
+  padding-right: var(--dl-space-space-oneandhalfunits);
+  flex-direction: column;
+  background-color: #151515;
+}
+
+.desk-lamp-container2 {
+  width: 100%;
+  height: auto;
+  display: flex;
+  position: relative;
+  max-width: 1280px;
+  align-items: flex-start;
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-sixunits);
+  justify-content: flex-start;
+}
+
+.desk-lamp-description1 {
+  color: rgb(255, 255, 255);
+  width: 100%;
+  font-size: 24px;
+  max-width: 800px;
+  line-height: 36px;
+}
+
+
+.desk-lamp-links1 {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  padding-top: var(--dl-space-space-twounits);
+  border-color: var(--dl-color-gray-black);
+  border-width: 0px;
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-twounits);
+  background-color: #151515;
+}
+
+.desk-lamp-container3 {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  margin-left: var(--dl-space-space-threeunits);
+  padding-top: var(--dl-space-space-oneandhalfunits);
+  border-color: #ffffff;
+  border-width: 1px;
+  margin-right: var(--dl-space-space-threeunits);
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-oneandhalfunits);
+  border-left-width: 0px;
+  border-right-width: 0px;
+}
+
+.desk-lamp-links {
+  font-style: normal;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.desk-lamp-footer {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  padding-top: var(--dl-space-space-twounits);
+  border-color: var(--dl-color-gray-black);
+  border-width: 0px;
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-twounits);
+  background-color: #151515;
+}
+
+.desk-lamp-footer-text {
+  color: #ffffff;
+}
+
+.desk-lamp-image {
+  width: 50%;
+  float: left;
+  max-width: 200%;
+  margin: 30px;
+  margin-bottom: var(--dl-space-space-twounits);
+  border-radius: 30px;
+}
+
+.desk-lamp-image-container {
+  display: flex;
+}
+
+@media(max-width: 1200px) {
+
+  .desk-lamp-image-container {
+    display: block;
+  }
+
+  .desk-lamp-navbar {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+  }
+
+  .desk-lamp-description {
+    color: rgb(255, 255, 255);
+    height: 306px;
+  }
+
+  .desk-lamp-portfolio {
+    height: auto;
+    padding-bottom: 0px;
+  }
+
+  .desk-lamp-container2 {
+    height: auto;
+  }
+
+  .desk-lamp-description1 {
+    color: rgb(255, 255, 255);
+    width: 70%;
+    font-size: 24px;
+    max-width: 1280px;
+    line-height: 36px;
+  }
+
+  .desk-lamp-links1 {
+    border-color: #000000;
+  }
+
+  .desk-lamp-container3 {
+    align-self: stretch;
+    margin-left: var(--dl-space-space-threeunits);
+    padding-top: var(--dl-space-space-oneandhalfunits);
+    border-color: #ffffff;
+    border-width: 1px;
+    margin-right: var(--dl-space-space-threeunits);
+    padding-bottom: var(--dl-space-space-oneandhalfunits);
+    border-top-width: 1px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+  }
+
+}
+
+@media(max-width: 991px) {
+  .desk-lamp-navbar-interactive {
+    padding-top: var(--dl-space-space-unit);
+    border-width: 0px;
+  }
+
+  .desk-lamp-navlink1 {
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .desk-lamp-header {
+    height: 100%;
+    padding-bottom: var(--dl-space-space-fiveunits);
+    justify-content: flex-start;
+  }
+
+  .desk-lamp-title {
+    color: rgb(255, 255, 255);
+  }
+
+  .desk-lamp-portfolio {
+    height: auto;
+    padding-top: var(--dl-space-space-fourunits);
+    padding-bottom: var(--dl-space-space-fourunits);
+  }
+
+  .desk-lamp-container2 {
+    height: auto;
+  }
+
+  .desk-lamp-description1 {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    line-height: 36px;
+  }
+
+  .desk-lamp-description {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    line-height: 36px;
+  }
+}
+
+@media(max-width: 767px) {
+  .desk-lamp-navbar-interactive {
+    padding-top: var(--dl-space-space-unit);
+  }
+
+  .desk-lamp-company {
+    font-size: 18px;
+    line-height: 20px;
+  }
+
+  .desk-lamp-navlink1 {
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .desk-lamp-header {
+    padding-bottom: var(--dl-space-space-fiveunits);
+  }
+
+  .desk-lamp-title {
+    color: rgb(255, 255, 255);
+    font-size: 40px;
+    font-weight: normal;
+    line-height: 36px;
+    text-transform: uppercase;
+  }
+
+  .desk-lamp-portfolio {
+    padding-top: 120px;
+  }
+
+  .desk-lamp-description1 {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 36px;
+  }
+
+  .desk-lamp-description {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 36px;
+  }
+}
+
+@media(max-width: 479px) {
+  .desk-lamp-navbar-interactive {
+    border-width: 0px;
+  }
+
+  .desk-lamp-company {
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  .desk-lamp-navlink1 {
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .desk-lamp-title {
+    color: rgb(255, 255, 255);
+    font-size: 40px;
+    font-weight: normal;
+    line-height: 36px;
+    text-transform: uppercase;
+  }
+}
