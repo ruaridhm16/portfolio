@@ -1,4 +1,4 @@
-.wind-turbine-container {
+.electronics-container {
   width: 100%;
   display: flex;
   overflow: auto;
@@ -8,7 +8,7 @@
   justify-content: center;
 }
 
-.wind-turbine-navbar {
+.electronics-navbar {
   top: 0px;
   left: 0px;
   width: 100%;
@@ -20,7 +20,7 @@
   background-color: #151515;
 }
 
-.wind-turbine-navbar-interactive {
+.electronics-navbar-interactive {
   width: 100%;
   height: 66px;
   display: flex;
@@ -36,7 +36,7 @@
   justify-content: space-between;
 }
 
-.wind-turbine-container1 {
+.electronics-container1 {
   flex: 0 0 auto;
   width: auto;
   height: auto;
@@ -45,36 +45,36 @@
   flex-direction: column;
 }
 
-.wind-turbine-company {
+.electronics-company {
   color: rgb(255, 255, 255);
   font-size: 32px;
   font-style: normal;
   font-weight: 500;
 }
 
-.wind-turbine-items {
+.electronics-items {
   gap: var(--dl-space-space-threeunits);
   display: flex;
   align-items: center;
   flex-direction: row;
 }
 
-.wind-turbine-links {
+.electronics-links {
   gap: var(--dl-space-space-threeunits);
   display: flex;
   align-items: center;
   flex-direction: row;
 }
 
-.wind-turbine-navlink {
+.electronics-navlink {
   text-decoration: none;
 }
 
-.wind-turbine-navlink1 {
+.electronics-navlink1 {
   text-decoration: none;
 }
 
-.wind-turbine-hero {
+.electronics-hero {
   width: 100%;
   height: 1079px;
   display: flex;
@@ -86,13 +86,13 @@
   padding-right: var(--dl-space-space-oneandhalfunits);
   flex-direction: column;
   background-size: cover;
-  background-image: url("public/windturbinehero.png");
+  background-image: url("public/electronicshero.jpg");
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.wind-turbine-header {
+.electronics-header {
   gap: var(--dl-space-space-twounits);
   width: 100%;
   height: 100%;
@@ -105,7 +105,7 @@
   padding-bottom: var(--dl-space-space-fiveunits);
 }
 
-.wind-turbine-title {
+.electronics-title {
   color: rgb(255, 255, 255);
   width: 100%;
   font-size: 80px;
@@ -115,7 +115,7 @@
   text-transform: uppercase;
 }
 
-.wind-turbine-description {
+.electronics-description {
   color: rgb(255, 255, 255);
   width: 70%;
   height: 2511px;
@@ -124,7 +124,7 @@
   line-height: 36px;
 }
 
-.wind-turbine-portfolio {
+.electronics-portfolio {
   width: 100%;
   height: auto;
   display: flex;
@@ -136,7 +136,7 @@
   background-color: #151515;
 }
 
-.wind-turbine-container2 {
+.electronics-container2 {
   width: 100%;
   height: auto;
   display: flex;
@@ -148,7 +148,7 @@
   justify-content: flex-start;
 }
 
-.wind-turbine-description1 {
+.electronics-description1 {
   color: rgb(255, 255, 255);
   width: 100%;
   font-size: 24px;
@@ -157,7 +157,7 @@
 }
 
 
-.wind-turbine-links1 {
+.electronics-links1 {
   display: flex;
   align-self: stretch;
   align-items: center;
@@ -169,7 +169,7 @@
   background-color: #151515;
 }
 
-.wind-turbine-container3 {
+.electronics-container3 {
   display: flex;
   align-self: stretch;
   align-items: center;
@@ -184,13 +184,13 @@
   border-right-width: 0px;
 }
 
-.wind-turbine-links {
+.electronics-links {
   font-style: normal;
   font-weight: 900;
   text-decoration: none;
 }
 
-.wind-turbine-footer {
+.electronics-footer {
   display: flex;
   align-self: stretch;
   align-items: center;
@@ -202,11 +202,11 @@
   background-color: #151515;
 }
 
-.wind-turbine-footer-text {
+.electronics-footer-text {
   color: #ffffff;
 }
 
-.wind-turbine-image {
+.electronics-image {
   width: 50%;
   float: left;
   max-width: 200%;
@@ -215,37 +215,37 @@
   border-radius: 30px;
 }
 
-.wind-turbine-image-container {
+.electronics-image-container {
   display: flex;
 }
 
 @media(max-width: 1200px) {
 
-  .wind-turbine-image-container {
+  .electronics-image-container {
     display: block;
   }
 
-  .wind-turbine-navbar {
+  .electronics-navbar {
     top: 0px;
     left: 0px;
     position: absolute;
   }
 
-  .wind-turbine-description {
+  .electronics-description {
     color: rgb(255, 255, 255);
     height: 306px;
   }
 
-  .wind-turbine-portfolio {
+  .electronics-portfolio {
     height: auto;
     padding-bottom: 0px;
   }
 
-  .wind-turbine-container2 {
+  .electronics-container2 {
     height: auto;
   }
 
-  .wind-turbine-description1 {
+  .electronics-description1 {
     color: rgb(255, 255, 255);
     width: 70%;
     font-size: 24px;
@@ -253,11 +253,11 @@
     line-height: 36px;
   }
 
-  .wind-turbine-links1 {
+  .electronics-links1 {
     border-color: #000000;
   }
 
-  .wind-turbine-container3 {
+  .electronics-container3 {
     align-self: stretch;
     margin-left: var(--dl-space-space-threeunits);
     padding-top: var(--dl-space-space-oneandhalfunits);
@@ -274,43 +274,43 @@
 }
 
 @media(max-width: 991px) {
-  .wind-turbine-navbar-interactive {
+  .electronics-navbar-interactive {
     padding-top: var(--dl-space-space-unit);
     border-width: 0px;
   }
 
-  .wind-turbine-navlink1 {
+  .electronics-navlink1 {
     font-size: 18px;
     text-decoration: none;
   }
 
-  .wind-turbine-header {
+  .electronics-header {
     height: 100%;
     padding-bottom: var(--dl-space-space-fiveunits);
     justify-content: flex-start;
   }
 
-  .wind-turbine-title {
+  .electronics-title {
     color: rgb(255, 255, 255);
   }
 
-  .wind-turbine-portfolio {
+  .electronics-portfolio {
     height: auto;
     padding-top: var(--dl-space-space-fourunits);
     padding-bottom: var(--dl-space-space-fourunits);
   }
 
-  .wind-turbine-container2 {
+  .electronics-container2 {
     height: auto;
   }
 
-  .wind-turbine-description1 {
+  .electronics-description1 {
     color: rgb(255, 255, 255);
     font-size: 24px;
     line-height: 36px;
   }
 
-  .wind-turbine-description {
+  .electronics-description {
     color: rgb(255, 255, 255);
     font-size: 24px;
     line-height: 36px;
@@ -318,25 +318,25 @@
 }
 
 @media(max-width: 767px) {
-  .wind-turbine-navbar-interactive {
+  .electronics-navbar-interactive {
     padding-top: var(--dl-space-space-unit);
   }
 
-  .wind-turbine-company {
+  .electronics-company {
     font-size: 18px;
     line-height: 20px;
   }
 
-  .wind-turbine-navlink1 {
+  .electronics-navlink1 {
     font-size: 18px;
     text-decoration: none;
   }
 
-  .wind-turbine-header {
+  .electronics-header {
     padding-bottom: var(--dl-space-space-fiveunits);
   }
 
-  .wind-turbine-title {
+  .electronics-title {
     color: rgb(255, 255, 255);
     font-size: 40px;
     font-weight: normal;
@@ -344,17 +344,17 @@
     text-transform: uppercase;
   }
 
-  .wind-turbine-portfolio {
+  .electronics-portfolio {
     padding-top: 120px;
   }
 
-  .wind-turbine-description1 {
+  .electronics-description1 {
     color: rgb(255, 255, 255);
     font-size: 16px;
     line-height: 36px;
   }
 
-  .wind-turbine-description {
+  .electronics-description {
     color: rgb(255, 255, 255);
     font-size: 16px;
     line-height: 36px;
@@ -362,11 +362,11 @@
 }
 
 @media(max-width: 479px) {
-  .wind-turbine-navbar-interactive {
+  .electronics-navbar-interactive {
     border-width: 0px;
   }
 
-  .wind-turbine-company {
+  .electronics-company {
     color: rgb(255, 255, 255);
     font-size: 18px;
     font-style: normal;
@@ -374,12 +374,12 @@
     line-height: 20px;
   }
 
-  .wind-turbine-navlink1 {
+  .electronics-navlink1 {
     font-size: 18px;
     text-decoration: none;
   }
 
-  .wind-turbine-title {
+  .electronics-title {
     color: rgb(255, 255, 255);
     font-size: 40px;
     font-weight: normal;
