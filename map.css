@@ -1,0 +1,17 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: black; /* set background color to black */
+}
+
+.map-container {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* center the image horizontally */
+  overflow-x: hidden;
+}
+
+.map-container img {
+  max-width: 100%;
+  height: auto;
+}
