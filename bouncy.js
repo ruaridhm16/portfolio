@@ -15,6 +15,25 @@ const ball = {
   dragOffsetY: 0,
 };
 
+// Get pointer position relative to canvas, for mouse or touch
+function getEventPos(evt) {
+  const rect = canvas.getBoundingClientRect();
+
+  let clientX, clientY;
+  if (evt.touches && evt.touches.length > 0) {
+    clientX = evt.touches[0].clientX;
+    clientY = evt.touches[0].clientY;
+  } else {
+    clientX = evt.clientX;
+    clientY = evt.clientY;
+  }
+
+  return {
+    x: clientX - rect.left,
+    y: clientY - rect.top,
+  };
+}
+
 function resizeCanvas() {
   dpr = window.devicePixelRatio || 1;
   displayWidth = Math.min(window.innerWidth * 0.9, 1000);
@@ -26,15 +45,19 @@ function resizeCanvas() {
   canvas.width = displayWidth * dpr;
   canvas.height = displayHeight * dpr;
 
-  ctx.setTransform(1, 0, 0, 1, 0, 0); // reset any transforms
+  ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transforms
   ctx.scale(dpr, dpr);
+
+  // Keep ball within new boundaries
+  ball.x = Math.min(Math.max(ball.radius, ball.x), displayWidth - ball.radius);
+  ball.y = Math.min(Math.max(ball.radius, ball.y), displayHeight - ball.radius);
 }
 
 function drawBall() {
   ctx.clearRect(0, 0, displayWidth, displayHeight);
 
   ctx.beginPath();
-  ctx.fillStyle = '#888'; // grey ball
+  ctx.fillStyle = '#888';
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
   ctx.fill();
   ctx.closePath();
@@ -42,14 +65,17 @@ function drawBall() {
 
 function updatePhysics() {
   if (!ball.dragging) {
-    // Apply gravity to vertical velocity
-    const gravity = 0.5; // Adjust for strength of gravity
+    const gravity = 0.5;
+    const bounceEnergyLoss = 0.7;
+    const friction = 0.98;
+
+    // Apply gravity
     ball.vy += gravity;
 
     ball.x += ball.vx;
     ball.y += ball.vy;
 
-    // Bounce off left and right walls (no gravity effect here)
+    // Bounce horizontal walls
     if (ball.x + ball.radius > displayWidth) {
       ball.x = displayWidth - ball.radius;
       ball.vx *= -1;
@@ -58,36 +84,27 @@ function updatePhysics() {
       ball.vx *= -1;
     }
 
-    // Bounce off bottom with energy loss (simulate damping)
-    const bounceEnergyLoss = 0.7; // 1 = perfect bounce, <1 loses energy
-
+    // Bounce bottom wall
     if (ball.y + ball.radius > displayHeight) {
       ball.y = displayHeight - ball.radius;
       ball.vy *= -bounceEnergyLoss;
-
-      // Optional small threshold to stop bouncing completely
-      if (Math.abs(ball.vy) < 1) {
-        ball.vy = 0;
-      }
+      if (Math.abs(ball.vy) < 1) ball.vy = 0;
     }
 
-    // Bounce off top (less likely but for completeness)
+    // Bounce top wall
     if (ball.y - ball.radius < 0) {
       ball.y = ball.radius;
       ball.vy *= -1;
     }
 
-    // Apply horizontal damping/friction
-    const friction = 0.98;
+    // Apply friction
     ball.vx *= friction;
 
-    // Stop very small velocities to avoid jitter
+    // Stop tiny movements
     if (Math.abs(ball.vx) < 0.05) ball.vx = 0;
     if (Math.abs(ball.vy) < 0.05) ball.vy = 0;
   }
 }
-
-
 
 function animate() {
   updatePhysics();
@@ -95,68 +112,58 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-// Drag handlers
-canvas.addEventListener('mousedown', (e) => {
-  const rect = canvas.getBoundingClientRect();
-  const mouseX = e.clientX - rect.left;
-  const mouseY = e.clientY - rect.top;
-
-  // Check if mouse is inside the ball
-  const dist = Math.hypot(mouseX - ball.x, mouseY - ball.y);
+function startDrag(evt) {
+  evt.preventDefault();
+  const pos = getEventPos(evt);
+  const dist = Math.hypot(pos.x - ball.x, pos.y - ball.y);
   if (dist <= ball.radius) {
     ball.dragging = true;
-    ball.dragOffsetX = mouseX - ball.x;
-    ball.dragOffsetY = mouseY - ball.y;
-    // Stop velocity while dragging
+    ball.dragOffsetX = pos.x - ball.x;
+    ball.dragOffsetY = pos.y - ball.y;
     ball.vx = 0;
     ball.vy = 0;
   }
-});
+}
 
-canvas.addEventListener('mousemove', (e) => {
+function dragMove(evt) {
   if (!ball.dragging) return;
+  evt.preventDefault();
 
-  const rect = canvas.getBoundingClientRect();
-  const mouseX = e.clientX - rect.left;
-  const mouseY = e.clientY - rect.top;
-
-  // Previous position for velocity calculation
+  const pos = getEventPos(evt);
   const prevX = ball.x;
   const prevY = ball.y;
 
-  // Update ball position with offset
-  ball.x = mouseX - ball.dragOffsetX;
-  ball.y = mouseY - ball.dragOffsetY;
+  ball.x = pos.x - ball.dragOffsetX;
+  ball.y = pos.y - ball.dragOffsetY;
 
-  // Clamp ball inside the container
+  // Keep inside boundaries
   ball.x = Math.min(Math.max(ball.radius, ball.x), displayWidth - ball.radius);
   ball.y = Math.min(Math.max(ball.radius, ball.y), displayHeight - ball.radius);
 
-  // Calculate velocity based on movement (momentum)
+  // Calculate velocity based on drag movement
   ball.vx = ball.x - prevX;
   ball.vy = ball.y - prevY;
-});
+}
 
-canvas.addEventListener('mouseup', () => {
+function endDrag(evt) {
   if (ball.dragging) {
     ball.dragging = false;
   }
-});
+}
 
-canvas.addEventListener('mouseleave', () => {
-  if (ball.dragging) {
-    ball.dragging = false;
-  }
-});
+// Attach event listeners with proper options
+canvas.addEventListener('mousedown', startDrag);
+canvas.addEventListener('mousemove', dragMove);
+canvas.addEventListener('mouseup', endDrag);
+canvas.addEventListener('mouseleave', endDrag);
+
+canvas.addEventListener('touchstart', startDrag, { passive: false });
+canvas.addEventListener('touchmove', dragMove, { passive: false });
+canvas.addEventListener('touchend', endDrag);
+canvas.addEventListener('touchcancel', endDrag);
+
+window.addEventListener('resize', resizeCanvas);
 
 // Initialize
 resizeCanvas();
 animate();
-
-// Resize handler
-window.addEventListener('resize', () => {
-  resizeCanvas();
-  // Optional: Clamp ball position after resize
-  ball.x = Math.min(Math.max(ball.radius, ball.x), displayWidth - ball.radius);
-  ball.y = Math.min(Math.max(ball.radius, ball.y), displayHeight - ball.radius);
-});
