@@ -1,0 +1,186 @@
+
+<style>
+.calc-section { margin-bottom: 1.5rem; }
+.row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 120px; }
+label { font-size: 13px; color: var(--color-text-secondary); }
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 1rem; }
+.metric { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem 1rem; }
+.metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.metric-value { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+.metric-unit { font-size: 12px; color: var(--color-text-secondary); }
+.section-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 10px; border-bottom: 0.5px solid var(--color-border-tertiary); padding-bottom: 6px; }
+.result-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.warning { font-size: 12px; color: var(--color-text-warning); background: var(--color-background-warning); border-radius: var(--border-radius-md); padding: 6px 10px; margin-top: 8px; }
+.tab-row { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+.tab { padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; cursor: pointer; font-size: 13px; color: var(--color-text-secondary); }
+.tab.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 500; }
+</style>
+
+<h2 class="sr-only">GT2 belt and pulley calculator for centre distance and belt length</h2>
+
+<div style="padding: 1rem 0;">
+  <div class="tab-row">
+    <button class="tab active" onclick="setMode('centre')" id="tab-centre">Find centre distance</button>
+    <button class="tab" onclick="setMode('belt')" id="tab-belt">Find belt length</button>
+    <button class="tab" onclick="setMode('teeth')" id="tab-teeth">Pulley info</button>
+  </div>
+
+  <div id="mode-centre">
+    <div class="calc-section">
+      <div class="section-title">Pulleys</div>
+      <div class="row">
+        <div class="field"><label>Driver teeth</label><input type="number" id="c-t1" value="20" min="10" oninput="calcCentre()"></div>
+        <div class="field"><label>Driven teeth</label><input type="number" id="c-t2" value="60" min="10" oninput="calcCentre()"></div>
+      </div>
+      <div class="calc-section">
+        <div class="section-title">Belt</div>
+        <div class="row">
+          <div class="field"><label>Belt length (mm)</label><input type="number" id="c-belt" value="400" min="100" oninput="calcCentre()"></div>
+        </div>
+        <div style="font-size:12px; color: var(--color-text-secondary);">Common GT2 lengths: 200, 280, 300, 400, 500, 600mm</div>
+      </div>
+    </div>
+    <div class="result-card" id="centre-results"></div>
+  </div>
+
+  <div id="mode-belt" style="display:none">
+    <div class="calc-section">
+      <div class="section-title">Pulleys</div>
+      <div class="row">
+        <div class="field"><label>Driver teeth</label><input type="number" id="b-t1" value="20" min="10" oninput="calcBelt()"></div>
+        <div class="field"><label>Driven teeth</label><input type="number" id="b-t2" value="60" min="10" oninput="calcBelt()"></div>
+      </div>
+      <div class="calc-section">
+        <div class="section-title">Layout</div>
+        <div class="row">
+          <div class="field"><label>Centre distance (mm)</label><input type="number" id="b-centre" value="150" min="10" oninput="calcBelt()"></div>
+        </div>
+      </div>
+    </div>
+    <div class="result-card" id="belt-results"></div>
+  </div>
+
+  <div id="mode-teeth" style="display:none">
+    <div class="calc-section">
+      <div class="section-title">Pulley</div>
+      <div class="row">
+        <div class="field"><label>Teeth count</label><input type="number" id="p-teeth" value="20" min="6" oninput="calcPulley()"></div>
+      </div>
+    </div>
+    <div class="result-card" id="pulley-results"></div>
+  </div>
+</div>
+
+<script>
+const GT2_PITCH = 2.0;
+
+function pitchDiameter(teeth) { return (teeth * GT2_PITCH) / Math.PI; }
+function pitchRadius(teeth) { return pitchDiameter(teeth) / 2; }
+
+function setMode(mode) {
+  ['centre','belt','teeth'].forEach(m => {
+    document.getElementById('mode-' + m).style.display = m === mode ? 'block' : 'none';
+    document.getElementById('tab-' + m).classList.toggle('active', m === mode);
+  });
+  if (mode === 'centre') calcCentre();
+  if (mode === 'belt') calcBelt();
+  if (mode === 'teeth') calcPulley();
+}
+
+function metricCard(label, value, unit) {
+  return `<div class="metric"><div class="metric-label">${label}</div><div class="metric-value">${value} <span class="metric-unit">${unit}</span></div></div>`;
+}
+
+function calcCentre() {
+  const t1 = parseFloat(document.getElementById('c-t1').value) || 20;
+  const t2 = parseFloat(document.getElementById('c-t2').value) || 60;
+  const L = parseFloat(document.getElementById('c-belt').value) || 400;
+
+  const r1 = pitchRadius(t1);
+  const r2 = pitchRadius(t2);
+  const D1 = pitchDiameter(t1);
+  const D2 = pitchDiameter(t2);
+
+  const A = 4*L - 2*Math.PI*(D1+D2);
+  const B = Math.pow(D2 - D1, 2);
+  const discriminant = A*A - 32*B;
+
+  let html = '';
+  html += `<div class="metric-grid">`;
+  html += metricCard('Driver pitch dia.', D1.toFixed(2), 'mm');
+  html += metricCard('Driven pitch dia.', D2.toFixed(2), 'mm');
+  html += metricCard('Gear ratio', (t2/t1).toFixed(2), ':1');
+  html += `</div>`;
+
+  if (discriminant < 0) {
+    html += `<div class="warning">Belt too short for these pulleys — choose a longer belt.</div>`;
+  } else {
+    const C = (A + Math.sqrt(discriminant)) / 16;
+    if (C < (r1 + r2 + 5)) {
+      html += `<div class="warning">Centre distance ${C.toFixed(1)}mm may be too small — pulleys could clash.</div>`;
+    }
+    html += `<div class="metric-grid" style="margin-top:10px">`;
+    html += metricCard('Centre distance', C.toFixed(1), 'mm');
+    html += metricCard('Belt teeth engaged (driver)', Math.floor(t1/2 * (1 - (D2-D1)/(2*C))*2).toString(), 'teeth');
+    html += `</div>`;
+    const minTeeth = Math.min(t1, t2);
+    if (minTeeth < 12) html += `<div class="warning">Small pulley has ${minTeeth} teeth — engagement may be low. Aim for 6+ teeth in contact.</div>`;
+  }
+
+  document.getElementById('centre-results').innerHTML = html;
+}
+
+function calcBelt() {
+  const t1 = parseFloat(document.getElementById('b-t1').value) || 20;
+  const t2 = parseFloat(document.getElementById('b-t2').value) || 60;
+  const C = parseFloat(document.getElementById('b-centre').value) || 150;
+
+  const D1 = pitchDiameter(t1);
+  const D2 = pitchDiameter(t2);
+
+  const L = 2*C + Math.PI*(D1+D2)/2 + Math.pow(D2-D1,2)/(4*C);
+  const teeth = L / GT2_PITCH;
+
+  const commonLengths = [200,280,300,400,500,600,700,800,900,1000];
+  const nearest = commonLengths.reduce((a,b) => Math.abs(b-L) < Math.abs(a-L) ? b : a);
+  const nearestTeeth = nearest / GT2_PITCH;
+
+  let html = `<div class="metric-grid">`;
+  html += metricCard('Driver pitch dia.', D1.toFixed(2), 'mm');
+  html += metricCard('Driven pitch dia.', D2.toFixed(2), 'mm');
+  html += metricCard('Gear ratio', (t2/t1).toFixed(2), ':1');
+  html += `</div><div class="metric-grid" style="margin-top:10px">`;
+  html += metricCard('Exact belt length', L.toFixed(1), 'mm');
+  html += metricCard('Exact belt teeth', Math.round(teeth).toString(), 'teeth');
+  html += metricCard('Nearest standard', nearest.toString(), 'mm');
+  html += metricCard('Standard teeth', nearestTeeth.toString(), 'teeth');
+  html += `</div>`;
+
+  const err = Math.abs(nearest - L);
+  if (err > 10) html += `<div class="warning">Nearest standard belt is ${err.toFixed(0)}mm off — allow adjustment in your mount for tensioning.</div>`;
+  else html += `<div style="font-size:12px; color: var(--color-text-secondary); margin-top:8px;">Standard ${nearest}mm belt is ${err.toFixed(1)}mm off — build in ~${Math.ceil(err/2)+5}mm of adjustment.</div>`;
+
+  document.getElementById('belt-results').innerHTML = html;
+}
+
+function calcPulley() {
+  const t = parseFloat(document.getElementById('p-teeth').value) || 20;
+  const pd = pitchDiameter(t);
+  const od = pd + 1.0;
+  const rd = pd - 0.764;
+
+  let html = `<div class="metric-grid">`;
+  html += metricCard('Pitch diameter', pd.toFixed(3), 'mm');
+  html += metricCard('Outside diameter', od.toFixed(3), 'mm');
+  html += metricCard('Root diameter', rd.toFixed(3), 'mm');
+  html += metricCard('Pitch circumference', (Math.PI * pd).toFixed(2), 'mm');
+  html += metricCard('Belt length per rev', (t * GT2_PITCH).toFixed(1), 'mm');
+  html += `</div>`;
+  html += `<div style="font-size:12px; color: var(--color-text-secondary); margin-top:10px;">GT2 pitch = 2mm. Outside dia = pitch dia + 1.0mm. Root dia = pitch dia − 0.764mm.</div>`;
+
+  document.getElementById('pulley-results').innerHTML = html;
+}
+
+calcCentre();
+</script>

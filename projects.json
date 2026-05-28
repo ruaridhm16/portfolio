@@ -13,6 +13,19 @@
     "website": ""
   },
   {
+  "title": "Prosthetic Running Blade — FEA",
+  "desc": "Designed and stress-analysed a CFRP running blade in Ansys. Iterated geometry using theory to pass fatigue, frequency, and mass criteria.",
+  "group": "Year 2",
+  "tags": [
+    { "label": "Finite Element Analysis", "style": "tag-y2" },
+    { "label": "Individual", "style": "tag-solo" }
+  ],
+  "featured": true,
+  "image": "Project_Image_FEA.png",
+  "file": "Project_FEA.pdf",
+  "website": ""
+  },
+  {
   "title": "Perfect Pantograph — Research",
   "desc": "Researched, interviewed and surveyed Design & Technology students to identify where current downfalls are.",
   "group": "Year 2",
