@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>HNEFATAFL</title>
+        <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=K2D:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
+        <link rel="icon" href="assets/favicon.png" type="image/png">
+    </head>
+    <body>
+        <main id="app">
+            <div id="screen-menu" class="screen" data-display="flex">
+                <img id="menu-decal"
+                    src="assets/background-decal.svg"
+                    alt=""
+                    aria-hidden="true">
+                <div class="menu-main">
+                    <h1 class="menu-title">HNEFATAFL</h1>
+                    <p class="menu-subtitle">(NEF-AH-TAH-FUL)</p>
+                    <hr class="menu-rule">
+                    <p class="menu-desc">A Viking strategy game of siege and
+                    escape, played across Scandinavia and the British Isles
+                    from around 400 AD. It dominated Norse culture for
+                    centuries until chess arrived around 1000 AD and displaced
+                    it into obscurity. The Copenhagen rules, formulated in
+                    2012, are a modern reconstruction designed to balance the
+                    asymmetric forces.</p>
+                    <hr class="menu-rule">
+                    <div class="menu-buttons">
+                        <button id="btn-play" class="icon-btn"
+                            aria-label="Play"></button>
+                        <button id="btn-rulebook" class="icon-btn"
+                            aria-label="Rulebook"></button>
+                    </div>
+                </div>
+                <footer class="menu-footer">
+                    <hr class="footer-rule">
+                    <p class="footer-text">Made by Ruaridh Murdoch</p>
+                    <hr class="footer-rule">
+                </footer>
+            </div>
+            <div id="screen-game" class="screen" data-display="flex">
+                <h1 class="visually-hidden">Hnefatafl</h1>
+                <div id="board-container">
+                    <div id="row-labels"></div>
+                    <div id="board"
+                        role="region"
+                        aria-label="Hnefatafl board"></div>
+                    <div id="col-labels"></div>
+                    <div id="info-board" aria-live="polite" tabindex="0"></div>
+                </div>
+            </div>
+            <div id="screen-replay" class="screen" data-display="flex">
+                <h1 class="visually-hidden">Hnefatafl</h1>
+                <div id="replay-controls">
+                    <button id="btn-replay-prev" class="icon-btn"
+                        aria-label="Previous move"></button>
+                    <button id="btn-replay-play-pause" class="icon-btn"
+                        aria-label="Play"></button>
+                    <button id="btn-replay-next" class="icon-btn"
+                        aria-label="Next move"></button>
+                </div>
+                <div id="replay-board-container">
+                    <div id="replay-row-labels"></div>
+                    <div id="replay-board"
+                        role="region"
+                        aria-label="Hnefatafl replay board"></div>
+                    <div id="replay-col-labels"></div>
+                    <div id="replay-log" aria-live="polite" tabindex="0"></div>
+                </div>
+            </div>
+            <div id="screen-rulebook" class="screen" data-display="flex"
+                tabindex="0" aria-label="Rulebook">
+                <header id="rulebook-header">
+                    <h1 class="menu-title">HNEFATAFL</h1>
+                </header>
+                <div id="rulebook-main">
+                    <div id="rulebook-card">
+                        <h2 id="rulebook-title">RULEBOOK</h2>
+                        <p>It is a game of siege and escape. Two players face off
+                        asymmetrically, one commanding the attackers, one defending
+                        the king.</p>
+
+                        <h3>SETUP</h3>
+                        <p>The game is played on an 11×11 board. The defender
+                        controls 12 warriors and a king, starting at the centre.
+                        The attacker controls 24 warriors, starting on the edges
+                        in a cross formation.</p>
+                        <p>The attacker always moves first.</p>
+
+                        <h3>MOVEMENT</h3>
+                        <p>All pieces move any number of empty squares in a
+                        straight line, horizontally or vertically, like a rook in
+                        chess. No piece may jump over another.</p>
+
+                        <h3>RESTRICTED SQUARES</h3>
+                        <p>Five squares are restricted, the four corners and the
+                        centre throne. Only the king may land on these squares.
+                        Any piece may pass through the throne if it is empty.</p>
+
+                        <h3>CAPTURE</h3>
+                        <p>A piece is captured by sandwiching it between two enemy
+                        pieces on opposite sides, horizontally or vertically.
+                        Moving into a sandwich does not get you captured, the trap
+                        must be closed by the attacker's move.</p>
+                        <p>The corners and throne count as hostile squares and can
+                        act as one side of a sandwich.</p>
+                        <p>The throne is always hostile to attackers. It is only
+                        hostile to defenders when empty.</p>
+
+                        <h3>CAPTURING THE KING</h3>
+                        <p>The king is captured when surrounded on all four sides
+                        by attackers or hostile squares. If the king is adjacent
+                        to the throne, the throne counts as one side, so only
+                        three attackers are needed.</p>
+                        <p>The king cannot be captured on the board edge.</p>
+
+                        <h3>SHIELDWALL CAPTURE</h3>
+                        <p>A row of two or more pieces along the board edge can be
+                        captured together by bracketing the entire group at both
+                        ends, as long as every member of the group has an enemy
+                        piece directly in front of them facing inward. A corner
+                        square can act as one of the bracketing pieces.</p>
+                        <p>If the king is part of a shieldwall, the other pieces
+                        are captured but the king is not.</p>
+
+                        <h3>WINNING</h3>
+                        <p>Defenders win if:</p>
+                        <ul>
+                            <li>The king reaches any corner square</li>
+                            <li>The king reaches the board edge, is protected on
+                            all sides, and has room to move (Exit Fort)</li>
+                        </ul>
+                        <p>Attackers win if:</p>
+                        <ul>
+                            <li>The king is captured</li>
+                            <li>All white pieces including the king are completely
+                            surrounded with no escape (Encirclement)</li>
+                            <li>White causes the same board position to occur
+                            three times, white loses by repetition</li>
+                        </ul>
+                        <p>Note that the defenders do not win by simply capturing all attacking pieces.</p>
+                        <h3>KEYBOARD CONTROLS</h3>
+                        <p>The game is fully playable without a mouse.</p>
+                        <ul>
+                            <li><strong>Tab</strong> - move focus to the next
+                            interactive element</li>
+                            <li><strong>Arrow keys</strong> - navigate between
+                            cells on the board</li>
+                            <li><strong>Enter / Space</strong> - select a piece
+                            or confirm a move</li>
+                            <li><strong>Escape</strong> - cancel the confirmation
+                            dialogue</li>
+                        </ul>
+                    </div>
+                </div>
+                <footer class="menu-footer">
+                    <hr class="footer-rule">
+                    <p class="footer-text">Made by Ruaridh Murdoch</p>
+                    <hr class="footer-rule">
+                </footer>
+            </div>
+        </main>
+        <button id="btn-back" class="icon-btn" aria-label="Back"></button>
+        <div id="transition-overlay"></div>
+        <script type="module" src="main.js"></script>
+    </body>
+</html>
