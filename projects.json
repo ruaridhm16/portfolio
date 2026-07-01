@@ -1,5 +1,44 @@
 [
   {
+  "title": "Swivelcut",
+  "desc": "A modular cardboard cutting tool for Design & Technology students, developed from our previous research through to a resolved final design.",
+  "group": "Year 2",
+  "tags": [
+    { "label": "Product Design Engineering", "style": "tag-y2" },
+    { "label": "Group", "style": "tag-group" }
+  ],
+  "featured": true,
+  "image": "Project_Image_Swivelcut.png",
+  "file": "Project_Swivelcut.pdf",
+  "website": ""
+},
+  {
+  "title": "Swivelcut Research",
+  "desc": "Researched, interviewed and surveyed Design & Technology students to identify where current downfalls are.",
+  "group": "Year 2",
+  "tags": [
+    { "label": "Product Design Engineering", "style": "tag-y2" },
+    { "label": "Group", "style": "tag-group" }
+  ],
+  "featured": true,
+  "image": "Project_Image_PDE.png",
+  "file": "Project_Swivelcut_Research.pdf",
+  "website": ""
+},
+  {
+    "title": "Hnefatafl",
+    "desc": "A digital implementation of the ancient Norse board game, with full move validation, capture rules and an interactive board.",
+    "group": "Year 2",
+    "tags": [
+      { "label": "Software Engineering", "style": "tag-y2" },
+      { "label": "Individual", "style": "tag-solo" }
+    ],
+    "featured": true,
+    "image": "Project_Image_Hnefatafl.png",
+    "file": "",
+    "website": "hnefatafl/"
+  },
+  {
     "title": "Teach-by-Touch Robotic Arm",
     "desc": "Physically move joints to record a sequence, insert a cartridge, press play. Custom DC motors, 3D-printed gearboxes, no programming needed.",
     "group": "Year 2",
@@ -13,7 +52,7 @@
     "website": ""
   },
   {
-  "title": "Prosthetic Running Blade — FEA",
+  "title": "Prosthetic Running Blade",
   "desc": "Designed and stress-analysed a CFRP running blade in Ansys. Iterated geometry using theory to pass fatigue, frequency, and mass criteria.",
   "group": "Year 2",
   "tags": [
@@ -25,32 +64,6 @@
   "file": "Project_FEA.pdf",
   "website": ""
   },
-  {
-  "title": "Perfect Pantograph — Research",
-  "desc": "Researched, interviewed and surveyed Design & Technology students to identify where current downfalls are.",
-  "group": "Year 2",
-  "tags": [
-    { "label": "Product Design Engineering", "style": "tag-y2" },
-    { "label": "Group", "style": "tag-group" }
-  ],
-  "featured": true,
-  "image": "Project_Image_PDE.png",
-  "file": "Project_Group_PDE.pdf",
-  "website": ""
-},
-{
-  "title": "Perfect Pantograph — Ideation",
-  "desc": "Designed a desktop cutting tool that helps D&T students translate drawings into scale models. Developed from research insights to a final resolved design.",
-  "group": "Year 2",
-  "tags": [
-    { "label": "Product Design Engineering", "style": "tag-y2" },
-    { "label": "Individual", "style": "tag-solo" }
-  ],
-  "featured": true,
-  "image": "Project_Image_Perfect_Pantograph.png",
-  "file": "Project_Perfect_Pantograph.pdf",
-  "website": ""
-},
   {
     "title": "Aerodynamic Cabriolet - Individual",
     "desc": "Designed a four-seat cabriolet body through CFD in Ansys Workbench. Cut drag by 14% iteratively, then 3D printed and wind-tunnel validated.",
@@ -65,20 +78,7 @@
     "website": ""
   },
   {
-    "title": "Cabriolet & Battery - Group",
-    "desc": "Wind tunnel testing and CFD validation of car and battery design. Includes Gantt, team contributions breakdown, and full comparative analysis.",
-    "group": "Year 2",
-    "tags": [
-      { "label": "Thermofluids", "style": "tag-y2" },
-      { "label": "Group",        "style": "tag-group" }
-    ],
-    "featured": true,
-    "image": "Project_Image_Group_Thermo.png",
-    "file": "Project_Group_Thermo.pdf",
-    "website": ""
-  },
-  {
-    "title": "Long-Haul Aircraft Comfort - Research",
+    "title": "Aircraft Comfort Research",
     "desc": "122-person survey, stakeholder mapping across passengers, crew, maintenance and procurement. Benchmarked major seat manufacturers.",
     "group": "Year 2",
     "tags": [
@@ -91,7 +91,7 @@
     "website": ""
   },
   {
-    "title": "Long-Haul Aircraft Comfort - Ideation",
+    "title": "Aircraft Comfort Concept",
     "desc": "Modular seat redesign with adjustable geometry and separable soft goods, informed by a 122-person survey and full stakeholder mapping.",
     "group": "Year 2",
     "tags": [
@@ -117,7 +117,7 @@
     "website": ""
   },
   {
-    "title": "Rhythm Rush - Research",
+    "title": "Rhythm Rush Research",
     "desc": "Researched how concert-goers experience queuing. Ran user interviews and surveys to uncover the social awkwardness and boredom of waiting.",
     "group": "Year 1",
     "tags": [
@@ -130,7 +130,7 @@
     "website": ""
   },
   {
-    "title": "Rhythm Rush - Development",
+    "title": "Rhythm Rush",
     "desc": "A motion-tracked dance battle game for concert queues. Up to four players compete via body-tracking on a large screen, scored on creativity and rhythm.",
     "group": "Year 1",
     "tags": [
@@ -166,6 +166,18 @@
     "featured": false,
     "image": "Project_Image_CAD.png",
     "file": "Project_CAD.pdf",
+    "website": ""
+  },
+  {
+    "title": "Old Portfolio",
+    "desc": "My previous personal portfolio (March 2026), now retired in favour of a new version.",
+    "group": "Personal",
+    "tags": [
+      { "label": "Portfolio",   "style": "tag-personal" }
+    ],
+    "featured": false,
+    "image": "Project_Image_Old_Portfolio.png",
+    "file": "Project_Old_Portfolio.pdf",
     "website": ""
   },
   {

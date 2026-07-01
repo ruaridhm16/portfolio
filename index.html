@@ -27,9 +27,10 @@
       --accent: #4C47E2;
       --black: #111;
       --mid: #777;
-      --border: #e5e5e5;
-      --bg: #ffffff;
-      --shadow: #d0d0d0;
+      --border: #bdbdbd;
+      --bg: #d7d7d7;
+      --shadow: #a8a8a8;
+      --surface: #cbcbcb;
     }
 
     html.dark {
@@ -99,7 +100,7 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
-      background: #f3f3f3;
+      background: var(--surface);
       display: flex;
       flex-direction: column;
       box-shadow: 5px 5px 0 0 var(--shadow);
@@ -108,7 +109,7 @@
     }
     html.dark .pdf-viewer { background: #1a1a1a; }
 
-    .pdf-canvas-wrap { position: relative; flex: 1; overflow: hidden; background: #fff; }
+    .pdf-canvas-wrap { position: relative; flex: 1; overflow: hidden; background: var(--surface); }
     html.dark .pdf-canvas-wrap { background: #1a1a1a; }
 
     #pdfCanvas, #pdfCanvasNext {
@@ -154,7 +155,7 @@
       position: absolute; inset: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 12px; background: #f3f3f3; color: #bbb;
+      gap: 12px; background: var(--surface); color: #999;
       font-size: 12px; font-weight: 500;
       transition: opacity 0.4s; z-index: 3;
     }
@@ -232,7 +233,7 @@
       transition: box-shadow 0.2s, transform 0.2s, background 0.3s, border-color 0.3s;
     }
     .card:hover { box-shadow: 4px 4px 0 0 var(--shadow); transform: translate(-2px, -2px); }
-    .card-img { width: 100%; aspect-ratio: 3/2; overflow: hidden; background: #f3f3f3; }
+    .card-img { width: 100%; aspect-ratio: 3/2; overflow: hidden; background: var(--surface); }
     html.dark .card-img { background: #222; }
     .card-img-inner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.4s ease; }
     .card:hover .card-img-inner { transform: scale(1.04); }
@@ -284,11 +285,11 @@
     }
     .file-row:hover { opacity: 0.6; }
     .file-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-    .file-icon { color: #ccc; flex-shrink: 0; }
+    .file-icon { color: #a4a4a4; flex-shrink: 0; }
     .file-name { font-size: 13px; font-weight: 500; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     .tags { display: flex; gap: 5px; flex-shrink: 0; }
-    .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.03em; padding: 3px 7px; border-radius: 4px; white-space: nowrap; background: #f2f2f2; color: #888; }
+    .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.03em; padding: 3px 7px; border-radius: 4px; white-space: nowrap; background: var(--surface); color: #6e6e6e; }
     html.dark .tag { background: #222; color: #555; }
 
     .file-actions { display: flex; gap: 6px; flex-shrink: 0; }
@@ -532,6 +533,24 @@
     const FILE_ICON = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
     const WEB_ICON  = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10z"/></svg>`;
 
+    // ── HOVER-TO-PREFETCH ──
+    // Project PDFs can be large, so we don't preload them all upfront — instead we
+    // warm the browser cache the moment someone hovers (or touches) a Preview/Download
+    // link, so it's often already cached by the time they click.
+    const prefetchedFiles = new Set();
+    function prefetchFile(url) {
+      if (!url || prefetchedFiles.has(url)) return;
+      prefetchedFiles.add(url);
+      fetch(url, { mode: 'same-origin' }).catch(() => {});
+    }
+    function handlePrefetchIntent(e) {
+      const el = e.target.closest('[data-prefetch]');
+      if (el) prefetchFile(el.dataset.prefetch);
+    }
+    document.addEventListener('mouseover', handlePrefetchIntent);
+    document.addEventListener('touchstart', handlePrefetchIntent, { passive: true });
+    document.addEventListener('focusin', handlePrefetchIntent);
+
     // ── RENDER CAROUSEL ──
     function renderCarousel(projects) {
       const container = document.getElementById('carouselContainer');
@@ -542,8 +561,8 @@
         const imgStyle = p.image ? `background-image:url('${p.image}')` : '';
         const actions  = p.website
           ? `<a href="${p.website}" target="_blank" class="card-btn primary">Visit</a>`
-          : `<a href="${p.file}" target="_blank" class="card-btn">Preview</a>
-             <a href="${p.file}" download class="card-btn primary">Download</a>`;
+          : `<a href="${p.file}" target="_blank" class="card-btn" data-prefetch="${p.file}">Preview</a>
+             <a href="${p.file}" download class="card-btn primary" data-prefetch="${p.file}">Download</a>`;
         container.insertAdjacentHTML('beforeend', `
           <div class="embla__slide">
             <div class="card">
@@ -570,8 +589,8 @@
           const icon    = p.website ? WEB_ICON : FILE_ICON;
           const actions = p.website
             ? `<a href="${p.website}" target="_blank" class="file-btn dl">Visit</a>`
-            : `<a href="${p.file}" target="_blank" class="file-btn">Preview</a>
-               <a href="${p.file}" download class="file-btn dl">Download</a>`;
+            : `<a href="${p.file}" target="_blank" class="file-btn" data-prefetch="${p.file}">Preview</a>
+               <a href="${p.file}" download class="file-btn dl" data-prefetch="${p.file}">Download</a>`;
           return `<div class="file-row">
             <div class="file-info">${icon}<span class="file-name">${p.title}</span></div>
             <div class="tags">${tagsHtml(p.tags)}</div>
