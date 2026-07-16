@@ -114,7 +114,8 @@
       z-index: 20;
     }
     html.dark .logo::after { content: "Change to Light Mode"; }
-    .logo:hover::after {
+    .logo:hover::after,
+    .logo.tap-armed::after {
       opacity: 1;
       transform: translateY(0);
     }
@@ -130,6 +131,7 @@
     .scatter-link .s-inner { display: inline-block; }
     .scatter-link .s-char  { display: inline-block; user-select: none; line-height: 1; }
 
+    .open-to-work { margin-top: 12px; font-size: 14px; font-weight: 400; font-style: italic; color: var(--mid); line-height: 1.75; }
     .cv-link { margin-top: 36px; }
     .cv-link .s-char { font-size: clamp(19px, 2.2vw, 27px); font-weight: 500; color: var(--accent); letter-spacing: -0.2px; opacity: 0.8; }
 
@@ -170,7 +172,8 @@
       transition: opacity 0.1s ease, transform 0.1s ease;
       z-index: 20;
     }
-    [data-tooltip]:hover::after {
+    [data-tooltip]:hover::after,
+    [data-tooltip].tap-armed::after {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
@@ -181,7 +184,8 @@
       top: calc(100% + 10px);
       transform: translateX(-50%) translateY(-4px);
     }
-    .social-icons [data-tooltip]:hover::after {
+    .social-icons [data-tooltip]:hover::after,
+    .social-icons [data-tooltip].tap-armed::after {
       transform: translateX(-50%) translateY(0);
     }
 
@@ -278,6 +282,18 @@
     /* Footer row */
     .pdf-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
     .pdf-hint { font-size: 12px; font-weight: 500; color: var(--mid); letter-spacing: 0.01em; }
+
+    .pdf-mobile-btn {
+      display: none;
+      width: 100%; text-align: center;
+      padding: 14px 20px; margin-bottom: 14px;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--bg); color: var(--black);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px; font-weight: 600; text-decoration: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .pdf-mobile-btn:hover { border-color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); }
     .portfolio-dl-link .s-char { font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: -0.1px; opacity: 0.8; }
 
     /* ── SCROLL HINT — clickable ── */
@@ -338,7 +354,7 @@
       cursor: pointer;
       transition: box-shadow 0.2s, transform 0.2s, background 0.3s, border-color 0.3s;
     }
-    .card:hover { box-shadow: 4px 4px 0 0 var(--shadow); transform: translate(-2px, -2px); }
+    .card:hover, .card.tap-armed { box-shadow: 4px 4px 0 0 var(--shadow); transform: translate(-2px, -2px); }
     .card-img { width: 100%; aspect-ratio: 3/2; overflow: hidden; background: var(--surface); }
     html.dark .card-img { background: #222; }
     .card-img-inner { width: 100%; height: 100%; background-size: cover; background-position: center; }
@@ -372,25 +388,41 @@
     .file-group:last-child { margin-bottom: 0; }
     .group-label { font-size: 14px; font-weight: 600; letter-spacing: -0.3px; color: var(--black); margin-bottom: 4px; opacity: 0.4; }
 
-    .file-row {
+    .file-row { cursor: pointer; }
+    .file-group .file-row { border-bottom: 1px solid var(--border); }
+    .file-group .file-row:last-child { border-bottom: none; }
+
+    .file-row-main {
       display: flex; align-items: center; justify-content: space-between;
       padding: 11px 14px; margin: 0 -14px; gap: 16px;
       border-radius: 8px;
-      cursor: pointer;
       transition: box-shadow 0.15s, transform 0.15s, background 0.15s;
     }
-    .file-group .file-row { border-bottom: 1px solid var(--border); border-radius: 0; }
-    .file-group .file-row:last-child { border-bottom: none; }
-    .file-row:hover {
+    .file-row:hover .file-row-main,
+    .file-row.tap-armed .file-row-main {
       box-shadow: 3px 3px 0 0 var(--shadow);
       transform: translate(-2px, -2px);
       background: var(--bg);
-      border-radius: 8px;
     }
     .file-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
     .file-icon { color: #a4a4a4; flex-shrink: 0; }
     .file-name { flex-shrink: 1; min-width: 0; font-size: 13px; font-weight: 500; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.15s; }
-    .file-row:hover .file-name { color: var(--accent); }
+    .file-row:hover .file-name,
+    .file-row.tap-armed .file-name { color: var(--accent); }
+
+    /* Mobile-only inline expand — the floating preview card doesn't make sense
+       on touch, so a tap opens this in place instead, pushing rows below it
+       down rather than overlapping anything */
+    .file-expand { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
+    .file-row.tap-armed .file-expand { max-height: 320px; }
+    .file-expand-inner { display: flex; gap: 14px; padding: 0 14px 16px; }
+    .file-expand-img {
+      width: 100px; height: 68px; flex-shrink: 0;
+      border-radius: 8px; border: 1px solid var(--border);
+      background-color: var(--surface); background-size: cover; background-position: center;
+    }
+    html.dark .file-expand-img { background-color: #222; }
+    .file-expand-desc { font-size: 12px; color: var(--mid); line-height: 1.5; }
 
     /* Floating hover preview — a small card that appears beside the row, no layout shift */
     .file-preview-card {
@@ -443,26 +475,47 @@
     .site-footer .footer-links a:hover { color: var(--accent); }
 
     @media (max-width: 860px) {
-      .hero { grid-template-columns: 1fr; min-height: unset; padding: 40px 28px; gap: 36px; }
+      .hero { grid-template-columns: 1fr; min-height: unset; padding: 48px 28px; gap: 44px; }
+
+      /* Smaller ticker text, and more breathing room before the logo below it */
       .skills-ticker { left: 28px; right: 28px; top: 16px; }
+      .skills-ticker-group span { font-size: 10px; }
+      .logo { margin-top: 32px; }
 
-      /* Bleed the PDF panel to the screen edges — the render scale is driven
-         by the viewer's width, so this is what actually makes the page legible. */
-      .pdf-panel { margin: 0 -28px; width: calc(100% + 56px); }
-      .pdf-viewer { aspect-ratio: 1.414 / 1; border-radius: 0; border-left: none; border-right: none; box-shadow: none; }
-      .pdf-footer-row { padding: 0 28px; }
+      /* Not enough vertical room to justify it, and it's easy to bump by accident */
+      .scroll-hint { display: none; }
 
-      /* Nav arrows never get a hover state on touch, so show them outright and make them easy to tap */
-      .pdf-zone { opacity: 1; width: 30%; }
-      .pdf-zone-icon { width: 42px; height: 42px; background: rgba(0,0,0,0.32); }
+      /* The cramped inline viewer isn't usable at this width — link out to the
+         full PDF and let the phone's own viewer (pinch-zoom, real scrolling) handle it */
+      .pdf-viewer { display: none; }
+      .pdf-hint { display: none; }
+      .pdf-footer-row { justify-content: center; }
+      .pdf-mobile-btn { display: block; }
 
-      .divider, .files-toggle-wrap { margin: 0 28px; }
-      .carousel-section { padding-left: 28px; padding-right: 28px; }
-      .site-footer { padding: 20px 28px; }
-      .site-updated { margin: 20px 28px 0; }
-      .embla { margin: 0 -28px; padding: 0 28px 4px; }
-      .embla__slide { flex: 0 0 260px; }
-      .carousel-scrollbar { margin: 6px 28px 0; }
+      .divider { margin: 0 28px; }
+      .carousel-section { padding: 72px 28px 56px; }
+      .files-toggle-wrap { margin: 0 28px; }
+      .site-footer { padding: 32px 28px; }
+      .site-updated { margin: 32px 28px 0; padding-bottom: 24px; }
+
+      /* Featured projects stack instead of scrolling sideways */
+      .embla { overflow: visible; margin: 0; padding: 0; }
+      .embla__container { flex-direction: column; gap: 20px; }
+      .embla__slide { flex: 0 0 auto; width: 100%; }
+      .carousel-scrollbar { display: none; }
+
+      /* The floating hover-preview card is a desktop-only concept — belt and
+         suspenders on top of the JS gating so it can never overlap a row here */
+      .file-preview-card { display: none !important; }
+
+      /* No cursor to justify a "lift toward you" shadow on tap — just the
+         accent-colour highlight, so the expand below never visually pokes
+         into the row above it */
+      .file-row.tap-armed .file-row-main {
+        box-shadow: none;
+        transform: none;
+      }
+
       .tags { display: none; }
     }
 
@@ -508,7 +561,12 @@
         flex: 0 0 47% !important; break-inside: avoid;
       }
       .card:hover { box-shadow: none; transform: none; }
-      .card-img-inner { transform: none !important; }
+      .card-img, .card-img-inner {
+        transform: none !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
 
       .file-row { break-inside: avoid; }
 
@@ -593,8 +651,9 @@
       <div class="logo" id="logoBtn"></div>
       <h1>Ruaridh<br>Murdoch</h1>
       <p class="desc">
-        Design Engineering student at Imperial College London, second year. I work across mechanical design, electronics, and software, usually all at once. I love figuring out how to design and make almost anything. This site has my portfolios and reports for all projects. Any and all code is on GitHub.
+        Design Engineering student at Imperial College London, second year. I work across mechanical design, electronics, and software, usually all at once. I love figuring out how to design and make almost anything. This site has my portfolios and reports for all <span id="projectCount">—</span> projects. Any and all code is on GitHub.
       </p>
+      <p class="open-to-work">Open to internship &amp; placement opportunities.</p>
       <a href="Ruaridh_Murdoch_CV.pdf" download class="scatter-link cv-link" data-scatter>Download CV</a>
       <div class="social-icons">
         <a href="mailto:ruaridhm16@gmail.com" aria-label="Email">
@@ -634,6 +693,7 @@
           <span class="pdf-page-info" id="pdfPageInfo">1 / 1</span>
         </div>
       </div>
+      <a href="Display_Portfolio.pdf" target="_blank" class="pdf-mobile-btn">View Full Portfolio</a>
       <div class="pdf-footer-row">
         <span class="pdf-hint">Click left or right to turn pages</span>
         <a href="Ruaridh_Murdoch_Portfolio.pdf" download class="scatter-link portfolio-dl-link" data-scatter>Download Portfolio</a>
@@ -955,10 +1015,17 @@
             ? `${codeBtn}<a href="${p.website}"${websiteTarget} class="file-btn dl">${actionLabel}</a>`
             : `<a href="${p.file}" download class="file-btn" data-prefetch="${p.file}">Download</a>
                <a href="${p.file}" target="_blank" class="file-btn dl" data-prefetch="${p.file}">${actionLabel}</a>`;
+          const expand = p.desc ? `<div class="file-expand"><div class="file-expand-inner">
+            ${p.image ? `<div class="file-expand-img" style="background-image:url('${p.image}')"></div>` : ''}
+            <p class="file-expand-desc">${p.desc}</p>
+          </div></div>` : '';
           return `<div class="file-row" data-title="${p.title}" data-desc="${p.desc || ''}" data-image="${p.image || ''}" data-website="${p.website || ''}" data-file="${p.file || ''}">
-            <div class="file-info">${icon}<span class="file-name">${p.title}</span></div>
-            <div class="tags">${tagsHtml(p.tags)}</div>
-            <div class="file-actions">${actions}</div>
+            <div class="file-row-main">
+              <div class="file-info">${icon}<span class="file-name">${p.title}</span></div>
+              <div class="tags">${tagsHtml(p.tags)}</div>
+              <div class="file-actions">${actions}</div>
+            </div>
+            ${expand}
           </div>`;
         }).join('');
         container.insertAdjacentHTML('beforeend', `
@@ -978,6 +1045,11 @@
 
     // ── FLOATING FILE PREVIEW ──
     function initFilePreview() {
+      // Below the mobile breakpoint, initTouchSafetyTaps handles this instead —
+      // keyed off viewport width (not hover capability) so it matches the same
+      // breakpoint the rest of the layout uses, and so testing by resizing a
+      // regular desktop browser window actually reflects mobile behaviour.
+      if (window.matchMedia('(max-width: 860px)').matches) return;
       const card  = document.getElementById('filePreviewCard');
       const img   = document.getElementById('filePreviewImg');
       const title = document.getElementById('filePreviewTitle');
@@ -1200,6 +1272,37 @@
       });
     }
 
+    // ── TOUCH SAFETY TAPS ──
+    // On touch, there's no hover to preview what a tap will do, so the first
+    // tap on anything that "goes somewhere" just shows what it would do
+    // (tooltip / inline preview), and a second tap on the same thing actually
+    // follows through. Tapping anything else cancels it.
+    function initTouchSafetyTaps() {
+      if (!window.matchMedia('(max-width: 860px)').matches) return;
+      const SELECTOR = '.file-row, .card, #siteUpdated, .social-icons a, #logoBtn';
+      let armed = null;
+      let armTimer = null;
+
+      function disarm() {
+        if (armed) armed.classList.remove('tap-armed');
+        armed = null;
+        clearTimeout(armTimer);
+      }
+
+      document.addEventListener('click', e => {
+        if (e.target.closest('.card-actions, .file-actions')) { disarm(); return; }
+        const el = e.target.closest(SELECTOR);
+        if (!el) { disarm(); return; }
+        if (armed === el) { disarm(); return; } // second tap — let it through
+        e.preventDefault();
+        e.stopPropagation();
+        disarm();
+        armed = el;
+        el.classList.add('tap-armed');
+        armTimer = setTimeout(disarm, 3000);
+      }, true);
+    }
+
     // ── SKILLS TICKER — draggable, throws with momentum, settles back into a steady scroll ──
     function initSkillsTicker() {
       const track = document.querySelector('.skills-ticker-track');
@@ -1293,9 +1396,10 @@
         renderFiles(projects);
         initCarousel();
         initRepoUpdated();
+        document.getElementById('projectCount').textContent = projects.length;
       } catch (err) {
         document.getElementById('carouselContainer').innerHTML =
-          `<div class="loading">Could not load projects.json — run python3 -m http.server from your folder.</div>`;
+          `<div class="loading">Couldn't load the projects right now.</div>`;
         console.error(err);
       }
     }
@@ -1339,13 +1443,24 @@
     // This script sits at the end of the body, so everything above is already
     // parsed — no need to wait for the window 'load' event (which would also
     // wait on fonts/images and delay the PDF/project fetches for no reason).
-    document.querySelectorAll('[data-scatter]').forEach(initScatter);
+    // The scatter effect is hover-driven — pointless (and just extra DOM
+    // churn) below the mobile breakpoint.
+    if (!window.matchMedia('(max-width: 860px)').matches) {
+      document.querySelectorAll('[data-scatter]').forEach(initScatter);
+    }
     initDarkMode();
     initEmailCopy();
     initSkillsTicker();
+    initTouchSafetyTaps();
     loadProjects();
     initPDF();
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Desktop-vs-mobile interaction (hover-preview vs tap-to-expand, scatter
+    // effect, etc.) is decided once at load — reload if the window is dragged
+    // across that breakpoint so it re-evaluates for the new size, same as a
+    // real visitor would get landing fresh at that width.
+    window.matchMedia('(max-width: 860px)').addEventListener('change', () => location.reload());
   </script>
 </body>
 </html>
