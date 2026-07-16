@@ -1,6 +1,6 @@
 # Portfolio
 
-Personal portfolio site - ruaridhmurdoch.com
+Personal portfolio site - [ruaridhmurdoch.com](https://ruaridhmurdoch.com/)
 
 A collection of nearly everything I've made all in one place.
 
