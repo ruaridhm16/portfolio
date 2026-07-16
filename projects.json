@@ -8,8 +8,8 @@
     { "label": "Group", "style": "tag-group" }
   ],
   "featured": true,
-  "image": "Project_Image_Swivelcut.png",
-  "file": "Project_Swivelcut.pdf",
+  "image": "projects/Project_Image_Swivelcut.png",
+  "file": "projects/Project_Swivelcut.pdf",
   "website": ""
 },
   {
@@ -21,8 +21,8 @@
     { "label": "Group", "style": "tag-group" }
   ],
   "featured": true,
-  "image": "Project_Image_PDE.png",
-  "file": "Project_Swivelcut_Research.pdf",
+  "image": "projects/Project_Image_PDE.png",
+  "file": "projects/Project_Swivelcut_Research.pdf",
   "website": ""
 },
   {
@@ -35,7 +35,7 @@
       { "label": "Individual", "style": "tag-solo" }
     ],
     "featured": true,
-    "image": "Project_Image_Hnefatafl.png",
+    "image": "projects/Project_Image_Hnefatafl.png",
     "file": "",
     "website": "hnefatafl/",
     "repo": "https://github.com/ruaridhm16/Hnefatafl-Game"
@@ -49,8 +49,8 @@
       { "label": "Group",              "style": "tag-group" }
     ],
     "featured": true,
-    "image": "Project_Image_Gizmo.png",
-    "file": "Project_Gizmo.pdf",
+    "image": "projects/Project_Image_Gizmo.png",
+    "file": "projects/Project_Gizmo.pdf",
     "website": ""
   },
   {
@@ -62,8 +62,8 @@
     { "label": "Individual", "style": "tag-solo" }
   ],
   "featured": true,
-  "image": "Project_Image_FEA.png",
-  "file": "Project_FEA.pdf",
+  "image": "projects/Project_Image_FEA.png",
+  "file": "projects/Project_FEA.pdf",
   "website": ""
   },
   {
@@ -75,8 +75,8 @@
       { "label": "Individual",   "style": "tag-solo" }
     ],
     "featured": true,
-    "image": "Project_Image_Individual_Thermo.png",
-    "file": "Project_Aerodynamic_Cabriolet.pdf",
+    "image": "projects/Project_Image_Individual_Thermo.png",
+    "file": "projects/Project_Aerodynamic_Cabriolet.pdf",
     "website": ""
   },
   {
@@ -88,8 +88,8 @@
       { "label": "Group",          "style": "tag-group" }
     ],
     "featured": true,
-    "image": "Project_Image_Group_Thermo_Battery.png",
-    "file": "Project_Group_Thermo_Battery.pdf",
+    "image": "projects/Project_Image_Group_Thermo_Battery.png",
+    "file": "projects/Project_Group_Thermo_Battery.pdf",
     "website": ""
   },
   {
@@ -101,8 +101,8 @@
       { "label": "Group", "style": "tag-group" }
     ],
     "featured": false,
-    "image": "Project_Image_Group_SDE.png",
-    "file": "Project_Group_SDE.pdf",
+    "image": "projects/Project_Image_Group_SDE.png",
+    "file": "projects/Project_Group_SDE.pdf",
     "website": ""
   },
   {
@@ -114,8 +114,8 @@
       { "label": "Individual", "style": "tag-solo" }
     ],
     "featured": false,
-    "image": "Project_Image_Individual_SDE.png",
-    "file": "Project_Individual_SDE.pdf",
+    "image": "projects/Project_Image_Individual_SDE.png",
+    "file": "projects/Project_Individual_SDE.pdf",
     "website": ""
   },
   {
@@ -127,8 +127,8 @@
       { "label": "Individual", "style": "tag-solo" }
     ],
     "featured": false,
-    "image": "Project_Image_Pedal_Ready.png",
-    "file": "Project_DEP.pdf",
+    "image": "projects/Project_Image_Pedal_Ready.png",
+    "file": "projects/Project_DEP.pdf",
     "website": ""
   },
   {
@@ -140,8 +140,8 @@
       { "label": "Group", "style": "tag-group" }
     ],
     "featured": false,
-    "image": "Project_Image_HCD.png",
-    "file": "Project_HCD.pdf",
+    "image": "projects/Project_Image_HCD.png",
+    "file": "projects/Project_HCD.pdf",
     "website": ""
   },
   {
@@ -153,8 +153,8 @@
       { "label": "Group", "style": "tag-group" }
     ],
     "featured": false,
-    "image": "Project_Image_Rhythm_Rush.png",
-    "file": "Project_Rhythm_Rush.pdf",
+    "image": "projects/Project_Image_Rhythm_Rush.png",
+    "file": "projects/Project_Rhythm_Rush.pdf",
     "website": ""
   },
   {
@@ -166,8 +166,8 @@
       { "label": "Individual", "style": "tag-solo" }
     ],
     "featured": false,
-    "image": "Project_Image_REVENG.png",
-    "file": "Project_REVENG.pdf",
+    "image": "projects/Project_Image_REVENG.png",
+    "file": "projects/Project_REVENG.pdf",
     "website": ""
   },
   {
@@ -179,8 +179,8 @@
       { "label": "Individual", "style": "tag-solo" }
     ],
     "featured": false,
-    "image": "Project_Image_CAD.png",
-    "file": "Project_CAD.pdf",
+    "image": "projects/Project_Image_CAD.png",
+    "file": "projects/Project_CAD.pdf",
     "website": ""
   },
   {
@@ -191,8 +191,8 @@
       { "label": "Portfolio",   "style": "tag-personal" }
     ],
     "featured": false,
-    "image": "Project_Image_Old_Portfolio.png",
-    "file": "Project_Old_Portfolio.pdf",
+    "image": "projects/Project_Image_Old_Portfolio.png",
+    "file": "projects/Project_Old_Portfolio.pdf",
     "website": ""
   },
   {
@@ -204,8 +204,8 @@
       { "label": "UI", "style": "tag-personal" }
     ],
     "featured": false,
-    "image": "Project_Image_Logo_Design.png",
-    "file": "Project_Logo_Design.pdf",
+    "image": "projects/Project_Image_Logo_Design.png",
+    "file": "projects/Project_Logo_Design.pdf",
     "website": ""
   },
   {

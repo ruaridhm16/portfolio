@@ -1,0 +1,608 @@
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('misc/fonts/PlusJakartaSans-Variable.woff2') format('woff2');
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: optional;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --accent: #4C47E2;
+  --black: #111;
+  --mid: #5c5c5c;
+  --border: #bdbdbd;
+  --bg: #d7d7d7;
+  --shadow: #a8a8a8;
+  --surface: #cbcbcb;
+}
+
+html.dark {
+  --black: #f0f0f0;
+  --mid: #a0a0a0;
+  --border: #2a2a2a;
+  --bg: #111111;
+  --shadow: #000000;
+}
+
+html { scroll-behavior: smooth; }
+
+/* ── KEYBOARD FOCUS ── */
+/* :focus-visible only shows for keyboard/non-pointer focus, so mouse
+   clicks stay exactly as before */
+a:focus-visible, button:focus-visible,
+.card:focus-visible, .file-row:focus-visible,
+.card-btn:focus-visible, .file-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ── SKILLS TICKER ── */
+.skills-ticker {
+  position: absolute; top: 44px; left: 72px; right: 72px; overflow: hidden; z-index: 1;
+  mask-image: linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent);
+}
+.skills-ticker-track {
+  display: flex; width: max-content;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.skills-ticker-track.dragging { cursor: grabbing; }
+.skills-ticker-group { display: flex; align-items: center; flex-shrink: 0; user-select: none; }
+.skills-ticker-group span {
+  white-space: nowrap;
+  font-size: 18px; font-weight: 500; letter-spacing: 0.03em;
+  color: var(--mid); opacity: 0.35;
+  padding: 0 18px;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  padding: 110px 72px 72px;
+  gap: 64px;
+  align-items: center;
+  position: relative;
+}
+.hero-left { display: flex; flex-direction: column; }
+
+.logo {
+  position: relative;
+  width: 60px; height: 60px;
+  border-radius: 9px;
+  margin-bottom: 28px;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: url('logo-light.png') center/cover no-repeat;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+html.dark .logo { background: url('logo-dark.png') center/cover no-repeat; }
+.logo:hover  { opacity: 0.75; }
+.logo:active { transform: scale(0.9); }
+
+.logo::after {
+  content: "Change to Dark Mode";
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  background: var(--black);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 20;
+}
+html.dark .logo::after { content: "Change to Light Mode"; }
+.logo:hover::after,
+.logo.tap-armed::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+h1 { font-size: clamp(38px, 4.5vw, 58px); font-weight: 700; letter-spacing: -2px; line-height: 1.05; }
+.desc { margin-top: 14px; font-size: 14px; font-weight: 400; color: var(--mid); line-height: 1.75; max-width: 400px; }
+.desc + .desc { margin-top: 12px; }
+h1 + .desc { margin-top: 20px; }
+
+/* ── DOWNLOAD LINKS ── */
+.download-link { position: relative; display: inline-block; cursor: pointer; text-decoration: none; transition: opacity 0.2s, transform 0.2s; }
+.download-link:hover { opacity: 1; transform: translateY(-2px); }
+
+.open-to-work { margin-top: 12px; font-size: 14px; font-weight: 400; color: var(--mid); line-height: 1.75; }
+.cv-link { align-self: flex-start; margin-top: 36px; }
+
+.cv-burst-dot {
+  position: absolute;
+  pointer-events: none;
+  z-index: 999;
+  will-change: transform;
+}
+.cv-link { font-size: clamp(19px, 2.2vw, 27px); font-weight: 500; color: var(--accent); letter-spacing: -0.2px; opacity: 0.8; }
+
+/* ── SOCIAL ICONS ── */
+.social-icons { display: flex; gap: 18px; margin-top: 20px; }
+.social-icons a { position: relative; color: var(--mid); display: flex; transition: color 0.2s, transform 0.2s; }
+.social-icons a:hover { color: var(--accent); transform: translateY(-2px); }
+.social-icons svg { width: 42px; height: 42px; }
+.site-updated {
+  position: relative;
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  margin: 24px 72px 0;
+  padding-bottom: 16px;
+  font-size: 15px; font-weight: 500; color: var(--mid); opacity: 0.7;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-updated:hover { color: var(--accent); }
+.site-updated-date, .site-updated-title { position: relative; }
+.site-updated-title {
+  font-weight: 400;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* Each half gets its own tooltip, biased away from the edge it sits near
+   so it never hangs off the side of the screen */
+.site-updated-date[data-tooltip]::after { left: 0; transform: translateY(4px); }
+.site-updated-date[data-tooltip]:hover::after,
+.site-updated-date[data-tooltip].tap-armed::after { opacity: 1; transform: translateY(0); }
+.site-updated-title[data-tooltip]::after { left: auto; right: 0; transform: translateY(4px); }
+.site-updated-title[data-tooltip]:hover::after,
+.site-updated-title[data-tooltip].tap-armed::after { opacity: 1; transform: translateY(0); }
+
+/* ── GENERIC TOOLTIPS ── */
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--black);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease, transform 0.1s ease;
+  z-index: 20;
+}
+[data-tooltip]:hover::after,
+[data-tooltip].tap-armed::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Social icons sit at the top of the hero, so their tooltip goes below instead */
+.social-icons [data-tooltip]::after {
+  bottom: auto;
+  top: calc(100% + 10px);
+  transform: translateX(-50%) translateY(-4px);
+}
+.social-icons [data-tooltip]:hover::after,
+.social-icons [data-tooltip].tap-armed::after {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── PDF PANEL ── */
+.pdf-panel { width: 100%; display: flex; flex-direction: column; }
+
+.pdf-viewer {
+  width: 100%;
+  aspect-ratio: 1.414 / 1;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 5px 0 0 var(--shadow);
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+html.dark .pdf-viewer { background: #1a1a1a; }
+
+.pdf-canvas-wrap { position: relative; flex: 1; overflow: hidden; background: var(--surface); }
+html.dark .pdf-canvas-wrap { background: #1a1a1a; }
+
+#pdfCanvas, #pdfCanvasNext {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: block; object-fit: contain;
+}
+#pdfCanvasNext { opacity: 0; transition: opacity 0.2s ease; }
+#pdfCanvasNext.show { opacity: 1; }
+#pdfCanvas { transition: opacity 0.2s ease; }
+#pdfCanvas.hide { opacity: 0; }
+
+/* ── CLICK ZONES — arrows adapt to light/dark content ── */
+.pdf-zone {
+  position: absolute; top: 0; bottom: 0;
+  width: 38%;
+  cursor: pointer;
+  z-index: 2;
+  display: flex; align-items: center;
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+.pdf-zone:hover { opacity: 1; }
+.pdf-zone.prev { left: 0; justify-content: flex-start; padding-left: 14px; }
+.pdf-zone.next { right: 0; justify-content: flex-end; padding-right: 14px; }
+.pdf-zone.hidden-btn { cursor: default; pointer-events: none; }
+
+/* Arrow pill — visible on any background */
+.pdf-zone-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.18);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: background 0.15s;
+}
+.pdf-zone:hover .pdf-zone-icon { background: rgba(0,0,0,0.38); }
+
+/* Loading overlay */
+.pdf-loading {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px; background: var(--surface); color: #999;
+  font-size: 12px; font-weight: 500;
+  transition: opacity 0.4s; z-index: 3;
+}
+html.dark .pdf-loading { background: #1a1a1a; }
+.pdf-loading.hidden { opacity: 0; pointer-events: none; }
+
+.spinner {
+  width: 22px; height: 22px;
+  border: 2px solid #e0e0e0;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Controls bar */
+.pdf-controls {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg); flex-shrink: 0;
+  transition: background 0.3s, border-color 0.3s;
+}
+.pdf-page-info { font-size: 11px; font-weight: 600; color: var(--mid); letter-spacing: 0.04em; }
+
+/* Footer row */
+.pdf-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+.pdf-hint { font-size: 12px; font-weight: 500; color: var(--mid); letter-spacing: 0.01em; }
+
+.pdf-mobile-btn {
+  display: none;
+  width: 100%; text-align: center;
+  padding: 14px 20px; margin-bottom: 14px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--bg); color: var(--black);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; font-weight: 600; text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.pdf-mobile-btn:hover { border-color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); }
+.portfolio-dl-link { font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: -0.1px; opacity: 0.8; }
+
+/* ── SCROLL HINT — clickable ── */
+.scroll-hint {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: var(--mid); font-size: 15px; font-weight: 500; letter-spacing: 0.01em;
+  cursor: pointer; text-decoration: none;
+  transition: color 0.2s;
+}
+.scroll-hint:hover { color: var(--accent); }
+
+/* ── DIVIDER ── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 0 72px; }
+
+/* ── CAROUSEL ── */
+.carousel-section { padding: 60px 72px 48px; }
+.carousel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.carousel-heading { font-size: 22px; font-weight: 700; letter-spacing: -0.7px; color: var(--black); }
+
+/* Native horizontal scroll — no JS-driven snapping, just real momentum */
+.embla {
+  overflow-x: auto; overflow-y: hidden;
+  margin: 0 -72px; padding: 0 72px 4px;
+  scrollbar-width: none;
+}
+.embla::-webkit-scrollbar { display: none; }
+.embla__container { display: flex; gap: 16px; }
+.embla__slide { flex: 0 0 300px; min-width: 0; opacity: 0; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease; }
+.embla__slide.in { opacity: 1; transform: translateY(0); }
+
+/* ── CUSTOM SCROLLBAR ── */
+.carousel-scrollbar {
+  position: relative;
+  height: 5px; border-radius: 3px;
+  background: var(--surface);
+  margin: 6px 72px 0;
+  cursor: pointer;
+  transition: background 0.3s, height 0.15s;
+}
+html.dark .carousel-scrollbar { background: #222; }
+.carousel-scrollbar:hover { height: 7px; }
+.carousel-scrollbar-thumb {
+  position: absolute; top: 0; left: 0; height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+  opacity: 0.75;
+  transition: opacity 0.15s;
+}
+.carousel-scrollbar:hover .carousel-scrollbar-thumb,
+.carousel-scrollbar-thumb.dragging { opacity: 1; }
+.carousel-scrollbar.hidden { display: none; }
+
+.card {
+  border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; height: 100%; display: flex; flex-direction: column;
+  background: var(--bg);
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s, background 0.3s, border-color 0.3s;
+}
+.card:hover, .card.tap-armed { box-shadow: 4px 4px 0 0 var(--shadow); transform: translate(-2px, -2px); }
+.card-img { width: 100%; aspect-ratio: 3/2; overflow: hidden; background: var(--surface); }
+html.dark .card-img { background: #222; }
+.card-img-inner { width: 100%; height: 100%; background-size: cover; background-position: center; }
+.card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+.card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+.card-title { font-size: 13px; font-weight: 600; color: var(--black); line-height: 1.3; margin-bottom: 6px; }
+.card-desc { font-size: 12px; font-weight: 400; color: var(--mid); line-height: 1.6; margin-bottom: 14px; flex: 1; }
+.card-actions { display: flex; gap: 6px; margin-top: auto; }
+.card-btn {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 6px;
+  text-decoration: none; border: 1px solid var(--border);
+  color: var(--black); background: var(--bg);
+  transition: border-color 0.15s, color 0.15s, box-shadow 0.15s, background 0.3s;
+  white-space: nowrap;
+}
+.card-btn:hover { border-color: var(--accent); color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); }
+.card-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.card-btn.primary:hover { box-shadow: 3px 3px 0 0 var(--shadow); }
+
+/* ── FILES ── */
+.files-toggle-wrap { margin: 0 72px; border-top: 1px solid var(--border); }
+.files-heading {
+  width: 100%; padding: 20px 0;
+  font-size: 22px; font-weight: 700; letter-spacing: -0.7px; color: var(--black);
+}
+
+.files-inner { padding-bottom: 60px; }
+
+.file-group { margin-bottom: 32px; }
+.file-group:last-child { margin-bottom: 0; }
+.group-label { font-size: 14px; font-weight: 600; letter-spacing: -0.3px; color: var(--black); margin-bottom: 4px; opacity: 0.4; }
+
+.file-row { cursor: pointer; }
+.file-group .file-row { border-bottom: 1px solid var(--border); }
+.file-group .file-row:last-child { border-bottom: none; }
+
+.file-row-main {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px; margin: 0 -14px; gap: 16px;
+  border-radius: 8px;
+  transition: box-shadow 0.15s, transform 0.15s, background 0.15s;
+}
+.file-row:hover .file-row-main,
+.file-row.tap-armed .file-row-main {
+  box-shadow: 3px 3px 0 0 var(--shadow);
+  transform: translate(-2px, -2px);
+  background: var(--bg);
+}
+.file-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.file-icon { color: #a4a4a4; flex-shrink: 0; }
+.file-name { flex-shrink: 1; min-width: 0; font-size: 13px; font-weight: 500; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.15s; }
+.file-row:hover .file-name,
+.file-row.tap-armed .file-name { color: var(--accent); }
+
+/* Mobile-only inline expand — the floating preview card doesn't make sense
+   on touch, so a tap opens this in place instead, pushing rows below it
+   down rather than overlapping anything */
+.file-expand { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
+.file-row.tap-armed .file-expand { max-height: 320px; }
+.file-expand-inner { display: flex; gap: 14px; padding: 0 14px 16px; }
+.file-expand-img {
+  width: 100px; height: 68px; flex-shrink: 0;
+  border-radius: 8px; border: 1px solid var(--border);
+  background-color: var(--surface); background-size: cover; background-position: center;
+}
+html.dark .file-expand-img { background-color: #222; }
+.file-expand-desc { font-size: 12px; color: var(--mid); line-height: 1.5; }
+
+/* Floating hover preview — a small card that appears beside the row, no layout shift */
+.file-preview-card {
+  position: fixed; z-index: 50; width: 300px;
+  border: 1px solid var(--border); border-radius: 12px;
+  background: var(--bg);
+  box-shadow: 5px 5px 0 0 var(--shadow);
+  opacity: 0; transform: translateY(6px) scale(0.98);
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+  overflow: hidden;
+}
+.file-preview-card.visible { opacity: 1; transform: translateY(0) scale(1); }
+.file-preview-img { width: 100%; aspect-ratio: 3/2; background-color: var(--surface); background-size: cover; background-position: center; }
+html.dark .file-preview-img { background-color: #222; }
+.file-preview-body { padding: 16px; }
+.file-preview-title { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 6px; }
+.file-preview-desc { font-size: 12px; font-weight: 400; color: var(--mid); line-height: 1.6; }
+@media (hover: none) { .file-preview-card { display: none !important; } }
+
+.tags { display: flex; gap: 5px; flex-shrink: 0; }
+.tag { font-size: 10px; font-weight: 600; letter-spacing: 0.03em; padding: 3px 7px; border-radius: 4px; white-space: nowrap; background: var(--surface); color: #6e6e6e; }
+html.dark .tag { background: #222; color: #555; }
+
+.file-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.file-btn {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 6px;
+  text-decoration: none; border: 1px solid var(--border);
+  color: var(--black); background: var(--bg);
+  transition: border-color 0.15s, color 0.15s, box-shadow 0.15s, background 0.3s;
+  white-space: nowrap;
+}
+.file-btn:hover { border-color: var(--accent); color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); }
+.file-btn.dl { background: var(--accent); color: #fff; border-color: var(--accent); }
+.file-btn.dl:hover { box-shadow: 3px 3px 0 0 var(--shadow); }
+
+.loading { padding: 48px 72px; font-size: 12px; font-weight: 500; color: #ccc; }
+
+/* ── FOOTER ── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.site-footer p { font-size: 12px; font-weight: 500; color: var(--mid); }
+.site-footer .footer-links { display: flex; gap: 20px; }
+.site-footer .footer-links a { position: relative; font-size: 12px; font-weight: 500; color: var(--mid); text-decoration: none; transition: color 0.2s; }
+.site-footer .footer-links a:hover { color: var(--accent); }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; min-height: unset; padding: 48px 28px; gap: 44px; }
+
+  /* Smaller ticker text, and more breathing room before the logo below it */
+  .skills-ticker { left: 28px; right: 28px; top: 16px; }
+  .skills-ticker-group span { font-size: 10px; }
+  .logo { margin-top: 32px; }
+
+  /* Not enough vertical room to justify it, and it's easy to bump by accident */
+  .scroll-hint { display: none; }
+
+  /* The cramped inline viewer isn't usable at this width — link out to the
+     full PDF and let the phone's own viewer (pinch-zoom, real scrolling) handle it */
+  .pdf-viewer { display: none; }
+  .pdf-hint { display: none; }
+  .pdf-footer-row { justify-content: center; }
+  .pdf-mobile-btn { display: block; }
+
+  .divider { margin: 0 28px; }
+  .carousel-section { padding: 72px 28px 56px; }
+  .files-toggle-wrap { margin: 0 28px; }
+  .site-footer { padding: 32px 28px; }
+  .site-updated { margin: 32px 28px 0; padding-bottom: 24px; }
+
+  /* Featured projects stack instead of scrolling sideways */
+  .embla { overflow: visible; margin: 0; padding: 0; }
+  .embla__container { flex-direction: column; gap: 20px; }
+  .embla__slide { flex: 0 0 auto; width: 100%; }
+  .carousel-scrollbar { display: none; }
+
+  /* The floating hover-preview card is a desktop-only concept — belt and
+     suspenders on top of the JS gating so it can never overlap a row here */
+  .file-preview-card { display: none !important; }
+
+  /* No cursor to justify a "lift toward you" shadow on tap — just the
+     accent-colour highlight, so the expand below never visually pokes
+     into the row above it */
+  .file-row.tap-armed .file-row-main {
+    box-shadow: none;
+    transform: none;
+  }
+
+  .tags { display: none; }
+}
+
+/* Genuine touch devices only — a resized desktop window shouldn't lose
+   this button, only an actual phone/tablet should */
+@media (hover: none) and (pointer: coarse) {
+  .portfolio-dl-link { display: none; }
+}
+
+/* ── PRINT ── */
+.print-only { display: none; }
+
+@media print {
+  /* Force a plain light/dark-free page — ink-friendly regardless of the toggle */
+  :root, html.dark {
+    --black: #111; --mid: #444; --border: #ccc;
+    --bg: #fff; --shadow: #ccc; --surface: #eee;
+  }
+  body { background: #fff !important; }
+
+  .print-only { display: block; }
+  .print-header { margin-bottom: 24px; }
+  .print-header h1 { font-size: 28px; letter-spacing: -1px; }
+  .print-header p { margin-top: 6px; font-size: 12px; color: var(--mid); }
+
+  .print-pdf-pages { margin-bottom: 32px; }
+  .print-pdf-pages img { width: 100%; display: block; margin-bottom: 16px; break-inside: avoid; }
+
+  .print-skills { margin: 0 0 32px; }
+  .print-skills h2 { font-size: 18px; margin-bottom: 10px; }
+  .print-skills p { font-size: 12px; line-height: 1.8; color: var(--mid); }
+
+  /* Everything interactive-only or web-only has no place on paper */
+  .skills-ticker, .scroll-hint, .pdf-panel, .carousel-scrollbar,
+  .file-preview-card, .file-row .file-actions,
+  .logo::after, [data-tooltip]::after, .site-updated {
+    display: none !important;
+  }
+
+  /* Un-clip the featured-projects carousel so every card prints, not just
+     whatever was scrolled into view */
+  .embla { overflow: visible !important; margin: 0 !important; padding: 0 !important; height: auto !important; }
+  .embla__container {
+    display: flex !important; flex-wrap: wrap !important;
+    transform: none !important; width: auto !important; gap: 16px;
+  }
+  .embla__slide {
+    opacity: 1 !important; transform: none !important;
+    flex: 0 0 47% !important; break-inside: avoid;
+  }
+  .card:hover { box-shadow: none; transform: none; }
+  .card-img, .card-img-inner {
+    transform: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .file-row { break-inside: avoid; }
+
+  a { color: inherit; text-decoration: none; }
+  .site-footer .footer-links a::after { content: " (" attr(href) ")"; font-size: 9px; }
+}
