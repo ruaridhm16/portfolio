@@ -543,6 +543,19 @@ img {
     z-index: 50;
 }
 
+/* Back to portfolio button (main menu only) */
+
+#btn-back-portfolio {
+    position: fixed;
+    top: clamp(8px, calc(var(--board-size) * 0.03), 30px);
+    left: clamp(8px, calc(var(--board-size) * 0.03), 30px);
+    width: clamp(40px, calc(var(--board-size) * 0.12), 100px);
+    height: clamp(40px, calc(var(--board-size) * 0.12), 100px);
+    background-image: url("assets/button-back.svg");
+    background-size: contain;
+    z-index: 50;
+}
+
 /* Replay screen */
 
 /* display set by JS via inline style - layout properties only here */

@@ -16,17 +16,13 @@
   <link rel="icon" href="logo-dark.png" media="(prefers-color-scheme: dark)" />
   <title>Ruaridh Murdoch</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/embla-carousel/embla-carousel.umd.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --accent: #4C47E2;
       --black: #111;
-      --mid: #777;
+      --mid: #5c5c5c;
       --border: #bdbdbd;
       --bg: #d7d7d7;
       --shadow: #a8a8a8;
@@ -35,7 +31,7 @@
 
     html.dark {
       --black: #f0f0f0;
-      --mid: #888;
+      --mid: #a0a0a0;
       --border: #2a2a2a;
       --bg: #111111;
       --shadow: #000000;
@@ -52,6 +48,26 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
+    /* ── SKILLS TICKER ── */
+    .skills-ticker {
+      position: absolute; top: 44px; left: 72px; right: 72px; overflow: hidden; z-index: 1;
+      mask-image: linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent);
+    }
+    .skills-ticker-track {
+      display: flex; width: max-content;
+      cursor: grab;
+      touch-action: pan-y;
+    }
+    .skills-ticker-track.dragging { cursor: grabbing; }
+    .skills-ticker-group { display: flex; align-items: center; flex-shrink: 0; user-select: none; }
+    .skills-ticker-group span {
+      white-space: nowrap;
+      font-size: 18px; font-weight: 500; letter-spacing: 0.03em;
+      color: var(--mid); opacity: 0.35;
+      padding: 0 18px;
+    }
+
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
@@ -65,9 +81,10 @@
     .hero-left { display: flex; flex-direction: column; }
 
     .logo {
+      position: relative;
       width: 60px; height: 60px;
       border-radius: 9px;
-      margin-bottom: 56px;
+      margin-bottom: 28px;
       flex-shrink: 0;
       cursor: pointer;
       background: url('logo-light.png') center/cover no-repeat;
@@ -77,19 +94,96 @@
     .logo:hover  { opacity: 0.75; }
     .logo:active { transform: scale(0.9); }
 
+    .logo::after {
+      content: "Change to Dark Mode";
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 0;
+      background: var(--black);
+      color: var(--bg);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      padding: 6px 10px;
+      border-radius: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 20;
+    }
+    html.dark .logo::after { content: "Change to Light Mode"; }
+    .logo:hover::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     h1 { font-size: clamp(38px, 4.5vw, 58px); font-weight: 700; letter-spacing: -2px; line-height: 1.05; }
-    .desc { margin-top: 20px; font-size: 14px; font-weight: 400; color: var(--mid); line-height: 1.75; max-width: 360px; }
+    .desc { margin-top: 14px; font-size: 14px; font-weight: 400; color: var(--mid); line-height: 1.75; max-width: 400px; }
+    .desc + .desc { margin-top: 12px; }
+    h1 + .desc { margin-top: 20px; }
 
     /* ── SCATTER LINKS ── */
-    .scatter-link { display: inline-block; cursor: pointer; text-decoration: none; overflow: visible; }
+    .scatter-link { position: relative; display: inline-block; cursor: pointer; text-decoration: none; overflow: visible; }
     .scatter-link .s-outer { display: inline-block; overflow: visible; }
     .scatter-link .s-inner { display: inline-block; }
     .scatter-link .s-char  { display: inline-block; user-select: none; line-height: 1; }
 
     .cv-link { margin-top: 36px; }
-    .cv-link .s-char { font-size: clamp(16px, 1.8vw, 22px); font-weight: 500; color: var(--accent); letter-spacing: -0.2px; opacity: 0.8; }
-    .contact-scatter .s-char { font-size: 13px; font-weight: 500; color: var(--mid); transition: color 0.2s; }
-    .contact-scatter:hover .s-char { color: var(--accent); }
+    .cv-link .s-char { font-size: clamp(19px, 2.2vw, 27px); font-weight: 500; color: var(--accent); letter-spacing: -0.2px; opacity: 0.8; }
+
+    /* ── SOCIAL ICONS ── */
+    .social-icons { display: flex; gap: 18px; margin-top: 20px; }
+    .social-icons a { position: relative; color: var(--mid); display: flex; transition: color 0.2s, transform 0.2s; }
+    .social-icons a:hover { color: var(--accent); transform: translateY(-2px); }
+    .social-icons svg { width: 42px; height: 42px; }
+    .site-updated {
+      position: relative;
+      display: block;
+      width: fit-content;
+      margin: 24px 72px 0;
+      padding-bottom: 16px;
+      font-size: 15px; font-weight: 500; color: var(--mid); opacity: 0.7;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .site-updated:hover { color: var(--accent); }
+
+    /* ── GENERIC TOOLTIPS ── */
+    [data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: var(--black);
+      color: var(--bg);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      padding: 6px 10px;
+      border-radius: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.1s ease, transform 0.1s ease;
+      z-index: 20;
+    }
+    [data-tooltip]:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Social icons sit at the top of the hero, so their tooltip goes below instead */
+    .social-icons [data-tooltip]::after {
+      bottom: auto;
+      top: calc(100% + 10px);
+      transform: translateX(-50%) translateY(-4px);
+    }
+    .social-icons [data-tooltip]:hover::after {
+      transform: translateX(-50%) translateY(0);
+    }
 
     /* ── PDF PANEL ── */
     .pdf-panel { width: 100%; display: flex; flex-direction: column; }
@@ -183,25 +277,18 @@
 
     /* Footer row */
     .pdf-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
-    .pdf-hint { font-size: 11px; font-weight: 500; color: #bbb; letter-spacing: 0.02em; }
+    .pdf-hint { font-size: 12px; font-weight: 500; color: var(--mid); letter-spacing: 0.01em; }
     .portfolio-dl-link .s-char { font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: -0.1px; opacity: 0.8; }
 
     /* ── SCROLL HINT — clickable ── */
     .scroll-hint {
       position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
       display: flex; flex-direction: column; align-items: center; gap: 6px;
-      color: #ccc; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-      animation: fadeInHint 1s 1.2s ease both; opacity: 0;
+      color: var(--mid); font-size: 15px; font-weight: 500; letter-spacing: 0.01em;
       cursor: pointer; text-decoration: none;
       transition: color 0.2s;
     }
     .scroll-hint:hover { color: var(--accent); }
-    .scroll-hint .chev { animation: bounce 1.6s ease infinite; }
-    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
-    @keyframes fadeInHint {
-      from { opacity:0; transform:translateX(-50%) translateY(6px); }
-      to   { opacity:1; transform:translateX(-50%) translateY(0); }
-    }
 
     /* ── DIVIDER ── */
     .divider { border: none; border-top: 1px solid var(--border); margin: 0 72px; }
@@ -210,33 +297,51 @@
     .carousel-section { padding: 60px 72px 48px; }
     .carousel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
     .carousel-heading { font-size: 22px; font-weight: 700; letter-spacing: -0.7px; color: var(--black); }
-    .carousel-nav { display: flex; gap: 8px; }
-    .carousel-btn {
-      width: 32px; height: 32px; border-radius: 7px;
-      border: 1px solid var(--border); background: var(--bg);
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: border-color 0.15s, color 0.15s, box-shadow 0.15s, background 0.3s;
-      color: var(--mid);
-    }
-    .carousel-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); }
-    .carousel-btn:disabled { opacity: 0.2; cursor: default; }
 
-    .embla { overflow: hidden; margin: 0 -72px; padding: 0 72px 4px; }
+    /* Native horizontal scroll — no JS-driven snapping, just real momentum */
+    .embla {
+      overflow-x: auto; overflow-y: hidden;
+      margin: 0 -72px; padding: 0 72px 4px;
+      scrollbar-width: none;
+    }
+    .embla::-webkit-scrollbar { display: none; }
     .embla__container { display: flex; gap: 16px; }
-    .embla__slide { flex: 0 0 300px; min-width: 0; opacity: 0; transform: translateY(14px); transition: opacity 0.4s ease, transform 0.4s ease; }
+    .embla__slide { flex: 0 0 300px; min-width: 0; opacity: 0; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease; }
     .embla__slide.in { opacity: 1; transform: translateY(0); }
+
+    /* ── CUSTOM SCROLLBAR ── */
+    .carousel-scrollbar {
+      position: relative;
+      height: 5px; border-radius: 3px;
+      background: var(--surface);
+      margin: 6px 72px 0;
+      cursor: pointer;
+      transition: background 0.3s, height 0.15s;
+    }
+    html.dark .carousel-scrollbar { background: #222; }
+    .carousel-scrollbar:hover { height: 7px; }
+    .carousel-scrollbar-thumb {
+      position: absolute; top: 0; left: 0; height: 100%;
+      border-radius: 3px;
+      background: var(--accent);
+      opacity: 0.75;
+      transition: opacity 0.15s;
+    }
+    .carousel-scrollbar:hover .carousel-scrollbar-thumb,
+    .carousel-scrollbar-thumb.dragging { opacity: 1; }
+    .carousel-scrollbar.hidden { display: none; }
 
     .card {
       border: 1px solid var(--border); border-radius: 12px;
       overflow: hidden; height: 100%; display: flex; flex-direction: column;
       background: var(--bg);
+      cursor: pointer;
       transition: box-shadow 0.2s, transform 0.2s, background 0.3s, border-color 0.3s;
     }
     .card:hover { box-shadow: 4px 4px 0 0 var(--shadow); transform: translate(-2px, -2px); }
     .card-img { width: 100%; aspect-ratio: 3/2; overflow: hidden; background: var(--surface); }
     html.dark .card-img { background: #222; }
-    .card-img-inner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.4s ease; }
-    .card:hover .card-img-inner { transform: scale(1.04); }
+    .card-img-inner { width: 100%; height: 100%; background-size: cover; background-position: center; }
     .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
     .card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
     .card-title { font-size: 13px; font-weight: 600; color: var(--black); line-height: 1.3; margin-bottom: 6px; }
@@ -254,23 +359,13 @@
     .card-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
     .card-btn.primary:hover { box-shadow: 3px 3px 0 0 var(--shadow); }
 
-    /* ── COLLAPSIBLE FILES ── */
+    /* ── FILES ── */
     .files-toggle-wrap { margin: 0 72px; border-top: 1px solid var(--border); }
-    .files-toggle-btn {
-      width: 100%; display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 0; background: none; border: none; cursor: pointer;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+    .files-heading {
+      width: 100%; padding: 20px 0;
+      font-size: 22px; font-weight: 700; letter-spacing: -0.7px; color: var(--black);
     }
-    .files-toggle-label { font-size: 22px; font-weight: 700; letter-spacing: -0.7px; color: var(--black); transition: opacity 0.2s; }
-    .files-toggle-btn:hover .files-toggle-label { opacity: 0.6; }
-    .files-toggle-icon { display: flex; align-items: center; gap: 8px; color: var(--mid); font-size: 12px; font-weight: 500; }
-    .files-toggle-icon svg { transition: transform 0.3s ease; }
-    .files-toggle-btn.open .files-toggle-icon { color: var(--accent); }
-    .files-toggle-btn.open .files-toggle-icon svg { transform: rotate(180deg); }
-    .toggle-hint-text { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
 
-    .files-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
-    .files-body.open { max-height: 9999px; }
     .files-inner { padding-bottom: 60px; }
 
     .file-group { margin-bottom: 32px; }
@@ -279,14 +374,42 @@
 
     .file-row {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 11px 0; gap: 16px;
-      border-bottom: 1px solid var(--border);
-      transition: opacity 0.15s;
+      padding: 11px 14px; margin: 0 -14px; gap: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: box-shadow 0.15s, transform 0.15s, background 0.15s;
     }
-    .file-row:hover { opacity: 0.6; }
+    .file-group .file-row { border-bottom: 1px solid var(--border); border-radius: 0; }
+    .file-group .file-row:last-child { border-bottom: none; }
+    .file-row:hover {
+      box-shadow: 3px 3px 0 0 var(--shadow);
+      transform: translate(-2px, -2px);
+      background: var(--bg);
+      border-radius: 8px;
+    }
     .file-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
     .file-icon { color: #a4a4a4; flex-shrink: 0; }
-    .file-name { font-size: 13px; font-weight: 500; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-name { flex-shrink: 1; min-width: 0; font-size: 13px; font-weight: 500; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.15s; }
+    .file-row:hover .file-name { color: var(--accent); }
+
+    /* Floating hover preview — a small card that appears beside the row, no layout shift */
+    .file-preview-card {
+      position: fixed; z-index: 50; width: 300px;
+      border: 1px solid var(--border); border-radius: 12px;
+      background: var(--bg);
+      box-shadow: 5px 5px 0 0 var(--shadow);
+      opacity: 0; transform: translateY(6px) scale(0.98);
+      pointer-events: none;
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      overflow: hidden;
+    }
+    .file-preview-card.visible { opacity: 1; transform: translateY(0) scale(1); }
+    .file-preview-img { width: 100%; aspect-ratio: 3/2; background-color: var(--surface); background-size: cover; background-position: center; }
+    html.dark .file-preview-img { background-color: #222; }
+    .file-preview-body { padding: 16px; }
+    .file-preview-title { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 6px; }
+    .file-preview-desc { font-size: 12px; font-weight: 400; color: var(--mid); line-height: 1.6; }
+    @media (hover: none) { .file-preview-card { display: none !important; } }
 
     .tags { display: flex; gap: 5px; flex-shrink: 0; }
     .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.03em; padding: 3px 7px; border-radius: 4px; white-space: nowrap; background: var(--surface); color: #6e6e6e; }
@@ -305,35 +428,185 @@
     .file-btn.dl { background: var(--accent); color: #fff; border-color: var(--accent); }
     .file-btn.dl:hover { box-shadow: 3px 3px 0 0 var(--shadow); }
 
-    /* ── CONTACT ── */
-    .contact-section { padding: 64px 72px 100px; border-top: 1px solid var(--border); }
-    .contact-section h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.8px; margin-bottom: 24px; }
-    .contact-links { display: flex; gap: 24px; align-items: center; }
-
     .loading { padding: 48px 72px; font-size: 12px; font-weight: 500; color: #ccc; }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .site-footer p { font-size: 12px; font-weight: 500; color: var(--mid); }
+    .site-footer .footer-links { display: flex; gap: 20px; }
+    .site-footer .footer-links a { position: relative; font-size: 12px; font-weight: 500; color: var(--mid); text-decoration: none; transition: color 0.2s; }
+    .site-footer .footer-links a:hover { color: var(--accent); }
 
     @media (max-width: 860px) {
       .hero { grid-template-columns: 1fr; min-height: unset; padding: 40px 28px; gap: 36px; }
-      .pdf-viewer { aspect-ratio: auto; height: 300px; }
+      .skills-ticker { left: 28px; right: 28px; top: 16px; }
+
+      /* Bleed the PDF panel to the screen edges — the render scale is driven
+         by the viewer's width, so this is what actually makes the page legible. */
+      .pdf-panel { margin: 0 -28px; width: calc(100% + 56px); }
+      .pdf-viewer { aspect-ratio: 1.414 / 1; border-radius: 0; border-left: none; border-right: none; box-shadow: none; }
+      .pdf-footer-row { padding: 0 28px; }
+
+      /* Nav arrows never get a hover state on touch, so show them outright and make them easy to tap */
+      .pdf-zone { opacity: 1; width: 30%; }
+      .pdf-zone-icon { width: 42px; height: 42px; background: rgba(0,0,0,0.32); }
+
       .divider, .files-toggle-wrap { margin: 0 28px; }
-      .carousel-section, .contact-section { padding-left: 28px; padding-right: 28px; }
+      .carousel-section { padding-left: 28px; padding-right: 28px; }
+      .site-footer { padding: 20px 28px; }
+      .site-updated { margin: 20px 28px 0; }
       .embla { margin: 0 -28px; padding: 0 28px 4px; }
       .embla__slide { flex: 0 0 260px; }
+      .carousel-scrollbar { margin: 6px 28px 0; }
       .tags { display: none; }
+    }
+
+    /* ── PRINT ── */
+    .print-only { display: none; }
+
+    @media print {
+      /* Force a plain light/dark-free page — ink-friendly regardless of the toggle */
+      :root, html.dark {
+        --black: #111; --mid: #444; --border: #ccc;
+        --bg: #fff; --shadow: #ccc; --surface: #eee;
+      }
+      body { background: #fff !important; }
+
+      .print-only { display: block; }
+      .print-header { margin-bottom: 24px; }
+      .print-header h1 { font-size: 28px; letter-spacing: -1px; }
+      .print-header p { margin-top: 6px; font-size: 12px; color: var(--mid); }
+
+      .print-pdf-pages { margin-bottom: 32px; }
+      .print-pdf-pages img { width: 100%; display: block; margin-bottom: 16px; break-inside: avoid; }
+
+      .print-skills { margin: 0 0 32px; }
+      .print-skills h2 { font-size: 18px; margin-bottom: 10px; }
+      .print-skills p { font-size: 12px; line-height: 1.8; color: var(--mid); }
+
+      /* Everything interactive-only or web-only has no place on paper */
+      .skills-ticker, .scroll-hint, .pdf-panel, .carousel-scrollbar,
+      .file-preview-card, .file-row .file-actions,
+      .logo::after, [data-tooltip]::after, .site-updated {
+        display: none !important;
+      }
+
+      /* Un-clip the featured-projects carousel so every card prints, not just
+         whatever was scrolled into view */
+      .embla { overflow: visible !important; margin: 0 !important; padding: 0 !important; height: auto !important; }
+      .embla__container {
+        display: flex !important; flex-wrap: wrap !important;
+        transform: none !important; width: auto !important; gap: 16px;
+      }
+      .embla__slide {
+        opacity: 1 !important; transform: none !important;
+        flex: 0 0 47% !important; break-inside: avoid;
+      }
+      .card:hover { box-shadow: none; transform: none; }
+      .card-img-inner { transform: none !important; }
+
+      .file-row { break-inside: avoid; }
+
+      a { color: inherit; text-decoration: none; }
+      .site-footer .footer-links a::after { content: " (" attr(href) ")"; font-size: 9px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- ── PRINT-ONLY HEADER — screen never sees this, only a printed page does ── -->
+  <div class="print-only print-header">
+    <h1>Ruaridh Murdoch</h1>
+    <p>ruaridhm16@gmail.com &nbsp;·&nbsp; ruaridhmurdoch.com &nbsp;·&nbsp; linkedin.com/in/ruaridh-murdoch-399ba4260</p>
+  </div>
+
+  <!-- ── PRINT-ONLY FULL PORTFOLIO PDF — pages are rendered in by JS as images ── -->
+  <div class="print-only print-pdf-pages" id="printPdfPages"></div>
+
   <!-- ── HERO ── -->
   <div class="hero">
+    <!-- ── SKILLS TICKER — sits in the top padding gap, spanning logo to PDF panel ── -->
+    <div class="skills-ticker" aria-hidden="true">
+      <div class="skills-ticker-track">
+        <div class="skills-ticker-group">
+          <span>CAD</span>
+          <span>Game Development</span>
+          <span>Sustainable Design</span>
+          <span>Python</span>
+          <span>FEA</span>
+          <span>Figma</span>
+          <span>Reverse Engineering</span>
+          <span>Fusion 360</span>
+          <span>Unity &amp; C#</span>
+          <span>User Research</span>
+          <span>JavaScript</span>
+          <span>Mechanical Design</span>
+          <span>LaTeX</span>
+          <span>CFD Simulation</span>
+          <span>UI Design</span>
+          <span>Electronics Design</span>
+          <span>DFM</span>
+          <span>Git</span>
+          <span>Stakeholder Mapping</span>
+          <span>Product Design Engineering</span>
+          <span>HTML/CSS</span>
+          <span>Rapid Prototyping</span>
+          <span>Matlab</span>
+          <span>DFA/DFDA</span>
+          <span>3D Printing</span>
+        </div>
+        <div class="skills-ticker-group">
+          <span>CAD</span>
+          <span>Game Development</span>
+          <span>Sustainable Design</span>
+          <span>Python</span>
+          <span>FEA</span>
+          <span>Figma</span>
+          <span>Reverse Engineering</span>
+          <span>Fusion 360</span>
+          <span>Unity &amp; C#</span>
+          <span>User Research</span>
+          <span>JavaScript</span>
+          <span>Mechanical Design</span>
+          <span>LaTeX</span>
+          <span>CFD Simulation</span>
+          <span>UI Design</span>
+          <span>Electronics Design</span>
+          <span>DFM</span>
+          <span>Git</span>
+          <span>Stakeholder Mapping</span>
+          <span>Product Design Engineering</span>
+          <span>HTML/CSS</span>
+          <span>Rapid Prototyping</span>
+          <span>Matlab</span>
+          <span>DFA/DFDA</span>
+          <span>3D Printing</span>
+        </div>
+      </div>
+    </div>
     <div class="hero-left">
       <div class="logo" id="logoBtn"></div>
       <h1>Ruaridh<br>Murdoch</h1>
       <p class="desc">
-        Design Engineering student at Imperial, second year. I work across mechanical design, electronics, and software, usually all at once. This site is a collection of nearly everything I've made and worked on so far.
+        Design Engineering student at Imperial College London, second year. I work across mechanical design, electronics, and software, usually all at once. I love figuring out how to design and make almost anything. This site has my portfolios and reports for all projects. Any and all code is on GitHub.
       </p>
       <a href="Ruaridh_Murdoch_CV.pdf" download class="scatter-link cv-link" data-scatter>Download CV</a>
+      <div class="social-icons">
+        <a href="mailto:ruaridhm16@gmail.com" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>
+        </a>
+        <a href="https://github.com/ruaridhm16" target="_blank" rel="noopener" aria-label="GitHub" data-tooltip="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.79-.25.79-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .3.21.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/ruaridh-murdoch-399ba4260/" target="_blank" rel="noopener" aria-label="LinkedIn" data-tooltip="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+        </a>
+      </div>
     </div>
 
     <!-- ── PDF PANEL ── -->
@@ -369,8 +642,8 @@
 
     <!-- Scroll hint — clicking scrolls to projects -->
     <a class="scroll-hint" id="scrollHint" href="#projects">
-      <span>Scroll</span>
-      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <span>Scroll for more</span>
+      <svg class="chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </a>
   </div>
 
@@ -380,45 +653,57 @@
   <div class="carousel-section" id="projects">
     <div class="carousel-header">
       <div class="carousel-heading">My favourite projects</div>
-      <div class="carousel-nav">
-        <button class="carousel-btn" id="prevBtn" disabled>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button class="carousel-btn" id="nextBtn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
     </div>
     <div class="embla" id="embla">
       <div class="embla__container" id="carouselContainer">
         <div class="loading">Give it a few more secs…</div>
       </div>
     </div>
+    <div class="carousel-scrollbar hidden" id="carouselScrollbar">
+      <div class="carousel-scrollbar-thumb" id="carouselThumb"></div>
+    </div>
   </div>
 
-  <!-- ── ALL FILES ── -->
+  <!-- ── PRINT-ONLY SKILLS LIST — same content as the ticker, laid out plainly ── -->
+  <div class="print-only print-skills">
+    <h2>Skills</h2>
+    <p>
+      CAD &bull; Game Development &bull; Sustainable Design &bull; Python &bull; FEA &bull; Figma &bull;
+      Reverse Engineering &bull; Fusion 360 &bull; Unity &amp; C# &bull; User Research &bull; JavaScript &bull;
+      Mechanical Design &bull; LaTeX &bull; CFD Simulation &bull; UI Design &bull; Electronics Design &bull;
+      DFM &bull; Git &bull; Stakeholder Mapping &bull; Product Design Engineering &bull; HTML/CSS &bull;
+      Rapid Prototyping &bull; Matlab &bull; DFA/DFDA &bull; 3D Printing
+    </p>
+  </div>
+
+  <!-- ── ALL OF MY PROJECTS ── -->
   <div class="files-toggle-wrap">
-    <button class="files-toggle-btn" id="filesToggle">
-      <span class="files-toggle-label">All files</span>
-      <span class="files-toggle-icon">
-        <span class="toggle-hint-text">Show</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </span>
-    </button>
-    <div class="files-body" id="filesBody">
-      <div class="files-inner" id="filesInner"></div>
+    <div class="files-heading">All of my projects</div>
+    <div class="files-inner" id="filesInner"></div>
+  </div>
+
+  <div class="file-preview-card" id="filePreviewCard">
+    <div class="file-preview-img" id="filePreviewImg"></div>
+    <div class="file-preview-body">
+      <div class="file-preview-title" id="filePreviewTitle"></div>
+      <div class="file-preview-desc" id="filePreviewDesc"></div>
     </div>
   </div>
 
-  <!-- ── CONTACT ── -->
-  <div class="contact-section">
-    <h2>Get in touch.</h2>
-    <div class="contact-links">
-      <a href="mailto:ruaridhm16@gmail.com" class="scatter-link contact-scatter" data-scatter>ruaridhm16@gmail.com</a>
-      <a href="https://www.linkedin.com/in/ruaridh-murdoch-399ba4260/" target="_blank" class="scatter-link contact-scatter" data-scatter>LinkedIn</a>
-    </div>
-  </div>
+  <a class="site-updated" id="siteUpdated" href="https://github.com/ruaridhm16/Portfolio-Website" target="_blank" rel="noopener" data-repo="https://github.com/ruaridhm16/Portfolio-Website" data-tooltip="View on GitHub"></a>
 
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> Ruaridh Murdoch. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="https://github.com/ruaridhm16" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/ruaridh-murdoch-399ba4260/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:ruaridhm16@gmail.com">Email</a>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>
     const PDF_FILE = 'Display_Portfolio.pdf';
 
@@ -513,10 +798,39 @@
         pdfDoc     = pdf;
         totalPages = pdf.numPages;
         showPage(1);
+        preparePrintPages();
       }).catch(() => {
         loadingEl.querySelector('span').textContent = 'Could not load portfolio PDF.';
       });
     }
+
+    // ── PRINT: render every PDF page to an image, ahead of time ──
+    // A native Ctrl+P can't be delayed for async work, so this runs quietly in
+    // the background right after the doc loads rather than waiting for the
+    // 'beforeprint' event — by the time anyone actually prints, it's ready.
+    let printPagesReady = false;
+    async function preparePrintPages() {
+      if (printPagesReady || !pdfDoc) return;
+      printPagesReady = true;
+      const container = document.getElementById('printPdfPages');
+      try {
+        for (let i = 1; i <= totalPages; i++) {
+          const page = await pdfDoc.getPage(i);
+          const vp = page.getViewport({ scale: 2 });
+          const canvas = document.createElement('canvas');
+          canvas.width = vp.width;
+          canvas.height = vp.height;
+          await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+          const img = document.createElement('img');
+          img.src = canvas.toDataURL('image/jpeg', 0.85);
+          img.alt = `Portfolio page ${i}`;
+          container.appendChild(img);
+        }
+      } catch (err) {
+        printPagesReady = false;
+      }
+    }
+    window.addEventListener('beforeprint', preparePrintPages);
 
     zonePrev.addEventListener('click', goPrev);
     zoneNext.addEventListener('click', goNext);
@@ -530,8 +844,42 @@
     function tagsHtml(tags) {
       return (tags || []).map(t => `<span class="tag ${t.style}">${t.label}</span>`).join('');
     }
-    const FILE_ICON = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+    const FILE_ICON = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3h8l4 4v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 3v4a2 2 0 0 0 2 2h4"/><path d="M4 8v11a2 2 0 0 0 2 2h9"/></svg>`;
     const WEB_ICON  = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10z"/></svg>`;
+    const GAME_ICON = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9h12a4 4 0 0 1 4 4l1 5a2.5 2.5 0 0 1-4.5 1.8L16 17H8l-2.5 2.8A2.5 2.5 0 0 1 1 18l1-5a4 4 0 0 1 4-4Z"/><line x1="7.5" y1="12.5" x2="7.5" y2="15.5"/><line x1="6" y1="14" x2="9" y2="14"/><circle cx="16.5" cy="12.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="18.5" cy="14.5" r="0.9" fill="currentColor" stroke="none"/></svg>`;
+
+    // Discipline icons — keyed by each project's primary (first) tag, so the
+    // row icon reflects what kind of project it is, not just how you open it.
+    const DISCIPLINE_ICONS = {
+      'product design engineering': `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.8 2.8-2-2Z"/></svg>`,
+      'software engineering':      `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 6 3 12 9 18"/><polyline points="15 6 21 12 15 18"/></svg>`,
+      'physical computing':        `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 3v4M15 3v4M9 17v4M15 17v4M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>`,
+      'finite element analysis':   `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 18 12 4 20 18Z"/><path d="M8 18 12 10 16 18M4 18h16M12 4v14"/></svg>`,
+      'aerodynamics':               `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h11a2.5 2.5 0 1 0-2.2-3.6"/><path d="M3 13h15a2.5 2.5 0 1 1-2.2 3.6"/><path d="M3 18h8"/></svg>`,
+      'thermodynamics':             `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 14.5V5a2 2 0 1 0-4 0v9.5a4 4 0 1 0 4 0Z"/><line x1="10" y1="8" x2="12.5" y2="8"/></svg>`,
+      'sustainable design':        `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 4C10 4 4 10 4 18c8 0 14-6 14-14Z"/><path d="M6 18c4-4 8-7 12-12"/></svg>`,
+      'human centred design':      `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="3.2"/><path d="M5 20c0-4 3.1-6.5 7-6.5s7 2.5 7 6.5"/></svg>`,
+      'design principles':         `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="5.5" r="1.6"/><path d="M12 7 5 20h4l3-6 3 6h4Z"/></svg>`,
+      'materials':                  `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 3 8l9 5 9-5Z"/><path d="M3 12l9 5 9-5M3 16l9 5 9-5"/></svg>`,
+      'figma':                      `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20 14 10M4 20l2-6 6 6-6 0Z"/><path d="M14 10l4-4a2 2 0 0 1 3 3l-4 4"/></svg>`
+    };
+
+    function isGame(p) {
+      const website = (p.website || '').toLowerCase();
+      const tags = (p.tags || []).map(t => (t.label || '').toLowerCase());
+      return website.includes('itch.io') || tags.some(t => t.includes('game'));
+    }
+    // Relative links (e.g. "hnefatafl/") are pages on this same site, so they
+    // should navigate in place rather than popping a new tab.
+    function isExternal(url) { return /^https?:\/\//i.test(url || ''); }
+
+    function projectIcon(p) {
+      if (isGame(p)) return GAME_ICON;
+      const primaryTag = ((p.tags || [])[0] || {}).label;
+      const discipline = DISCIPLINE_ICONS[(primaryTag || '').toLowerCase()];
+      if (discipline) return discipline;
+      return p.website ? WEB_ICON : FILE_ICON;
+    }
 
     // ── HOVER-TO-PREFETCH ──
     // Project PDFs can be large, so we don't preload them all upfront — instead we
@@ -559,13 +907,16 @@
       if (!featured.length) { container.innerHTML = '<div class="loading">No featured projects yet.</div>'; return; }
       featured.forEach(p => {
         const imgStyle = p.image ? `background-image:url('${p.image}')` : '';
+        const actionLabel = p.website ? (isGame(p) ? 'Play' : 'Visit') : 'View';
+        const codeBtn = p.repo ? `<a href="${p.repo}" target="_blank" class="card-btn">GitHub</a>` : '';
+        const websiteTarget = isExternal(p.website) ? ' target="_blank"' : '';
         const actions  = p.website
-          ? `<a href="${p.website}" target="_blank" class="card-btn primary">Visit</a>`
-          : `<a href="${p.file}" target="_blank" class="card-btn" data-prefetch="${p.file}">Preview</a>
-             <a href="${p.file}" download class="card-btn primary" data-prefetch="${p.file}">Download</a>`;
+          ? `${codeBtn}<a href="${p.website}"${websiteTarget} class="card-btn primary">${actionLabel}</a>`
+          : `<a href="${p.file}" download class="card-btn" data-prefetch="${p.file}">Download</a>
+             <a href="${p.file}" target="_blank" class="card-btn primary" data-prefetch="${p.file}">${actionLabel}</a>`;
         container.insertAdjacentHTML('beforeend', `
           <div class="embla__slide">
-            <div class="card">
+            <div class="card" data-website="${p.website || ''}" data-file="${p.file || ''}">
               <div class="card-img"><div class="card-img-inner" style="${imgStyle}"></div></div>
               <div class="card-body">
                 <div class="card-tags">${tagsHtml(p.tags)}</div>
@@ -575,6 +926,15 @@
               </div>
             </div>
           </div>`);
+      });
+      container.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', e => {
+          if (e.target.closest('.card-actions')) return;
+          const url = card.dataset.website || card.dataset.file;
+          if (!url) return;
+          if (isExternal(url)) window.open(url, '_blank');
+          else window.location.href = url;
+        });
       });
     }
 
@@ -586,12 +946,16 @@
       projects.forEach(p => { if (!groups[p.group]) groups[p.group] = []; groups[p.group].push(p); });
       Object.entries(groups).forEach(([groupName, items]) => {
         const rows = items.map(p => {
-          const icon    = p.website ? WEB_ICON : FILE_ICON;
+          const game        = isGame(p);
+          const icon        = projectIcon(p);
+          const actionLabel = p.website ? (game ? 'Play' : 'Visit') : 'View';
+          const codeBtn = p.repo ? `<a href="${p.repo}" target="_blank" class="file-btn">GitHub</a>` : '';
+          const websiteTarget = isExternal(p.website) ? ' target="_blank"' : '';
           const actions = p.website
-            ? `<a href="${p.website}" target="_blank" class="file-btn dl">Visit</a>`
-            : `<a href="${p.file}" target="_blank" class="file-btn" data-prefetch="${p.file}">Preview</a>
-               <a href="${p.file}" download class="file-btn dl" data-prefetch="${p.file}">Download</a>`;
-          return `<div class="file-row">
+            ? `${codeBtn}<a href="${p.website}"${websiteTarget} class="file-btn dl">${actionLabel}</a>`
+            : `<a href="${p.file}" download class="file-btn" data-prefetch="${p.file}">Download</a>
+               <a href="${p.file}" target="_blank" class="file-btn dl" data-prefetch="${p.file}">${actionLabel}</a>`;
+          return `<div class="file-row" data-title="${p.title}" data-desc="${p.desc || ''}" data-image="${p.image || ''}" data-website="${p.website || ''}" data-file="${p.file || ''}">
             <div class="file-info">${icon}<span class="file-name">${p.title}</span></div>
             <div class="tags">${tagsHtml(p.tags)}</div>
             <div class="file-actions">${actions}</div>
@@ -599,6 +963,112 @@
         }).join('');
         container.insertAdjacentHTML('beforeend', `
           <div class="file-group"><div class="group-label">${groupName}</div>${rows}</div>`);
+      });
+      container.querySelectorAll('.file-row').forEach(row => {
+        row.addEventListener('click', e => {
+          if (e.target.closest('.file-actions')) return;
+          const url = row.dataset.website || row.dataset.file;
+          if (!url) return;
+          if (isExternal(url)) window.open(url, '_blank');
+          else window.location.href = url;
+        });
+      });
+      initFilePreview();
+    }
+
+    // ── FLOATING FILE PREVIEW ──
+    function initFilePreview() {
+      const card  = document.getElementById('filePreviewCard');
+      const img   = document.getElementById('filePreviewImg');
+      const title = document.getElementById('filePreviewTitle');
+      const desc  = document.getElementById('filePreviewDesc');
+      const zone  = document.getElementById('filesInner');
+
+      let warm = false;        // once true, cards switch instantly
+      let warmupTimer = null;  // the one-time 0.5s grace period on first entry
+      let activeRow = null;
+      let lastX = 0, lastY = 0;
+
+      function renderCard(row) {
+        if (!row || !row.dataset.desc) return;
+        title.textContent = row.dataset.title;
+        desc.textContent  = row.dataset.desc;
+        if (row.dataset.image) {
+          img.style.backgroundImage = `url('${row.dataset.image}')`;
+          img.style.display = 'block';
+        } else {
+          img.style.display = 'none';
+        }
+        card.classList.add('visible');
+        position(row);
+      }
+
+      // Anchored to the row itself (top-right corner, flipping below if there's
+      // no room above) — no cursor-tracking, it just sits still while shown.
+      function position(row) {
+        const rect = row.getBoundingClientRect();
+        const cw = card.offsetWidth, ch = card.offsetHeight;
+        let left = rect.left + rect.width / 2 - cw / 2;
+        left = Math.max(12, Math.min(left, window.innerWidth - cw - 12));
+        let top = rect.top - ch - 10;
+        if (top < 12) top = rect.bottom + 10;
+        top = Math.max(12, Math.min(top, window.innerHeight - ch - 12));
+        card.style.left = left + 'px';
+        card.style.top  = top + 'px';
+      }
+
+      function hide() {
+        card.classList.remove('visible');
+        activeRow = null;
+      }
+
+      // First row hovered after entering the section waits 0.5s before showing
+      // anything (so a mouse that only landed there mid-scroll doesn't pop a
+      // card while you're still reading). Everything after that is instant,
+      // until the mouse leaves the whole section.
+      function focusRow(row) {
+        if (!row.dataset.desc) { hide(); return; }
+        if (row === activeRow) { position(row); return; }
+        activeRow = row;
+        if (warm) {
+          renderCard(row);
+        } else if (!warmupTimer) {
+          warmupTimer = setTimeout(() => {
+            warm = true;
+            warmupTimer = null;
+            if (activeRow) renderCard(activeRow);
+          }, 500);
+        }
+      }
+
+      document.querySelectorAll('.file-row').forEach(row => {
+        row.addEventListener('mouseenter', e => {
+          lastX = e.clientX; lastY = e.clientY;
+          focusRow(row);
+        });
+        row.addEventListener('mouseleave', () => {
+          setTimeout(() => { if (activeRow === row) hide(); }, 50);
+        });
+      });
+
+      document.addEventListener('mousemove', e => {
+        lastX = e.clientX; lastY = e.clientY;
+      }, { passive: true });
+
+      // A row can slide under a stationary cursor while the page scrolls —
+      // mouseenter alone never fires for that, so re-check on every scroll.
+      window.addEventListener('scroll', () => {
+        if (!zone.contains(document.elementFromPoint(lastX, lastY))) return;
+        const row = document.elementFromPoint(lastX, lastY).closest('.file-row');
+        if (row) focusRow(row);
+        else if (activeRow) hide();
+      }, { passive: true, capture: true });
+
+      zone.addEventListener('mouseleave', () => {
+        clearTimeout(warmupTimer);
+        warmupTimer = null;
+        warm = false;
+        hide();
       });
     }
 
@@ -640,22 +1110,67 @@
       });
     }
 
-    // ── EMBLA ──
+    // ── CAROUSEL — native scroll, no snapping, custom scrollbar ──
     function initCarousel() {
-      const node  = document.getElementById('embla');
-      const embla = EmblaCarousel(node, { loop:false, align:'start', dragFree:true });
-      const prev  = document.getElementById('prevBtn');
-      const next  = document.getElementById('nextBtn');
-      const sync  = () => { prev.disabled = !embla.canScrollPrev(); next.disabled = !embla.canScrollNext(); };
-      embla.on('select', sync); embla.on('init', sync);
-      prev.addEventListener('click', () => embla.scrollPrev());
-      next.addEventListener('click', () => embla.scrollNext());
+      const node   = document.getElementById('embla');
+      const track  = document.getElementById('carouselScrollbar');
+      const thumb  = document.getElementById('carouselThumb');
+
+      function maxScroll() { return node.scrollWidth - node.clientWidth; }
+
+      function sync() {
+        const max = maxScroll();
+        if (max <= 0) {
+          track.classList.add('hidden');
+          return;
+        }
+        track.classList.remove('hidden');
+        const thumbRatio = node.clientWidth / node.scrollWidth;
+        const thumbWidth = Math.max(thumbRatio * track.clientWidth, 36);
+        const thumbTravel = track.clientWidth - thumbWidth;
+        thumb.style.width = thumbWidth + 'px';
+        thumb.style.left  = ((node.scrollLeft / max) * thumbTravel) + 'px';
+      }
+
+      node.addEventListener('scroll', sync, { passive: true });
+      window.addEventListener('resize', sync);
+
+      // Drag the thumb itself
+      let dragging = false, startX = 0, startScrollLeft = 0;
+      thumb.addEventListener('pointerdown', e => {
+        dragging = true;
+        startX = e.clientX;
+        startScrollLeft = node.scrollLeft;
+        thumb.classList.add('dragging');
+        thumb.setPointerCapture(e.pointerId);
+      });
+      thumb.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const thumbTravel = track.clientWidth - thumb.offsetWidth;
+        if (thumbTravel <= 0) return;
+        const dx = e.clientX - startX;
+        node.scrollLeft = startScrollLeft + dx * (maxScroll() / thumbTravel);
+      });
+      const stopDrag = () => { dragging = false; thumb.classList.remove('dragging'); };
+      thumb.addEventListener('pointerup', stopDrag);
+      thumb.addEventListener('pointercancel', stopDrag);
+
+      // Click anywhere on the track to jump straight there
+      track.addEventListener('pointerdown', e => {
+        if (e.target === thumb) return;
+        const rect = track.getBoundingClientRect();
+        const ratio = (e.clientX - rect.left) / rect.width;
+        node.scrollLeft = ratio * maxScroll();
+      });
+
+      sync();
+
       const slides = node.querySelectorAll('.embla__slide');
       const obs = new IntersectionObserver(entries => {
         entries.forEach(e => {
           if (e.isIntersecting) {
             const idx = Array.from(slides).indexOf(e.target);
-            setTimeout(() => e.target.classList.add('in'), idx * 70);
+            setTimeout(() => e.target.classList.add('in'), idx * 30);
             obs.unobserve(e.target);
           }
         });
@@ -663,23 +1178,109 @@
       slides.forEach(s => obs.observe(s));
     }
 
-    // ── FILES TOGGLE ──
-    function initToggle() {
-      const btn  = document.getElementById('filesToggle');
-      const body = document.getElementById('filesBody');
-      const hint = btn.querySelector('.toggle-hint-text');
-      btn.addEventListener('click', () => {
-        const open = body.classList.toggle('open');
-        btn.classList.toggle('open', open);
-        if (hint) hint.textContent = open ? 'Hide' : 'Show';
-      });
-    }
-
     // ── DARK MODE ──
     function initDarkMode() {
       document.getElementById('logoBtn').addEventListener('click', () => {
         document.documentElement.classList.toggle('dark');
       });
+    }
+
+    // ── EMAIL: COPY TO CLIPBOARD INSTEAD OF OPENING A MAIL CLIENT ──
+    function initEmailCopy() {
+      document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        const email = link.getAttribute('href').slice('mailto:'.length);
+        link.setAttribute('data-tooltip', 'Copy Email');
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          navigator.clipboard.writeText(email).then(() => {
+            link.setAttribute('data-tooltip', 'Copied!');
+            setTimeout(() => link.setAttribute('data-tooltip', 'Copy Email'), 1200);
+          });
+        });
+      });
+    }
+
+    // ── SKILLS TICKER — draggable, throws with momentum, settles back into a steady scroll ──
+    function initSkillsTicker() {
+      const track = document.querySelector('.skills-ticker-track');
+      const group = track.querySelector('.skills-ticker-group');
+
+      let groupWidth = group.offsetWidth;
+      let autoSpeed = groupWidth / 45000; // px/ms — matches the old 45s-per-loop pace
+      window.addEventListener('resize', () => {
+        groupWidth = group.offsetWidth;
+        autoSpeed = groupWidth / 45000;
+      });
+
+      let pos = 0;
+      let direction = -1; // -1 = normal leftward drift, flips to +1 after a hard rightward throw
+      let velocity = -autoSpeed;
+      let dragging = false;
+      let dragStartX = 0;
+      let dragStartPos = 0;
+      let lastX = 0;
+      let lastT = 0;
+      let flingVelocity = 0;
+
+      function wrapPos(p) {
+        if (groupWidth <= 0) return p;
+        p = p % groupWidth;
+        if (p > 0) p -= groupWidth;
+        return p;
+      }
+
+      track.addEventListener('pointerdown', e => {
+        dragging = true;
+        track.classList.add('dragging');
+        track.setPointerCapture(e.pointerId);
+        dragStartX = e.clientX;
+        dragStartPos = pos;
+        lastX = e.clientX;
+        lastT = performance.now();
+        flingVelocity = 0;
+      });
+
+      track.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const now = performance.now();
+        const dt = now - lastT || 16;
+        flingVelocity = (e.clientX - lastX) / dt;
+        pos = dragStartPos + (e.clientX - dragStartX);
+        lastX = e.clientX;
+        lastT = now;
+      });
+
+      const HARD_THROW = 0.4; // px/ms — above this, the throw resets which way it idles
+
+      function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+        track.classList.remove('dragging');
+        const flingSpeed = Math.min(Math.abs(flingVelocity), 3);
+        if (flingSpeed > HARD_THROW) {
+          direction = flingVelocity > 0 ? 1 : -1;
+        }
+        velocity = Math.sign(flingVelocity || direction) * Math.max(flingSpeed, autoSpeed);
+      }
+      track.addEventListener('pointerup', endDrag);
+      track.addEventListener('pointercancel', endDrag);
+
+      let lastFrame = performance.now();
+      function frame(now) {
+        const dt = Math.min(now - lastFrame, 50);
+        lastFrame = now;
+        if (!dragging && document.hasFocus()) {
+          // Momentum eases back into the steady drift speed, in whichever
+          // direction the last hard throw set
+          const target = direction * autoSpeed;
+          velocity += (target - velocity) * Math.min(dt / 400, 1);
+          pos += velocity * dt;
+        }
+        pos = wrapPos(pos);
+        track.style.transform = `translateX(${pos}px)`;
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
     }
 
     // ── LOAD PROJECTS ──
@@ -690,7 +1291,8 @@
         const projects = await res.json();
         renderCarousel(projects);
         renderFiles(projects);
-        if (window.EmblaCarousel) initCarousel();
+        initCarousel();
+        initRepoUpdated();
       } catch (err) {
         document.getElementById('carouselContainer').innerHTML =
           `<div class="loading">Could not load projects.json — run python3 -m http.server from your folder.</div>`;
@@ -698,14 +1300,52 @@
       }
     }
 
+    // ── LIVE "LAST UPDATED" FROM GITHUB ──
+    function timeAgo(dateStr) {
+      const mins = Math.floor((Date.now() - new Date(dateStr).getTime()) / 60000);
+      if (mins < 60) return mins <= 1 ? 'just now' : `${mins}m ago`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `${hours}h ago`;
+      const days = Math.floor(hours / 24);
+      if (days < 30) return `${days}d ago`;
+      const months = Math.floor(days / 30);
+      if (months < 12) return `${months}mo ago`;
+      return `${Math.floor(months / 12)}y ago`;
+    }
+
+    const repoUpdatedCache = {};
+    async function fetchRepoUpdated(repoUrl) {
+      if (repoUpdatedCache[repoUrl]) return repoUpdatedCache[repoUrl];
+      const match = repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
+      if (!match) return null;
+      const promise = fetch(`https://api.github.com/repos/${match[1]}/${match[2]}/commits?per_page=1`)
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(data => data[0] && data[0].commit && data[0].commit.committer.date)
+        .catch(() => null);
+      repoUpdatedCache[repoUrl] = promise;
+      return promise;
+    }
+
+    function initRepoUpdated() {
+      document.querySelectorAll('[data-repo]').forEach(el => {
+        const label = el.id === 'siteUpdated' ? 'Last updated' : 'Updated';
+        fetchRepoUpdated(el.dataset.repo).then(date => {
+          if (date) el.textContent = `${label} ${timeAgo(date)}`;
+        });
+      });
+    }
+
     // ── INIT ──
-    window.addEventListener('load', () => {
-      document.querySelectorAll('[data-scatter]').forEach(initScatter);
-      initToggle();
-      initDarkMode();
-      loadProjects();
-      initPDF();
-    });
+    // This script sits at the end of the body, so everything above is already
+    // parsed — no need to wait for the window 'load' event (which would also
+    // wait on fonts/images and delay the PDF/project fetches for no reason).
+    document.querySelectorAll('[data-scatter]').forEach(initScatter);
+    initDarkMode();
+    initEmailCopy();
+    initSkillsTicker();
+    loadProjects();
+    initPDF();
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>

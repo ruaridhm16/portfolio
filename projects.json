@@ -31,12 +31,14 @@
     "group": "Year 2",
     "tags": [
       { "label": "Software Engineering", "style": "tag-y2" },
+      { "label": "Game", "style": "tag-y2" },
       { "label": "Individual", "style": "tag-solo" }
     ],
     "featured": true,
     "image": "Project_Image_Hnefatafl.png",
     "file": "",
-    "website": "hnefatafl/"
+    "website": "hnefatafl/",
+    "repo": "https://github.com/ruaridhm16/Hnefatafl-Game"
   },
   {
     "title": "Teach-by-Touch Robotic Arm",
@@ -65,20 +67,33 @@
   "website": ""
   },
   {
-    "title": "Aerodynamic Cabriolet - Individual",
+    "title": "Aerodynamic Cabriolet",
     "desc": "Designed a four-seat cabriolet body through CFD in Ansys Workbench. Cut drag by 14% iteratively, then 3D printed and wind-tunnel validated.",
     "group": "Year 2",
     "tags": [
-      { "label": "Thermofluids", "style": "tag-y2" },
+      { "label": "Aerodynamics", "style": "tag-y2" },
       { "label": "Individual",   "style": "tag-solo" }
     ],
     "featured": true,
     "image": "Project_Image_Individual_Thermo.png",
-    "file": "Project_Individual_Thermo.pdf",
+    "file": "Project_Aerodynamic_Cabriolet.pdf",
     "website": ""
   },
   {
-    "title": "Aircraft Comfort Research",
+    "title": "Battery Cooling Plate",
+    "desc": "Designed a parallel-serpentine cooling plate for an off-grid battery in Ansys CFD. Balanced pressure drop against thermal uniformity, then checked against hand calculations.",
+    "group": "Year 2",
+    "tags": [
+      { "label": "Thermodynamics", "style": "tag-y2" },
+      { "label": "Group",          "style": "tag-group" }
+    ],
+    "featured": true,
+    "image": "Project_Image_Group_Thermo_Battery.png",
+    "file": "Project_Group_Thermo_Battery.pdf",
+    "website": ""
+  },
+  {
+    "title": "Airline Seat Research",
     "desc": "122-person survey, stakeholder mapping across passengers, crew, maintenance and procurement. Benchmarked major seat manufacturers.",
     "group": "Year 2",
     "tags": [
@@ -91,7 +106,7 @@
     "website": ""
   },
   {
-    "title": "Aircraft Comfort Concept",
+    "title": "Airline Seat Redesign",
     "desc": "Modular seat redesign with adjustable geometry and separable soft goods, informed by a 122-person survey and full stakeholder mapping.",
     "group": "Year 2",
     "tags": [
@@ -143,7 +158,7 @@
     "website": ""
   },
   {
-    "title": "Child-Friendly Hand Mixer",
+    "title": "Reverse Engineered Hand Mixer",
     "desc": "Reverse engineering report- disassembly, materials identification, manufacturing process analysis.",
     "group": "Year 1",
     "tags": [
@@ -171,7 +186,7 @@
   {
     "title": "Old Portfolio",
     "desc": "My previous personal portfolio (March 2026), now retired in favour of a new version.",
-    "group": "Personal",
+    "group": "Extra",
     "tags": [
       { "label": "Portfolio",   "style": "tag-personal" }
     ],
@@ -183,7 +198,7 @@
   {
     "title": "Logo Design",
     "desc": "Just a small thing on making a logo because I thought it was cool",
-    "group": "Personal",
+    "group": "Extra",
     "tags": [
       { "label": "Figma",   "style": "tag-personal" },
       { "label": "UI", "style": "tag-personal" }
@@ -194,9 +209,9 @@
     "website": ""
   },
   {
-    "title": "Duck Jam - Game Jam Winner",
+    "title": "Duck Jam",
     "desc": "Won first place in Duck Sauce Game Jam. Autoscrolling river game where collecting ducks layers a live melody.",
-    "group": "Personal",
+    "group": "Extra",
     "tags": [
       { "label": "Game Jam",  "style": "tag-personal" },
       { "label": "Unity / C#", "style": "tag-personal" }
@@ -204,12 +219,13 @@
     "featured": true,
     "image": "https://img.itch.zone/aW1hZ2UvMTk0NDkyNi8xMTQzODA4NC5wbmc=/794x1000/0X8bjq.png",
     "file": "",
-    "website": "https://ruaridhm16.itch.io/duck-jam"
+    "website": "https://ruaridhm16.itch.io/duck-jam",
+    "repo": "https://github.com/ruaridhm16/Duck-Jam-Game"
   },
   {
-    "title": "Abyssal - Game Jam Winner",
+    "title": "Abyssal",
     "desc": "Won first place in Duck Sauce Game Jam. 2D underwater exploration with narrative discovery.",
-    "group": "Personal",
+    "group": "Extra",
     "tags": [
       { "label": "Game Jam",  "style": "tag-personal" },
       { "label": "Unity / C#", "style": "tag-personal" }
@@ -217,12 +233,13 @@
     "featured": true,
     "image": "https://img.itch.zone/aW1hZ2UvMjU0ODk4Ny8xNTE2NzI0OC5wbmc=/794x1000/BbIYJF.png",
     "file": "",
-    "website": "https://ruaridhm16.itch.io/abyssal"
+    "website": "https://ruaridhm16.itch.io/abyssal",
+    "repo": "https://github.com/ruaridhm16/Abyssal-Game"
   },
   {
     "title": "Dodgy Double Decker",
     "desc": "3D bus-driving game, with online leaderboard. Did all game design and programming in Unity using C#.",
-    "group": "Personal",
+    "group": "Extra",
     "tags": [
       { "label": "Game",  "style": "tag-personal" },
       { "label": "Unity / C#", "style": "tag-personal" }
@@ -230,6 +247,7 @@
     "featured": false,
     "image": "https://img.itch.zone/aW1hZ2UvMjU4Nzg4My8xNTQwOTExMS5wbmc=/794x1000/TguMKf.png",
     "file": "",
-    "website": "https://ruaridhm16.itch.io/dodgy-double-decker"
+    "website": "https://ruaridhm16.itch.io/dodgy-double-decker",
+    "repo": "https://github.com/ruaridhm16/Dodgy-Double-Decker-Game"
   }
 ]

@@ -1050,6 +1050,23 @@ document.getElementById("btn-back").addEventListener(
     }
 );
 
+// If we arrived from the portfolio site, going "back" should return the
+// browser to that exact page, scroll position included, rather than loading
+// a fresh copy of it. Only true history navigation restores scroll like that.
+document.getElementById("btn-back-portfolio").addEventListener(
+    "click",
+    function (event) {
+        const cameFromSameSite = (
+            document.referrer
+            && document.referrer.indexOf(window.location.host) !== -1
+        );
+        if (cameFromSameSite && window.history.length > 1) {
+            event.preventDefault();
+            window.history.back();
+        }
+    }
+);
+
 document.getElementById("btn-replay-prev").addEventListener(
     "click",
     function () {
