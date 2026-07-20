@@ -200,11 +200,17 @@ function renderCarousel(projects) {
 
     const buttons = [];
 
-    if (p.repo) {
+    if (p.simulator) {
+      buttons.push(
+        `<a href="${p.simulator}" target="_blank" class="card-btn">Simulator</a>`
+      );
+    }
+    else if (p.repo) {
       buttons.push(
         `<a href="${p.repo}" target="_blank" class="card-btn">GitHub</a>`
       );
     }
+
 
     if (p.file) {
       buttons.push(
@@ -283,9 +289,14 @@ function renderFiles(projects) {
 
       const buttons = [];
 
-      if (p.repo) {
+      if (p.simulator) {
+      buttons.push(
+        `<a href="${p.simulator}" target="_blank" class="card-btn">Simulator</a>`
+      );
+      }
+      else if (p.repo) {
         buttons.push(
-          `<a href="${p.repo}" target="_blank" class="file-btn">GitHub</a>`
+          `<a href="${p.repo}" target="_blank" class="card-btn">GitHub</a>`
         );
       }
 

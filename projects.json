@@ -11,7 +11,8 @@
   "image": "projects/Project_Image_Swivelcut.png",
   "file": "projects/Project_Swivelcut.pdf",
   "website": "",
-  "repo": "https://github.com/ruaridhm16/SwivelCut-Device"
+  "repo": "https://github.com/ruaridhm16/SwivelCut-Device",
+  "simulator": "swivel-cut/"
 },
   {
   "title": "Swivelcut Research",
@@ -153,10 +154,10 @@
       { "label": "Human Centred Design",   "style": "tag-y1" },
       { "label": "Group", "style": "tag-group" }
     ],
-    "featured": false,
+    "featured": true,
     "image": "projects/Project_Image_Rhythm_Rush.png",
     "file": "projects/Project_Rhythm_Rush.pdf",
-    "website": "",
+    "simulator": "rhythm-rush/",
     "repo": "https://github.com/ruaridhm16/Rhythm-Rush-Concept"
   },
   {
