@@ -24,7 +24,6 @@ function renderToOffscreen(pageNum) {
   if (pageCache[pageNum]) return Promise.resolve(pageCache[pageNum]);
   return pdfDoc.getPage(pageNum).then(page => {
     const viewer = document.getElementById('pdfViewer');
-    // Clamp DPR to 2 max — no need to render at 3× or 4× on very high-DPI screens
     const dpr    = Math.min(window.devicePixelRatio || 1, 2);
     const scale  = (viewer.clientWidth / page.getViewport({ scale: 1 }).width) * dpr;
     const vp     = page.getViewport({ scale });
@@ -97,10 +96,6 @@ function initPDF() {
   });
 }
 
-// ── PRINT: render every PDF page to an image, ahead of time ──
-// A native Ctrl+P can't be delayed for async work, so this runs quietly in
-// the background right after the doc loads rather than waiting for the
-// 'beforeprint' event — by the time anyone actually prints, it's ready.
 let printPagesReady = false;
 async function preparePrintPages() {
   if (printPagesReady || !pdfDoc) return;
@@ -162,8 +157,7 @@ function isGame(p) {
   const tags = (p.tags || []).map(t => (t.label || '').toLowerCase());
   return website.includes('itch.io') || tags.some(t => t.includes('game'));
 }
-// Relative links (e.g. "hnefatafl/") are pages on this same site, so they
-// should navigate in place rather than popping a new tab.
+
 function isExternal(url) { return /^https?:\/\//i.test(url || ''); }
 
 function projectIcon(p) {
@@ -174,10 +168,6 @@ function projectIcon(p) {
   return p.website ? WEB_ICON : FILE_ICON;
 }
 
-// ── HOVER-TO-PREFETCH ──
-// Project PDFs can be large, so we don't preload them all upfront — instead we
-// warm the browser cache the moment someone hovers (or touches) a Preview/Download
-// link, so it's often already cached by the time they click.
 const prefetchedFiles = new Set();
 function prefetchFile(url) {
   if (!url || prefetchedFiles.has(url)) return;
@@ -196,21 +186,53 @@ document.addEventListener('focusin', handlePrefetchIntent);
 function renderCarousel(projects) {
   const container = document.getElementById('carouselContainer');
   container.innerHTML = '';
+
   const featured = projects.filter(p => p.featured);
-  if (!featured.length) { container.innerHTML = '<div class="loading">No featured projects yet.</div>'; return; }
+
+  if (!featured.length) {
+    container.innerHTML = '<div class="loading">No featured projects yet.</div>';
+    return;
+  }
+
   featured.forEach(p => {
     const imgStyle = p.image ? `background-image:url('${p.image}')` : '';
-    const actionLabel = p.website ? (isGame(p) ? 'Play' : 'Visit') : 'View';
-    const codeBtn = p.repo ? `<a href="${p.repo}" target="_blank" class="card-btn">GitHub</a>` : '';
-    const websiteTarget = isExternal(p.website) ? ' target="_blank"' : '';
-    const actions  = p.website
-      ? `${codeBtn}<a href="${p.website}"${websiteTarget} class="card-btn primary">${actionLabel}</a>`
-      : `<a href="${p.file}" download class="card-btn" data-prefetch="${p.file}">Download</a>
-         <a href="${p.file}" target="_blank" class="card-btn primary" data-prefetch="${p.file}">${actionLabel}</a>`;
+    const game = isGame(p);
+
+    const buttons = [];
+
+    if (p.repo) {
+      buttons.push(
+        `<a href="${p.repo}" target="_blank" class="card-btn">GitHub</a>`
+      );
+    }
+
+    if (p.file) {
+      buttons.push(
+        `<a href="${p.file}" download class="card-btn" data-prefetch="${p.file}">Download</a>`
+      );
+
+      buttons.push(
+        `<a href="${p.file}" target="_blank" class="card-btn primary" data-prefetch="${p.file}">View</a>`
+      );
+    }
+
+    if (p.website) {
+      const websiteTarget = isExternal(p.website) ? ' target="_blank"' : '';
+      buttons.push(
+        `<a href="${p.website}"${websiteTarget} class="card-btn primary">${
+          game ? 'Play' : 'Visit'
+        }</a>`
+      );
+    }
+
+    const actions = buttons.join('');
+
     container.insertAdjacentHTML('beforeend', `
       <div class="embla__slide">
         <div class="card" tabindex="0" role="link" aria-label="${p.title}" data-website="${p.website || ''}" data-file="${p.file || ''}">
-          <div class="card-img"><div class="card-img-inner" style="${imgStyle}"></div></div>
+          <div class="card-img">
+            <div class="card-img-inner" style="${imgStyle}"></div>
+          </div>
           <div class="card-body">
             <div class="card-tags">${tagsHtml(p.tags)}</div>
             <div class="card-title">${p.title}</div>
@@ -220,17 +242,20 @@ function renderCarousel(projects) {
         </div>
       </div>`);
   });
+
   function goToCard(card) {
     const url = card.dataset.website || card.dataset.file;
     if (!url) return;
     if (isExternal(url)) window.open(url, '_blank');
     else window.location.href = url;
   }
+
   container.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', e => {
       if (e.target.closest('.card-actions')) return;
       goToCard(card);
     });
+
     card.addEventListener('keydown', e => {
       if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('.card-actions')) {
         e.preventDefault();
@@ -244,23 +269,54 @@ function renderCarousel(projects) {
 function renderFiles(projects) {
   const container = document.getElementById('filesInner');
   container.innerHTML = '';
+
   const groups = {};
-  projects.forEach(p => { if (!groups[p.group]) groups[p.group] = []; groups[p.group].push(p); });
+  projects.forEach(p => {
+    if (!groups[p.group]) groups[p.group] = [];
+    groups[p.group].push(p);
+  });
+
   Object.entries(groups).forEach(([groupName, items]) => {
     const rows = items.map(p => {
-      const game        = isGame(p);
-      const icon        = projectIcon(p);
-      const actionLabel = p.website ? (game ? 'Play' : 'Visit') : 'View';
-      const codeBtn = p.repo ? `<a href="${p.repo}" target="_blank" class="file-btn">GitHub</a>` : '';
-      const websiteTarget = isExternal(p.website) ? ' target="_blank"' : '';
-      const actions = p.website
-        ? `${codeBtn}<a href="${p.website}"${websiteTarget} class="file-btn dl">${actionLabel}</a>`
-        : `<a href="${p.file}" download class="file-btn" data-prefetch="${p.file}">Download</a>
-           <a href="${p.file}" target="_blank" class="file-btn dl" data-prefetch="${p.file}">${actionLabel}</a>`;
-      const expand = p.desc ? `<div class="file-expand"><div class="file-expand-inner">
-        ${p.image ? `<div class="file-expand-img" style="background-image:url('${p.image}')"></div>` : ''}
-        <p class="file-expand-desc">${p.desc}</p>
-      </div></div>` : '';
+      const game = isGame(p);
+      const icon = projectIcon(p);
+
+      const buttons = [];
+
+      if (p.repo) {
+        buttons.push(
+          `<a href="${p.repo}" target="_blank" class="file-btn">GitHub</a>`
+        );
+      }
+
+      if (p.file) {
+        buttons.push(
+          `<a href="${p.file}" download class="file-btn" data-prefetch="${p.file}">Download</a>`
+        );
+
+        buttons.push(
+          `<a href="${p.file}" target="_blank" class="file-btn dl" data-prefetch="${p.file}">View</a>`
+        );
+      }
+
+      if (p.website) {
+        const websiteTarget = isExternal(p.website) ? ' target="_blank"' : '';
+        buttons.push(
+          `<a href="${p.website}"${websiteTarget} class="file-btn dl">${
+            game ? 'Play' : 'Visit'
+          }</a>`
+        );
+      }
+
+      const actions = buttons.join('');
+
+      const expand = p.desc
+        ? `<div class="file-expand"><div class="file-expand-inner">
+            ${p.image ? `<div class="file-expand-img" style="background-image:url('${p.image}')"></div>` : ''}
+            <p class="file-expand-desc">${p.desc}</p>
+          </div></div>`
+        : '';
+
       return `<div class="file-row" tabindex="0" role="link" aria-label="${p.title}" data-title="${p.title}" data-desc="${p.desc || ''}" data-image="${p.image || ''}" data-website="${p.website || ''}" data-file="${p.file || ''}">
         <div class="file-row-main">
           <div class="file-info">${icon}<span class="file-name">${p.title}</span></div>
@@ -270,9 +326,13 @@ function renderFiles(projects) {
         ${expand}
       </div>`;
     }).join('');
-    container.insertAdjacentHTML('beforeend', `
-      <div class="file-group"><div class="group-label">${groupName}</div>${rows}</div>`);
+
+    container.insertAdjacentHTML(
+      'beforeend',
+      `<div class="file-group"><div class="group-label">${groupName}</div>${rows}</div>`
+    );
   });
+
   function goToRow(row) {
     const url = row.dataset.website || row.dataset.file;
     if (!url) return;

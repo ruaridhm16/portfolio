@@ -10,7 +10,8 @@
   "featured": true,
   "image": "projects/Project_Image_Swivelcut.png",
   "file": "projects/Project_Swivelcut.pdf",
-  "website": ""
+  "website": "",
+  "repo": "https://github.com/ruaridhm16/SwivelCut-Device"
 },
   {
   "title": "Swivelcut Research",
@@ -155,7 +156,8 @@
     "featured": false,
     "image": "projects/Project_Image_Rhythm_Rush.png",
     "file": "projects/Project_Rhythm_Rush.pdf",
-    "website": ""
+    "website": "",
+    "repo": "https://github.com/ruaridhm16/Rhythm-Rush-Concept"
   },
   {
     "title": "Reverse Engineered Hand Mixer",
