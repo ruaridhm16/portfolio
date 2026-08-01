@@ -102,6 +102,7 @@ main {
     border-bottom: 1px solid var(--border);
 }
 html.dark #stage.active { background: #222; }
+#stage.setting-up #video-clip { visibility: hidden; }
 
 #video-clip {
     position: absolute;
@@ -224,8 +225,28 @@ button#btn-start:disabled { opacity: 0.6; cursor: default; }
 }
 .info-about p + p { margin-top: 14px; }
 
+.github-btn-bottom { display: none; }
+
 @media (max-width: 640px) {
     header { padding: 20px 20px; }
     main { padding: 0 20px 40px; }
     #placeholder { padding: 40px 32px; }
+
+    .header-actions .github-btn { display: none; }
+    .github-btn-bottom {
+        display: inline-block;
+        margin-top: 24px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 12px; font-weight: 600;
+        padding: 8px 14px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--black);
+        text-decoration: none;
+    }
+
+    main.camera-active #info,
+    main.camera-active #stage-caption,
+    main.camera-active .github-btn-bottom { display: none; }
 }

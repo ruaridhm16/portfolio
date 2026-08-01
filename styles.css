@@ -173,6 +173,15 @@ h1 + .desc { margin-top: 20px; }
 }
 .feedback-form textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 
+.feedback-form input[type="email"]:-webkit-autofill,
+.feedback-form input[type="email"]:-webkit-autofill:hover,
+.feedback-form input[type="email"]:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--black);
+  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
+  box-shadow: 0 0 0 1000px var(--bg) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 .feedback-row { display: flex; align-items: center; gap: 12px; }
 .feedback-row input[type="email"] { flex: 1; min-width: 0; }
 .feedback-status { flex-shrink: 0; margin: 0; font-size: 12px; font-weight: 500; color: var(--mid); }
@@ -184,6 +193,9 @@ h1 + .desc { margin-top: 20px; }
   .feedback-row input[type="email"] { order: 1; }
   .feedback-status { order: 2; }
   .feedback-submit { order: 3; }
+
+  .feedback-form textarea,
+  .feedback-form input[type="email"] { font-size: 16px; }
 }
 
 .feedback-submit { padding: 9px 22px; cursor: pointer; flex-shrink: 0; }
@@ -530,8 +542,7 @@ html.dark .card-img { background: #222; }
   border-radius: 8px;
   transition: box-shadow 0.15s, transform 0.15s, background 0.15s;
 }
-.file-row:hover .file-row-main,
-.file-row.tap-armed .file-row-main {
+.file-row:hover .file-row-main {
   box-shadow: 3px 3px 0 0 var(--shadow);
   transform: translate(-2px, -2px);
   background: var(--bg);
@@ -539,19 +550,7 @@ html.dark .card-img { background: #222; }
 .file-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
 .file-icon { color: #a4a4a4; flex-shrink: 0; }
 .file-name { flex-shrink: 1; min-width: 0; font-size: 13px; font-weight: 500; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.15s; }
-.file-row:hover .file-name,
-.file-row.tap-armed .file-name { color: var(--accent); }
-
-.file-expand { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
-.file-row.tap-armed .file-expand { max-height: 320px; }
-.file-expand-inner { display: flex; gap: 14px; padding: 0 14px 16px; }
-.file-expand-img {
-  width: 100px; height: 68px; flex-shrink: 0;
-  border-radius: 8px; border: 1px solid var(--border);
-  background-color: var(--surface); background-size: cover; background-position: center;
-}
-html.dark .file-expand-img { background-color: #222; }
-.file-expand-desc { font-size: 12px; color: var(--mid); line-height: 1.5; }
+.file-row:hover .file-name { color: var(--accent); }
 
 .file-preview-card {
   position: fixed; z-index: 50; width: 300px;
@@ -612,6 +611,7 @@ html.dark .tag { background: #222; color: #555; }
 
   .pdf-viewer { display: none; }
   .pdf-hint { display: none; }
+  .pdf-fullscreen-btn { display: none; }
   .pdf-footer-row { justify-content: center; }
   .pdf-mobile-btn { display: block; }
 
@@ -726,6 +726,19 @@ html.dark .project-overlay-panel { background: #222; }
   object-fit: cover;
   background: var(--surface);
 }
+.image-overlay img[hidden] { display: none; }
+
+.image-overlay-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--surface);
+  transition: background 0.3s ease;
+}
+.image-overlay-actions[hidden] { display: none; }
+.image-overlay-actions .card-btn,
+.image-overlay-actions .file-btn { font-size: 12px; padding: 7px 14px; }
 
 .image-overlay-close {
   position: absolute;

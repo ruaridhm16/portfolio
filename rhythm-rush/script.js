@@ -173,6 +173,7 @@ export function init(root = document, onClose = null) {
     const stopBtn = root.getElementById("btn-stop");
     const hideCameraBtn = root.getElementById("btn-hide-camera");
     const closeBtn = root.getElementById("btn-close");
+    const mainEl = root.querySelector("main");
 
     const contentRoot = root.host || document.documentElement;
 
@@ -237,6 +238,8 @@ export function init(root = document, onClose = null) {
     async function startCamera() {
         startBtn.disabled = true;
         statusEl.textContent = "Setting up stuff...";
+        stage.classList.add("setting-up");
+        mainEl.classList.add("camera-active");
 
         const [modelResult, cameraResult] = await Promise.allSettled([
             landmarkerReady,
@@ -253,12 +256,16 @@ export function init(root = document, onClose = null) {
         if (modelResult.status === "rejected") {
             statusEl.textContent = "Couldn't load the pose model - try refreshing.";
             startBtn.disabled = false;
+            stage.classList.remove("setting-up");
+            mainEl.classList.remove("camera-active");
             console.error(modelResult.reason);
             return;
         }
         if (cameraResult.status === "rejected") {
             statusEl.textContent = "Camera access denied.";
             startBtn.disabled = false;
+            stage.classList.remove("setting-up");
+            mainEl.classList.remove("camera-active");
             console.error(cameraResult.reason);
             return;
         }
@@ -270,6 +277,7 @@ export function init(root = document, onClose = null) {
         growStageToVideo(video.videoWidth, video.videoHeight);
         stage.classList.add("active");
         stage.classList.remove("tracking-visible");
+        stage.classList.remove("setting-up");
 
         placeholder.classList.add("hidden");
         liveIndicator.hidden = false;
@@ -303,6 +311,8 @@ export function init(root = document, onClose = null) {
         stage.classList.remove("camera-hidden");
         stage.classList.remove("active");
         stage.classList.remove("tracking-visible");
+        stage.classList.remove("setting-up");
+        mainEl.classList.remove("camera-active");
         hideCameraBtn.textContent = "Hide camera";
         liveIndicator.hidden = true;
         stopBtn.hidden = true;

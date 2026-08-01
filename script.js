@@ -175,6 +175,10 @@ document.addEventListener('mouseover', handlePrefetchIntent);
 document.addEventListener('touchstart', handlePrefetchIntent, { passive: true });
 document.addEventListener('focusin', handlePrefetchIntent);
 
+function isMobileViewport() {
+  return window.matchMedia('(max-width: 860px)').matches;
+}
+
 const SIMULATOR_PAGES = new Set();
 
 const projectOverlay = document.getElementById('projectOverlay');
@@ -264,6 +268,7 @@ document.addEventListener('keydown', e => {
 });
 
 document.addEventListener('click', e => {
+  if (isMobileViewport()) return;
   const link = e.target.closest('a[href]');
   if (link && SIMULATOR_PAGES.has(link.getAttribute('href'))) {
     e.preventDefault();
@@ -276,13 +281,17 @@ const imageOverlayImg = document.getElementById('imageOverlayImg');
 const imageOverlayClose = document.getElementById('imageOverlayClose');
 const imageOverlayTitle = document.getElementById('imageOverlayTitle');
 const imageOverlayDesc = document.getElementById('imageOverlayDesc');
+const imageOverlayActions = document.getElementById('imageOverlayActions');
 
-function openImageOverlay(src, title, desc) {
-  imageOverlayImg.src = src;
+function openImageOverlay(src, title, desc, actionsHTML) {
+  imageOverlayImg.src = src || '';
   imageOverlayImg.alt = title || '';
+  imageOverlayImg.hidden = !src;
   imageOverlayTitle.textContent = title || '';
   imageOverlayDesc.textContent = desc || '';
   imageOverlayDesc.hidden = !desc;
+  imageOverlayActions.innerHTML = actionsHTML || '';
+  imageOverlayActions.hidden = !actionsHTML;
   imageOverlay.classList.add('open');
   imageOverlay.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
@@ -296,7 +305,7 @@ function closeImageOverlay() {
 
 document.addEventListener('click', e => {
   if (e.target.closest('.card-img-badges')) return;
-  const trigger = e.target.closest('.card-img[data-image]');
+  const trigger = !isMobileViewport() && e.target.closest('.card-img[data-image]');
   if (trigger) {
     openImageOverlay(trigger.dataset.image, trigger.closest('.card')?.getAttribute('aria-label'), trigger.dataset.desc);
     return;
@@ -306,6 +315,7 @@ document.addEventListener('click', e => {
   }
 });
 document.addEventListener('keydown', e => {
+  if (isMobileViewport()) return;
   if (e.target.closest('.card-img-badges')) return;
   const trigger = e.target.closest('.card-img[data-image]');
   if (trigger && (e.key === 'Enter' || e.key === ' ')) {
@@ -429,20 +439,12 @@ function renderFiles(projects) {
 
       const actions = buttons.join('');
 
-      const expand = p.desc
-        ? `<div class="file-expand"><div class="file-expand-inner">
-            ${p.image ? `<div class="file-expand-img" style="background-image:url('${p.image}')"></div>` : ''}
-            <p class="file-expand-desc">${p.desc}</p>
-          </div></div>`
-        : '';
-
       return `<div class="file-row" tabindex="0" role="link" aria-label="${p.title}" data-title="${p.title}" data-desc="${p.desc || ''}" data-image="${p.image || ''}" data-website="${p.website || ''}" data-file="${p.file || ''}">
         <div class="file-row-main">
           <div class="file-info">${icon}<span class="file-name">${p.title}</span></div>
           <div class="tags">${tagsHtml(p.tags)}</div>
           <div class="file-actions">${actions}</div>
         </div>
-        ${expand}
       </div>`;
     }).join('');
 
@@ -453,6 +455,11 @@ function renderFiles(projects) {
   });
 
   function activateRow(row) {
+    if (isMobileViewport()) {
+      const actionsHTML = row.querySelector('.file-actions')?.innerHTML || '';
+      openImageOverlay(row.dataset.image, row.dataset.title, row.dataset.desc, actionsHTML);
+      return;
+    }
     if (row.dataset.image) {
       openImageOverlay(row.dataset.image, row.dataset.title, row.dataset.desc);
       return;
@@ -480,7 +487,7 @@ function renderFiles(projects) {
 
 function initFilePreview() {
 
-  if (window.matchMedia('(max-width: 860px)').matches) return;
+  if (isMobileViewport()) return;
   const card  = document.getElementById('filePreviewCard');
   const img   = document.getElementById('filePreviewImg');
   const title = document.getElementById('filePreviewTitle');
@@ -790,6 +797,13 @@ function initFeedbackForm() {
     if (kind) statusTimer = setTimeout(() => setStatus(''), 5000);
   }
 
+  emailInput.addEventListener('invalid', () => {
+    emailInput.setCustomValidity(
+      emailInput.validity.typeMismatch ? "That doesn't look like a valid email address." : ''
+    );
+  });
+  emailInput.addEventListener('input', () => emailInput.setCustomValidity(''));
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
     if (form.botcheck.checked) return;
@@ -831,8 +845,8 @@ function initFeedbackForm() {
 }
 
 function initTouchSafetyTaps() {
-  if (!window.matchMedia('(max-width: 860px)').matches) return;
-  const SELECTOR = '.file-row, .site-updated-date, .site-updated-title, .social-icons a, #logoBtn';
+  if (!isMobileViewport()) return;
+  const SELECTOR = '.site-updated-date, .site-updated-title, .social-icons a, #logoBtn';
   let armed = null;
   let armTimer = null;
 
