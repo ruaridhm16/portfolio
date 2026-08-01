@@ -1,21 +1,9 @@
-/**
- * Converts a board row/col pair to chess-style notation.
- * Columns 0-10 map to A-K, rows 0-10 map to 11-1.
- * @param {number} row - Row index (0-10)
- * @param {number} col - Column index (0-10)
- * @returns {string} e.g. "A11", "K1"
- */
+
 const toNotation = function (row, col) {
     const cols = "ABCDEFGHIJK";
     return cols.charAt(col) + String(11 - row);
 };
 
-/**
- * True if status is one of black's win outcomes, e.g.
- * "black_wins_capture".
- * @param {string} status - A GameState status
- * @returns {boolean}
- */
 const isBlackStatus = function (status) {
     return status.indexOf("black") === 0;
 };

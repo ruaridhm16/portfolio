@@ -1,6 +1,5 @@
 const PDF_FILE = 'Display_Portfolio.pdf';
 
-// ── PDF.JS ──
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
@@ -47,7 +46,6 @@ function showPage(num) {
   if (rendering) return;
   rendering = true;
 
-  // If already cached, skip the loading flash entirely
   const alreadyCached = !!pageCache[num];
 
   renderToOffscreen(num).then(off => {
@@ -55,7 +53,6 @@ function showPage(num) {
     canvasBack.classList.add('show');
     canvasFront.classList.add('hide');
 
-    // Faster swap if cached (no render lag)
     const delay = alreadyCached ? 80 : 220;
     setTimeout(() => {
       paintToCanvas(canvasFront, ctxFront, off);
@@ -69,7 +66,6 @@ function showPage(num) {
       zonePrev.classList.toggle('hidden-btn', num <= 1);
       zoneNext.classList.toggle('hidden-btn', num >= totalPages);
 
-      // Pre-render neighbours silently
       if (num + 1 <= totalPages) renderToOffscreen(num + 1);
       if (num - 1 >= 1)          renderToOffscreen(num - 1);
     }, delay);
@@ -84,7 +80,7 @@ function initPDF() {
     url: PDF_FILE,
     disableRange: false,
     disableStream: false,
-    // Pre-fetch the first 32KB so page 1 starts immediately
+
     rangeChunkSize: 32768,
   }).promise.then(pdf => {
     pdfDoc     = pdf;
@@ -128,7 +124,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goPrev();
 });
 
-// ── HELPERS ──
 function tagsHtml(tags) {
   return (tags || []).map(t => `<span class="tag ${t.style}">${t.label}</span>`).join('');
 }
@@ -136,8 +131,6 @@ const FILE_ICON = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24
 const WEB_ICON  = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10z"/></svg>`;
 const GAME_ICON = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9h12a4 4 0 0 1 4 4l1 5a2.5 2.5 0 0 1-4.5 1.8L16 17H8l-2.5 2.8A2.5 2.5 0 0 1 1 18l1-5a4 4 0 0 1 4-4Z"/><line x1="7.5" y1="12.5" x2="7.5" y2="15.5"/><line x1="6" y1="14" x2="9" y2="14"/><circle cx="16.5" cy="12.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="18.5" cy="14.5" r="0.9" fill="currentColor" stroke="none"/></svg>`;
 
-// Discipline icons — keyed by each project's primary (first) tag, so the
-// row icon reflects what kind of project it is, not just how you open it.
 const DISCIPLINE_ICONS = {
   'product design engineering': `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.8 2.8-2-2Z"/></svg>`,
   'software engineering':      `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 6 3 12 9 18"/><polyline points="15 6 21 12 15 18"/></svg>`,
@@ -182,7 +175,147 @@ document.addEventListener('mouseover', handlePrefetchIntent);
 document.addEventListener('touchstart', handlePrefetchIntent, { passive: true });
 document.addEventListener('focusin', handlePrefetchIntent);
 
-// ── RENDER CAROUSEL ──
+const SIMULATOR_PAGES = new Set();
+
+const projectOverlay = document.getElementById('projectOverlay');
+const projectOverlayHost = document.getElementById('projectOverlayHost');
+const projectOverlayShadow = projectOverlayHost.attachShadow({ mode: 'open' });
+
+const overlayContentCache = new Map();
+const overlayModuleCache = new Map();
+let overlayCleanup = null;
+let overlayCloseTimer = null;
+
+async function fetchOverlayContent(url) {
+  if (overlayContentCache.has(url)) return overlayContentCache.get(url);
+  const styleUrl = new URL(`${url}style.css`, window.location.href);
+  const [html, css] = await Promise.all([
+    fetch(`${url}index.html`, { cache: 'reload' }).then(r => r.text()),
+    fetch(styleUrl, { cache: 'reload' }).then(r => r.text())
+  ]);
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  doc.querySelectorAll('script').forEach(s => s.remove());
+  const content = {
+    bodyHTML: doc.body.innerHTML,
+    css: css
+      .replace(/:root/g, ':host')
+      .replace(/html\.dark/g, ':host(.dark)')
+      .replace(/url\((['"]?)(.*?)\1\)/g, (m, quote, path) => `url('${new URL(path, styleUrl)}')`)
+  };
+  overlayContentCache.set(url, content);
+  return content;
+}
+
+async function openProjectOverlay(url) {
+  clearTimeout(overlayCloseTimer);
+  projectOverlay.classList.add('open');
+  projectOverlay.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+
+  try {
+    const { bodyHTML, css } = await fetchOverlayContent(url);
+
+    projectOverlayShadow.innerHTML = '';
+    const styleEl = document.createElement('style');
+    styleEl.textContent = css;
+    projectOverlayShadow.appendChild(styleEl);
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = bodyHTML;
+    projectOverlayShadow.append(...wrapper.childNodes);
+    projectOverlayHost.classList.toggle('dark', document.documentElement.classList.contains('dark'));
+
+    let modulePromise = overlayModuleCache.get(url);
+    if (!modulePromise) {
+      const scriptUrl = new URL(`${url}script.js`, window.location.href).href;
+      modulePromise = fetch(scriptUrl, { cache: 'reload' })
+        .then(r => r.text())
+        .then(code => import(URL.createObjectURL(new Blob([code], { type: 'text/javascript' }))));
+      overlayModuleCache.set(url, modulePromise);
+    }
+    const module = await modulePromise;
+    if (typeof module.init !== 'function') throw new Error(`${url}script.js has no init() export`);
+    overlayCleanup = module.init(projectOverlayShadow, closeProjectOverlay);
+  } catch (err) {
+    console.error(err);
+    closeProjectOverlay();
+    window.open(url, '_blank');
+  }
+}
+
+function closeProjectOverlay() {
+  projectOverlay.classList.remove('open');
+  projectOverlay.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (overlayCleanup) {
+    overlayCleanup();
+    overlayCleanup = null;
+  }
+  clearTimeout(overlayCloseTimer);
+  overlayCloseTimer = setTimeout(() => {
+    projectOverlayShadow.innerHTML = '';
+  }, 300);
+}
+
+projectOverlay.addEventListener('click', e => {
+  if (e.target === projectOverlay) closeProjectOverlay();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && projectOverlay.classList.contains('open')) closeProjectOverlay();
+});
+
+document.addEventListener('click', e => {
+  const link = e.target.closest('a[href]');
+  if (link && SIMULATOR_PAGES.has(link.getAttribute('href'))) {
+    e.preventDefault();
+    openProjectOverlay(link.getAttribute('href'));
+  }
+});
+
+const imageOverlay = document.getElementById('imageOverlay');
+const imageOverlayImg = document.getElementById('imageOverlayImg');
+const imageOverlayClose = document.getElementById('imageOverlayClose');
+const imageOverlayTitle = document.getElementById('imageOverlayTitle');
+const imageOverlayDesc = document.getElementById('imageOverlayDesc');
+
+function openImageOverlay(src, title, desc) {
+  imageOverlayImg.src = src;
+  imageOverlayImg.alt = title || '';
+  imageOverlayTitle.textContent = title || '';
+  imageOverlayDesc.textContent = desc || '';
+  imageOverlayDesc.hidden = !desc;
+  imageOverlay.classList.add('open');
+  imageOverlay.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeImageOverlay() {
+  imageOverlay.classList.remove('open');
+  imageOverlay.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('click', e => {
+  if (e.target.closest('.card-img-badges')) return;
+  const trigger = e.target.closest('.card-img[data-image]');
+  if (trigger) {
+    openImageOverlay(trigger.dataset.image, trigger.closest('.card')?.getAttribute('aria-label'), trigger.dataset.desc);
+    return;
+  }
+  if (e.target === imageOverlay || e.target === imageOverlayClose || e.target.closest('#imageOverlayClose')) {
+    closeImageOverlay();
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.target.closest('.card-img-badges')) return;
+  const trigger = e.target.closest('.card-img[data-image]');
+  if (trigger && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    openImageOverlay(trigger.dataset.image, trigger.closest('.card')?.getAttribute('aria-label'), trigger.dataset.desc);
+    return;
+  }
+  if (e.key === 'Escape' && imageOverlay.classList.contains('open')) closeImageOverlay();
+});
+
 function renderCarousel(projects) {
   const container = document.getElementById('carouselContainer');
   container.innerHTML = '';
@@ -202,7 +335,7 @@ function renderCarousel(projects) {
 
     if (p.simulator) {
       buttons.push(
-        `<a href="${p.simulator}" target="_blank" class="card-btn">Simulator</a>`
+        `<a href="${p.simulator}" target="_blank" class="card-btn sim-btn">Simulator</a>`
       );
     }
     else if (p.repo) {
@@ -211,33 +344,34 @@ function renderCarousel(projects) {
       );
     }
 
-
     if (p.file) {
       buttons.push(
-        `<a href="${p.file}" download class="card-btn" data-prefetch="${p.file}">Download</a>`
-      );
-
-      buttons.push(
-        `<a href="${p.file}" target="_blank" class="card-btn primary" data-prefetch="${p.file}">View</a>`
+        `<a href="${p.file}" target="_blank" class="card-btn primary" data-prefetch="${p.file}">Read</a>`
       );
     }
 
     if (p.website) {
-      const websiteTarget = isExternal(p.website) ? ' target="_blank"' : '';
+      const websiteExternal = isExternal(p.website);
+      const websiteTarget = websiteExternal ? ' target="_blank"' : '';
+      const websiteLabel = game ? (websiteExternal ? 'Itch.io' : 'Play') : 'Visit';
       buttons.push(
-        `<a href="${p.website}"${websiteTarget} class="card-btn primary">${
-          game ? 'Play' : 'Visit'
-        }</a>`
+        `<a href="${p.website}"${websiteTarget} class="card-btn primary">${websiteLabel}</a>`
       );
     }
 
     const actions = buttons.join('');
 
+    const badges = [];
+    if (p.simulator) badges.push(`<a href="${p.simulator}" target="_blank" class="sim-badge"><span class="sim-badge-face">Try it live</span></a>`);
+    if (game && p.website && !isExternal(p.website)) badges.push(`<a href="${p.website}" class="sim-badge"><span class="sim-badge-face">Play now</span></a>`);
+
     container.insertAdjacentHTML('beforeend', `
       <div class="embla__slide">
-        <div class="card" tabindex="0" role="link" aria-label="${p.title}" data-website="${p.website || ''}" data-file="${p.file || ''}">
-          <div class="card-img">
+        <div class="card" aria-label="${p.title}">
+          <div class="card-img"${p.image ? ` data-image="${p.image}" data-desc="${p.desc || ''}" role="button" tabindex="0" aria-label="Expand image"` : ''}>
+            ${badges.length ? `<div class="card-img-badges">${badges.join('')}</div>` : ''}
             <div class="card-img-inner" style="${imgStyle}"></div>
+            ${p.image ? '<span class="card-img-hint">Expand image</span>' : ''}
           </div>
           <div class="card-body">
             <div class="card-tags">${tagsHtml(p.tags)}</div>
@@ -248,30 +382,8 @@ function renderCarousel(projects) {
         </div>
       </div>`);
   });
-
-  function goToCard(card) {
-    const url = card.dataset.website || card.dataset.file;
-    if (!url) return;
-    if (isExternal(url)) window.open(url, '_blank');
-    else window.location.href = url;
-  }
-
-  container.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', e => {
-      if (e.target.closest('.card-actions')) return;
-      goToCard(card);
-    });
-
-    card.addEventListener('keydown', e => {
-      if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('.card-actions')) {
-        e.preventDefault();
-        goToCard(card);
-      }
-    });
-  });
 }
 
-// ── RENDER ALL FILES ──
 function renderFiles(projects) {
   const container = document.getElementById('filesInner');
   container.innerHTML = '';
@@ -291,7 +403,7 @@ function renderFiles(projects) {
 
       if (p.simulator) {
       buttons.push(
-        `<a href="${p.simulator}" target="_blank" class="card-btn">Simulator</a>`
+        `<a href="${p.simulator}" target="_blank" class="card-btn sim-btn">Simulator</a>`
       );
       }
       else if (p.repo) {
@@ -302,20 +414,16 @@ function renderFiles(projects) {
 
       if (p.file) {
         buttons.push(
-          `<a href="${p.file}" download class="file-btn" data-prefetch="${p.file}">Download</a>`
-        );
-
-        buttons.push(
-          `<a href="${p.file}" target="_blank" class="file-btn dl" data-prefetch="${p.file}">View</a>`
+          `<a href="${p.file}" target="_blank" class="file-btn dl" data-prefetch="${p.file}">Read</a>`
         );
       }
 
       if (p.website) {
-        const websiteTarget = isExternal(p.website) ? ' target="_blank"' : '';
+        const websiteExternal = isExternal(p.website);
+        const websiteTarget = websiteExternal ? ' target="_blank"' : '';
+        const websiteLabel = game ? (websiteExternal ? 'Itch.io' : 'Play') : 'Visit';
         buttons.push(
-          `<a href="${p.website}"${websiteTarget} class="file-btn dl">${
-            game ? 'Play' : 'Visit'
-          }</a>`
+          `<a href="${p.website}"${websiteTarget} class="file-btn dl">${websiteLabel}</a>`
         );
       }
 
@@ -344,33 +452,34 @@ function renderFiles(projects) {
     );
   });
 
-  function goToRow(row) {
+  function activateRow(row) {
+    if (row.dataset.image) {
+      openImageOverlay(row.dataset.image, row.dataset.title, row.dataset.desc);
+      return;
+    }
     const url = row.dataset.website || row.dataset.file;
     if (!url) return;
-    if (isExternal(url)) window.open(url, '_blank');
+    if (SIMULATOR_PAGES.has(url)) openProjectOverlay(url);
+    else if (isExternal(url)) window.open(url, '_blank');
     else window.location.href = url;
   }
   container.querySelectorAll('.file-row').forEach(row => {
     row.addEventListener('click', e => {
       if (e.target.closest('.file-actions')) return;
-      goToRow(row);
+      activateRow(row);
     });
     row.addEventListener('keydown', e => {
       if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('.file-actions')) {
         e.preventDefault();
-        goToRow(row);
+        activateRow(row);
       }
     });
   });
   initFilePreview();
 }
 
-// ── FLOATING FILE PREVIEW ──
 function initFilePreview() {
-  // Below the mobile breakpoint, initTouchSafetyTaps handles this instead —
-  // keyed off viewport width (not hover capability) so it matches the same
-  // breakpoint the rest of the layout uses, and so testing by resizing a
-  // regular desktop browser window actually reflects mobile behaviour.
+
   if (window.matchMedia('(max-width: 860px)').matches) return;
   const card  = document.getElementById('filePreviewCard');
   const img   = document.getElementById('filePreviewImg');
@@ -378,8 +487,8 @@ function initFilePreview() {
   const desc  = document.getElementById('filePreviewDesc');
   const zone  = document.getElementById('filesInner');
 
-  let warm = false;        // once true, cards switch instantly
-  let warmupTimer = null;  // the one-time 0.5s grace period on first entry
+  let warm = false;
+  let warmupTimer = null;
   let activeRow = null;
   let lastX = 0, lastY = 0;
 
@@ -397,8 +506,6 @@ function initFilePreview() {
     position(row);
   }
 
-  // Anchored to the row itself (top-right corner, flipping below if there's
-  // no room above) — no cursor-tracking, it just sits still while shown.
   function position(row) {
     const rect = row.getBoundingClientRect();
     const cw = card.offsetWidth, ch = card.offsetHeight;
@@ -416,10 +523,6 @@ function initFilePreview() {
     activeRow = null;
   }
 
-  // First row hovered after entering the section waits 0.5s before showing
-  // anything (so a mouse that only landed there mid-scroll doesn't pop a
-  // card while you're still reading). Everything after that is instant,
-  // until the mouse leaves the whole section.
   function focusRow(row) {
     if (!row.dataset.desc) { hide(); return; }
     if (row === activeRow) { position(row); return; }
@@ -449,8 +552,6 @@ function initFilePreview() {
     lastX = e.clientX; lastY = e.clientY;
   }, { passive: true });
 
-  // A row can slide under a stationary cursor while the page scrolls —
-  // mouseenter alone never fires for that, so re-check on every scroll.
   window.addEventListener('scroll', () => {
     if (!zone.contains(document.elementFromPoint(lastX, lastY))) return;
     const row = document.elementFromPoint(lastX, lastY).closest('.file-row');
@@ -466,47 +567,6 @@ function initFilePreview() {
   });
 }
 
-// ── SCATTER (disabled — uncomment this block + the init call below to bring it back) ──
-/*
-const SCATTER = [
-  {x:-6,y:22,r:4},{x:-10,y:10,r:2},{x:-6,y:12,r:-3},{x:0,y:2,r:-3},{x:0,y:-6,r:2},
-  {x:0,y:6,r:-1},{x:0,y:-11,r:-2},{x:0,y:4,r:4},{x:4,y:-8,r:3},{x:6,y:10,r:-2},
-  {x:-3,y:-4,r:3},{x:3,y:7,r:-2},{x:-4,y:3,r:1},{x:2,y:-3,r:-2},{x:-2,y:5,r:2},
-  {x:4,y:-2,r:-1},{x:-3,y:2,r:2},{x:1,y:-4,r:-1},{x:-2,y:4,r:2},{x:3,y:-2,r:-1}
-];
-function initScatter_DISABLED(el) {
-  const text = el.textContent.trim(); el.textContent = '';
-  const outers = [], inners = [];
-  text.split('').forEach(char => {
-    const outer = document.createElement('span'); outer.className = 's-outer';
-    const inner = document.createElement('span'); inner.className = 's-inner';
-    const ch    = document.createElement('span'); ch.className = 's-char';
-    ch.textContent = char === ' ' ? ' ' : char;
-    inner.appendChild(ch); outer.appendChild(inner); el.appendChild(outer);
-    outers.push(outer); inners.push(inner);
-  });
-  let floats = [];
-  el.addEventListener('mouseenter', () => {
-    outers.forEach((outer, i) => {
-      const s = SCATTER[i % SCATTER.length];
-      gsap.to(outer, { xPercent:s.x, yPercent:s.y, rotation:s.r, duration:0.22, ease:'power3.inOut' });
-      floats.push(gsap.to(inners[i], {
-        keyframes:[{yPercent:0,duration:0},{yPercent:-2,duration:2.5,ease:'power3.inOut'},{yPercent:0,duration:2.5,ease:'power3.inOut'}],
-        repeat:-1, delay:Math.random()*0.3
-      }));
-    });
-  });
-  el.addEventListener('mouseleave', () => {
-    floats.forEach(t => t.kill()); floats = [];
-    outers.forEach((outer, i) => {
-      gsap.to(outer, { xPercent:0, yPercent:0, rotation:0, duration:0.3, ease:'power3.inOut' });
-      gsap.to(inners[i], { yPercent:0, duration:0.3, ease:'power3.inOut' });
-    });
-  });
-}
-*/
-
-// ── CAROUSEL — native scroll, no snapping, custom scrollbar ──
 function initCarousel() {
   const node   = document.getElementById('embla');
   const track  = document.getElementById('carouselScrollbar');
@@ -531,9 +591,6 @@ function initCarousel() {
   node.addEventListener('scroll', sync, { passive: true });
   window.addEventListener('resize', sync);
 
-  // Remember how far through the carousel they'd scrolled, so coming
-  // back (e.g. after opening a project and hitting back) doesn't just
-  // dump them back at the start
   const SCROLL_KEY = 'cs';
   const savedScroll = parseInt(localStorage.getItem(SCROLL_KEY), 10);
   if (!isNaN(savedScroll)) node.scrollLeft = savedScroll;
@@ -545,7 +602,6 @@ function initCarousel() {
     }, 150);
   }, { passive: true });
 
-  // Drag the thumb itself
   let dragging = false, startX = 0, startScrollLeft = 0;
   thumb.addEventListener('pointerdown', e => {
     dragging = true;
@@ -565,7 +621,6 @@ function initCarousel() {
   thumb.addEventListener('pointerup', stopDrag);
   thumb.addEventListener('pointercancel', stopDrag);
 
-  // Click anywhere on the track to jump straight there
   track.addEventListener('pointerdown', e => {
     if (e.target === thumb) return;
     const rect = track.getBoundingClientRect();
@@ -588,46 +643,37 @@ function initCarousel() {
   slides.forEach(s => obs.observe(s));
 }
 
-// ── DARK MODE ──
 function initDarkMode() {
   document.getElementById('logoBtn').addEventListener('click', () => {
     const isDark = document.documentElement.classList.toggle('dark');
-    // Key present = dark, key absent = light — never write the word
-    // "light" at all, since that's the default anyway.
+
     if (isDark) localStorage.setItem('t', '');
     else localStorage.removeItem('t');
+    document.getElementById('projectOverlayHost')?.classList.toggle('dark', isDark);
   });
 }
 
-// ── CV DOWNLOAD: small particle burst as a bit of positive feedback ──
 function initCVFeedback() {
   const link = document.querySelector('.cv-link');
   if (!link) return;
   const colors = ['#4C47E2', '#FF7A59', '#2DD4BF', '#FBBF24', '#F472B6'];
 
   link.addEventListener('click', () => {
-    // Checked fresh on every click (not cached at page load) in case the
-    // OS setting changes without a reload — and this is the one and only
-    // gate: reduced motion means no confetti at all, full stop.
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const rect = link.getBoundingClientRect();
-    // Document-relative (position: absolute), not viewport-relative —
-    // getBoundingClientRect() is viewport coordinates, so scroll offset
-    // has to be added to place these correctly in the page itself.
+
     const originX = -160 + window.scrollX;
     const originY = rect.top + rect.height / 2 + 40 + window.scrollY;
     const count = 50;
-    const gravity = 0.0028; // px/ms² — accumulated onto vy every frame
-    const maxLifetime = 6000; // hard safety cap in case a piece is oddly slow to leave the screen
+    const gravity = 0.0028;
+    const maxLifetime = 6000;
 
-    // One shared rAF loop updates every piece (not one loop per piece),
-    // and only ever writes `transform` — compositor-only, no layout —
-    // so this stays cheap even at high counts.
     const pieces = [];
-    const fragment = document.createDocumentFragment(); // one DOM insertion for all 50, not 50 separate ones
+    const fragment = document.createDocumentFragment();
     for (let i = 0; i < count; i++) {
-      const angle = -0.65 + (Math.random() - 0.7) * 0.5; // steep up-and-right, ~±14° of variation
-      const speed = 1.0 + Math.random() * 1.1; // px/ms — genuinely fast, not a gentle toss
+      const angle = -0.65 + (Math.random() - 0.7) * 0.5;
+      const speed = 1.0 + Math.random() * 1.1;
       const w = 5 + Math.random() * 4;
       const h = w * (1.6 + Math.random() * 0.8);
 
@@ -646,7 +692,7 @@ function initCVFeedback() {
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         rot: 0,
-        rotSpeed: (Math.random() < 0.5 ? -1 : 1) * (0.25 + Math.random() * 0.4), // deg/ms
+        rotSpeed: (Math.random() < 0.5 ? -1 : 1) * (0.25 + Math.random() * 0.4),
         born: performance.now(),
       });
     }
@@ -656,9 +702,7 @@ function initCVFeedback() {
     function frame(now) {
       const dt = Math.min(now - lastFrame, 40);
       lastFrame = now;
-      // Re-checked every frame since these are document coordinates now —
-      // if the page is scrolled mid-flight, "off the visible screen"
-      // should track wherever the viewport actually is at that moment.
+
       const maxX = window.scrollX + window.innerWidth + 100;
       const maxY = window.scrollY + window.innerHeight + 100;
 
@@ -683,8 +727,6 @@ function initCVFeedback() {
   });
 }
 
-// ── EASED SCROLL — "Scroll for more" gets a custom eased jump instead of
-// the browser's default (fairly linear) smooth scroll ──
 function initEasedScroll() {
   const link = document.getElementById('scrollHint');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -708,10 +750,7 @@ function initEasedScroll() {
 
     function step(now) {
       const progress = Math.min((now - startTime) / duration, 1);
-      // 'auto' just means "do whatever scroll-behavior says", which is
-      // 'smooth' here — so the browser was re-smoothing *between* every
-      // one of these rAF steps too, fighting our own easing. 'instant'
-      // actually bypasses CSS scroll-behavior for this call.
+
       window.scrollTo({ top: startY + diff * easeInOutCubic(progress), behavior: 'instant' });
       if (progress < 1) requestAnimationFrame(step);
     }
@@ -719,7 +758,6 @@ function initEasedScroll() {
   });
 }
 
-// ── EMAIL: COPY TO CLIPBOARD INSTEAD OF OPENING A MAIL CLIENT ──
 function initEmailCopy() {
   document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
     const email = link.getAttribute('href').slice('mailto:'.length);
@@ -734,14 +772,67 @@ function initEmailCopy() {
   });
 }
 
-// ── TOUCH SAFETY TAPS ──
-// On touch, there's no hover to preview what a tap will do, so the first
-// tap on anything that "goes somewhere" just shows what it would do
-// (tooltip / inline preview), and a second tap on the same thing actually
-// follows through. Tapping anything else cancels it.
+const WEB3FORMS_ACCESS_KEY = '4a47d7f7-92b0-4f0e-ace1-ba6eaa1acb15';
+
+function initFeedbackForm() {
+  const form = document.getElementById('feedbackForm');
+  if (!form) return;
+  const messageInput = document.getElementById('feedbackMessage');
+  const emailInput = document.getElementById('feedbackEmail');
+  const submitBtn = document.getElementById('feedbackSubmit');
+  const statusEl = document.getElementById('feedbackStatus');
+  let statusTimer = null;
+
+  function setStatus(text, kind) {
+    clearTimeout(statusTimer);
+    statusEl.textContent = text;
+    statusEl.className = 'feedback-status' + (kind ? ' ' + kind : '');
+    if (kind) statusTimer = setTimeout(() => setStatus(''), 5000);
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (form.botcheck.checked) return;
+
+    const message = messageInput.value.trim();
+    if (!message) { messageInput.focus(); return; }
+
+    setStatus('');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    const email = emailInput.value.trim();
+    const payload = {
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: email ? `New portfolio message from ${email}` : 'New portfolio message (anonymous)',
+      from_name: email || 'Anonymous visitor',
+      Message: message,
+    };
+    if (email) payload.email = email;
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Submission failed');
+
+      setStatus('Thanks, sent!', 'success');
+      form.reset();
+    } catch (err) {
+      setStatus('Something went wrong. Try again, or email me directly.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send';
+    }
+  });
+}
+
 function initTouchSafetyTaps() {
   if (!window.matchMedia('(max-width: 860px)').matches) return;
-  const SELECTOR = '.file-row, .card, .site-updated-date, .site-updated-title, .social-icons a, #logoBtn';
+  const SELECTOR = '.file-row, .site-updated-date, .site-updated-title, .social-icons a, #logoBtn';
   let armed = null;
   let armTimer = null;
 
@@ -755,7 +846,7 @@ function initTouchSafetyTaps() {
     if (e.target.closest('.card-actions, .file-actions')) { disarm(); return; }
     const el = e.target.closest(SELECTOR);
     if (!el) { disarm(); return; }
-    if (armed === el) { disarm(); return; } // second tap — let it through
+    if (armed === el) { disarm(); return; }
     e.preventDefault();
     e.stopPropagation();
     disarm();
@@ -765,30 +856,23 @@ function initTouchSafetyTaps() {
   }, true);
 }
 
-// ── SKILLS TICKER — draggable, throws with momentum, settles back into a steady scroll ──
 function initSkillsTicker() {
   const track = document.querySelector('.skills-ticker-track');
   const group = track.querySelector('.skills-ticker-group');
-  // No idle drift and no post-release momentum for anyone who's asked
-  // their OS to reduce motion — dragging by hand still works fine since
-  // that's user-driven, not an animation.
+
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   let groupWidth = group.offsetWidth;
-  let autoSpeed = reducedMotion ? 0 : groupWidth / 45000; // px/ms — matches the old 45s-per-loop pace
+  let autoSpeed = reducedMotion ? 0 : groupWidth / 45000;
   window.addEventListener('resize', () => {
     groupWidth = group.offsetWidth;
     autoSpeed = reducedMotion ? 0 : groupWidth / 45000;
   });
 
   let pos = 0;
-  let direction = -1; // -1 = normal leftward drift, flips to +1 after a hard rightward throw
+  let direction = -1;
   let velocity = -autoSpeed;
 
-  // Restore where it was and which way it was headed — one key, two
-  // fields packed into a single delimited string (rounded to whole
-  // pixels) rather than JSON, and only ever written on tab-hide/unload
-  // (see below), not on every frame.
   const TICKER_KEY = 'sk';
   const savedTicker = localStorage.getItem(TICKER_KEY);
   if (savedTicker) {
@@ -802,7 +886,7 @@ function initSkillsTicker() {
   }
   function saveTickerState() {
     try { localStorage.setItem(TICKER_KEY, `${Math.round(pos)}|${direction === 1 ? '1' : '0'}`); }
-    catch (e) { /* storage full/unavailable — fine, just skip saving */ }
+    catch (e) {}
   }
   document.addEventListener('visibilitychange', () => { if (document.hidden) saveTickerState(); });
   window.addEventListener('pagehide', saveTickerState);
@@ -842,7 +926,7 @@ function initSkillsTicker() {
     lastT = now;
   });
 
-  const HARD_THROW = 0.4; // px/ms — above this, the throw resets which way it idles
+  const HARD_THROW = 0.4;
 
   function endDrag() {
     if (!dragging) return;
@@ -863,8 +947,7 @@ function initSkillsTicker() {
     const dt = Math.min(now - lastFrame, 50);
     lastFrame = now;
     if (!dragging && document.hasFocus()) {
-      // Momentum eases back into the steady drift speed, in whichever
-      // direction the last hard throw set
+
       const target = direction * autoSpeed;
       velocity += (target - velocity) * Math.min(dt / 400, 1);
       pos += velocity * dt;
@@ -876,12 +959,12 @@ function initSkillsTicker() {
   requestAnimationFrame(frame);
 }
 
-// ── LOAD PROJECTS ──
 async function loadProjects() {
   try {
     const res = await fetch('projects.json');
     if (!res.ok) throw new Error();
     const projects = await res.json();
+    projects.forEach(p => { if (p.simulator) SIMULATOR_PAGES.add(p.simulator); });
     renderCarousel(projects);
     renderFiles(projects);
     initCarousel();
@@ -895,7 +978,6 @@ async function loadProjects() {
   }
 }
 
-// ── LIVE "LAST UPDATED" FROM GITHUB ──
 function timeAgo(dateStr) {
   const mins = Math.floor((Date.now() - new Date(dateStr).getTime()) / 60000);
   if (mins < 60) return mins <= 1 ? 'just now' : `${mins}m ago`;
@@ -909,18 +991,13 @@ function timeAgo(dateStr) {
 }
 
 const repoUpdatedCache = {};
-const REPO_CACHE_TTL = 15 * 60 * 1000; // 15 minutes — plenty fresh, far fewer GitHub API calls
+const REPO_CACHE_TTL = 15 * 60 * 1000;
 
 async function fetchRepoUpdated(repoUrl) {
   if (repoUpdatedCache[repoUrl]) return repoUpdatedCache[repoUrl];
   const match = repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
   if (!match) return null;
 
-  // Key is just "owner/repo" (no scheme/host, no "repoUpdated:" prefix)
-  // and the value is three pipe-delimited fields — epoch millis for both
-  // timestamps rather than ISO-8601 strings — instead of JSON, which
-  // would otherwise spend a couple dozen bytes per entry on repeated key
-  // names, quotes, braces and colons that carry no actual information.
   const storageKey = `r:${match[1]}/${match[2]}`;
   try {
     const raw = localStorage.getItem(storageKey);
@@ -934,7 +1011,7 @@ async function fetchRepoUpdated(repoUrl) {
         return repoUpdatedCache[repoUrl];
       }
     }
-  } catch (e) { /* ignore bad/missing cache entries */ }
+  } catch (e) {}
 
   const promise = fetch(`https://api.github.com/repos/${match[1]}/${match[2]}/commits?per_page=1`)
     .then(r => r.ok ? r.json() : Promise.reject())
@@ -944,7 +1021,7 @@ async function fetchRepoUpdated(repoUrl) {
       const info = { date: new Date(commit.committer.date).getTime(), title: commit.message.split('\n')[0] };
       try {
         localStorage.setItem(storageKey, `${Date.now()}|${info.date}|${info.title}`);
-      } catch (e) { /* storage full/unavailable — fine, just skip caching */ }
+      } catch (e) {}
       return info;
     })
     .catch(() => null);
@@ -967,24 +1044,14 @@ function initRepoUpdated() {
   });
 }
 
-// ── INIT ──
-// This script sits at the end of the body, so everything above is already
-// parsed — no need to wait for the window 'load' event (which would also
-// wait on fonts/images and delay the PDF/project fetches for no reason).
-// Scatter effect — disabled. Uncomment to bring it back:
-// if (!window.matchMedia('(max-width: 860px)').matches) {
-//   document.querySelectorAll('[data-scatter]').forEach(initScatter);
-// }
 initDarkMode();
 initEmailCopy();
 initSkillsTicker();
 initTouchSafetyTaps();
 initEasedScroll();
 initCVFeedback();
+initFeedbackForm();
 
-// Show the last known project count immediately (instead of "—") while
-// the fresh fetch is still in flight — loadProjects() overwrites both
-// this and the cached value once it resolves.
 const cachedProjectCount = localStorage.getItem('pc');
 if (cachedProjectCount) document.getElementById('projectCount').textContent = cachedProjectCount;
 
@@ -992,10 +1059,6 @@ loadProjects();
 initPDF();
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Desktop-vs-mobile interaction (hover-preview vs tap-to-expand, scatter
-// effect, etc.) is decided once at load — reload if the window is dragged
-// across that breakpoint so it re-evaluates for the new size, same as a
-// real visitor would get landing fresh at that width.
 let breakpointReloadTimer = null;
 window.matchMedia('(max-width: 860px)').addEventListener('change', () => {
   clearTimeout(breakpointReloadTimer);

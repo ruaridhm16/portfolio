@@ -1,4 +1,4 @@
-/*jslint browser*/
+
 import {
     createGame,
     getLegalMoves,
@@ -23,11 +23,6 @@ let replayPlaying = false;
 let replayLabelsRendered = false;
 let currentScreen = "menu";
 
-/**
- * Returns the SVG file path for a given terrain type.
- * @param {string} terrain - The terrain type of the cell
- * @returns {string} Path to the SVG file
- */
 const getTerrainSVG = function (terrain) {
     if (terrain === "corner") {
         return "assets/cell-corner.svg";
@@ -47,11 +42,6 @@ const getTerrainSVG = function (terrain) {
     return "assets/cell-normal.svg";
 };
 
-/**
- * Returns the SVG file path for a given piece type.
- * @param {string} piece - The piece type
- * @returns {string} Path to the SVG file
- */
 const getPieceSVG = function (piece) {
     if (piece === "black") {
         return "assets/piece-black.svg";
@@ -65,13 +55,6 @@ const getPieceSVG = function (piece) {
     return "";
 };
 
-/**
- * Returns the rotation in degrees for a terrain cell based on its position.
- * @param {string} terrain - The terrain type of the cell
- * @param {number} row - Row index (0-10)
- * @param {number} col - Column index (0-10)
- * @returns {number} Rotation in degrees
- */
 const getRotation = function (terrain, row, col) {
     if (terrain === "black") {
         if (row === 0 || row === 1) {
@@ -118,13 +101,6 @@ const getRotation = function (terrain, row, col) {
     return 0;
 };
 
-/**
- * Creates and appends a new grouped turn block to the log.
- * Returns the block element so lines can be added to it.
- * @param {string} side - "black" or "white"
- * @param {number} turnNumber - The current turn number
- * @returns {Element} The block container element
- */
 const createTurnBlock = function (side, turnNumber) {
     const log = document.getElementById("info-board");
     const block = document.createElement("div");
@@ -138,11 +114,6 @@ const createTurnBlock = function (side, turnNumber) {
     return block;
 };
 
-/**
- * Appends a move or capture line inside an existing turn block.
- * @param {Element} block - The turn block container
- * @param {string} text - The line text
- */
 const appendToBlock = function (block, text) {
     const log = document.getElementById("info-board");
     const entry = document.createElement("div");
@@ -152,14 +123,6 @@ const appendToBlock = function (block, text) {
     log.scrollTop = log.scrollHeight;
 };
 
-/**
- * Injects a temporary piece image for each capture into boardElement
- * and animates it shrinking to nothing before removal.
- * @param {Element} boardElement - The board container the captures
- *     happened on (#board or #replay-board)
- * @param {Array<{row: number, col: number, piece: string}>} captures -
- *     The captures to animate
- */
 const animateCaptureImages = function (boardElement, captures) {
     captures.forEach(function (capture) {
         const index = capture.row * 11 + capture.col;
@@ -178,18 +141,12 @@ const animateCaptureImages = function (boardElement, captures) {
     });
 };
 
-/**
- * Animates all pending captures on the live board, then clears them.
- */
 const animateCapturedPieces = function () {
     const boardElement = document.getElementById("board");
     animateCaptureImages(boardElement, pendingCaptures);
     pendingCaptures = [];
 };
 
-/**
- * Updates page background and label colours to match the current turn.
- */
 const updatePageStyle = function () {
     if (game.turn === "black") {
         document.body.classList.remove("white-turn");
@@ -210,11 +167,6 @@ const updatePageStyle = function () {
     );
 };
 
-/**
- * Appends a "whose turn" indicator below the latest log block and
- * stores it so the next move can remove it before logging.
- * @param {string} side - "black" or "white"
- */
 const showTurnIndicator = function (side) {
     const log = document.getElementById("info-board");
     const indicator = document.createElement("div");
@@ -225,13 +177,6 @@ const showTurnIndicator = function (side) {
     turnIndicator = indicator;
 };
 
-/**
- * Creates and fades in a full-screen game over overlay.
- * @param {string} status - A GameState status, e.g. "black_wins_capture"
- *     or "white_wins_corner"
- * @param {boolean} [instant] - If true, show the overlay immediately
- *     with no fade-in (used when returning from the replay screen)
- */
 const showGameOver = function (status, instant) {
     const isBlack = isBlackStatus(status);
     const bg = (
@@ -315,25 +260,12 @@ const showGameOver = function (status, instant) {
     }
 };
 
-/**
- * Returns true if (rowIndex, colIndex) is one of the currently
- * highlighted legal move targets for the selected piece.
- * @param {number} rowIndex - Row index of the cell
- * @param {number} colIndex - Column index of the cell
- * @returns {boolean}
- */
 const isLegalMoveTarget = function (rowIndex, colIndex) {
     return legalMoves.some(function (move) {
         return move[0] === rowIndex && move[1] === colIndex;
     });
 };
 
-/**
- * Handles a click on a cell, updating the selected piece in game state.
- * @param {Object} cell - The cell object
- * @param {number} rowIndex - Row index of the cell
- * @param {number} colIndex - Column index of the cell
- */
 const handleCellClick = function (cell, rowIndex, colIndex) {
 
     if (game.status !== "playing") {
@@ -361,7 +293,6 @@ const handleCellClick = function (cell, rowIndex, colIndex) {
         );
         pendingCaptures = game.captures;
 
-        // log the move
         turnCount += 1;
         const block = createTurnBlock(movingTurn, turnCount);
         appendToBlock(
@@ -404,7 +335,6 @@ const handleCellClick = function (cell, rowIndex, colIndex) {
 
     if (cell.piece !== null) {
 
-        // can't select the opponent's pieces
         if (!isAllyPiece(cell.piece, game.turn)) {
             return;
         }
@@ -430,15 +360,6 @@ const handleCellClick = function (cell, rowIndex, colIndex) {
     }
 };
 
-/**
- * Creates a cell element with its terrain image, accessible label,
- * and a piece image on top if the cell is occupied. Shared by the
- * live board and the read-only replay board.
- * @param {Object} cell - The cell object
- * @param {number} rowIndex - Row index of the cell
- * @param {number} colIndex - Column index of the cell
- * @returns {Element} The cell element, not yet attached to the DOM
- */
 const createCellElement = function (cell, rowIndex, colIndex) {
     const cellElement = document.createElement("div");
     const img = document.createElement("img");
@@ -474,10 +395,6 @@ const createCellElement = function (cell, rowIndex, colIndex) {
     return cellElement;
 };
 
-/**
- * Renders the board into the #board element.
- * @param {Array} board - 11x11 array of cell objects
- */
 const renderBoard = function (board) {
     const boardElement = document.getElementById("board");
     board.forEach(function (row, rowIndex) {
@@ -485,7 +402,6 @@ const renderBoard = function (board) {
 
             const cellElement = createCellElement(cell, rowIndex, colIndex);
 
-            // accessibility attributes
             cellElement.setAttribute("tabindex", (
                 (rowIndex === 0 && colIndex === 0)
                 ? "0"
@@ -493,7 +409,6 @@ const renderBoard = function (board) {
             ));
             cellElement.setAttribute("role", "button");
 
-            // re-renders via the click callback
             cellElement.addEventListener("click", function () {
                 handleCellClick(cell, rowIndex, colIndex);
                 if (onCellClick !== null) {
@@ -569,11 +484,6 @@ const renderBoard = function (board) {
     });
 };
 
-/**
- * Renders row and column index labels into the given containers.
- * @param {string} rowContainerId - Id of the row-labels container
- * @param {string} colContainerId - Id of the col-labels container
- */
 const renderLabelSet = function (rowContainerId, colContainerId) {
     const rowLabels = document.getElementById(rowContainerId);
     const colLabels = document.getElementById(colContainerId);
@@ -596,16 +506,10 @@ const renderLabelSet = function (rowContainerId, colContainerId) {
     }
 };
 
-/**
- * Renders row and column index labels around the board.
- */
 const renderLabels = function () {
     renderLabelSet("row-labels", "col-labels");
 };
 
-/**
- * Clears and re-renders the board and info panel.
- */
 const render = function () {
     const boardElement = document.getElementById("board");
     boardElement.innerHTML = "";
@@ -613,16 +517,11 @@ const render = function () {
     updatePageStyle();
 };
 
-// wire up the click callback
 onCellClick = function () {
     render();
     animateCapturedPieces();
 };
 
-/**
- * Resets game state and renders a fresh board. Removes any lingering
- * game-over overlay. Renders labels on the first call only.
- */
 const startGame = function () {
     const existing = document.getElementById("game-over-overlay");
     if (existing !== null) {
@@ -647,15 +546,6 @@ const startGame = function () {
     }
 };
 
-/**
- * Fades through a solid colour to switch to a different screen.
- * Sets the overlay background to colour, fades it in, swaps the
- * visible screen, then fades the overlay back out.
- * @param {string} targetScreenId - The id of the screen to show
- * @param {string} colour - CSS colour for the transition flash
- * @param {function} [onSwitch] - Optional callback fired at the
- *     midpoint, while the overlay is opaque and before fade-out
- */
 const transitionTo = function (targetScreenId, colour, onSwitch) {
     const overlay = document.getElementById("transition-overlay");
     let fadingIn = true;
@@ -705,10 +595,6 @@ const transitionTo = function (targetScreenId, colour, onSwitch) {
     overlay.style.opacity = "1";
 };
 
-/**
- * Renders a board state into #replay-board (view-only, no handlers).
- * @param {Array} board - 11x11 array of cell objects
- */
 const renderReplayBoard = function (board) {
     const boardEl = document.getElementById("replay-board");
     board.forEach(function (row, rowIndex) {
@@ -720,18 +606,10 @@ const renderReplayBoard = function (board) {
     });
 };
 
-/**
- * Renders row and column labels around the replay board.
- * Only needs to run once per session (guarded by replayLabelsRendered).
- */
 const renderReplayLabels = function () {
     renderLabelSet("replay-row-labels", "replay-col-labels");
 };
 
-/**
- * Rebuilds the move log in #replay-log up to and including step.
- * @param {number} step - 1-indexed step to render up to (0 clears log)
- */
 const renderReplayLog = function (step) {
     const logEl = document.getElementById("replay-log");
     logEl.innerHTML = "";
@@ -791,11 +669,6 @@ const renderReplayLog = function (step) {
     logEl.scrollTop = logEl.scrollHeight;
 };
 
-/**
- * Navigates the replay to a specific step, clamped to valid range.
- * @param {number} step - Target step; 0 shows the initial board state
- * @param {string} direction - "forward" or "backward"
- */
 const goToReplayStep = function (step, direction) {
     const len = game.history.length;
     const clamped = Math.max(0, Math.min(step, len));
@@ -831,9 +704,6 @@ const goToReplayStep = function (step, direction) {
     renderReplayLog(clamped);
 };
 
-/**
- * Stops autoplay and resets the play/pause button to its play icon.
- */
 const pauseReplay = function () {
     if (replayInterval !== null) {
         window.clearInterval(replayInterval);
@@ -844,10 +714,6 @@ const pauseReplay = function () {
     btn.style.backgroundImage = "url('assets/button-icon-play.svg')";
 };
 
-/**
- * Starts autoplay at one step per second.
- * Clears any existing interval before setting a new one.
- */
 const playReplay = function () {
     replayPlaying = true;
     const btn = document.getElementById("btn-replay-play-pause");
@@ -865,10 +731,6 @@ const playReplay = function () {
     }, 1000);
 };
 
-/**
- * Resets replay state, renders labels once, shows step 0, and
- * transitions to #screen-replay. Colour matches the game winner.
- */
 const startReplay = function () {
     replayStep = 0;
     replayPlaying = false;
@@ -889,12 +751,6 @@ const startReplay = function () {
     transitionTo("screen-replay", "#FFF8F1");
 };
 
-/**
- * Shows a confirmation dialog warning that the current game will be
- * lost, with focus trapped between its two buttons. Escape and the
- * No button both dismiss it; Yes dismisses it and calls onConfirm.
- * @param {function} onConfirm - Called if the user confirms
- */
 const showConfirmModal = function (onConfirm) {
     const overlay = document.createElement("div");
     overlay.id = "confirm-modal";
@@ -962,11 +818,68 @@ const showConfirmModal = function (onConfirm) {
     btnCancel.focus();
 };
 
+const isMobileViewport = function () {
+    return window.matchMedia("(max-width: 700px)").matches;
+};
+
+const showDesktopDisclaimer = function (onDismiss) {
+    const overlay = document.createElement("div");
+    overlay.id = "confirm-modal";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", "Desktop notice");
+
+    const card = document.createElement("div");
+    card.classList.add("confirm-card");
+
+    const msgLine1 = document.createElement("p");
+    msgLine1.classList.add("confirm-message");
+    msgLine1.textContent = "This was designed for desktop, not mobile.";
+
+    const msgLine2 = document.createElement("p");
+    msgLine2.classList.add("confirm-message");
+    msgLine2.textContent = "A mobile-friendly version is planned.";
+
+    const btnOk = document.createElement("button");
+    btnOk.id = "btn-disclaimer-ok";
+    btnOk.classList.add("text-btn");
+    btnOk.textContent = "Got it";
+
+    const removeModal = function () {
+        overlay.remove();
+    };
+
+    btnOk.addEventListener("click", function () {
+        removeModal();
+        onDismiss();
+    });
+
+    overlay.addEventListener("keydown", function (evt) {
+        if (evt.key === "Escape" || evt.key === "Enter") {
+            btnOk.click();
+        }
+    });
+
+    card.appendChild(msgLine1);
+    card.appendChild(msgLine2);
+    card.appendChild(btnOk);
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+    btnOk.focus();
+};
+
 document.getElementById("btn-play").addEventListener(
     "click",
     function () {
-        startGame();
-        transitionTo("screen-game", "#2C2C2C");
+        const enterGame = function () {
+            startGame();
+            transitionTo("screen-game", "#2C2C2C");
+        };
+        if (isMobileViewport()) {
+            showDesktopDisclaimer(enterGame);
+        } else {
+            enterGame();
+        }
     }
 );
 
@@ -1050,9 +963,6 @@ document.getElementById("btn-back").addEventListener(
     }
 );
 
-// If we arrived from the portfolio site, going "back" should return the
-// browser to that exact page, scroll position included, rather than loading
-// a fresh copy of it. Only true history navigation restores scroll like that.
 document.getElementById("btn-back-portfolio").addEventListener(
     "click",
     function (event) {
@@ -1098,4 +1008,3 @@ document.getElementById("btn-replay-next").addEventListener(
         goToReplayStep(replayStep + 1, "forward");
     }
 );
-

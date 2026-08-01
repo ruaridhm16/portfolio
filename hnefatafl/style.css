@@ -25,14 +25,10 @@ body.white-turn {
     --info-text: #242424;
 }
 
-/* Screen management */
-
-/* Only one screen visible at a time */
 .screen {
     display: none;
 }
 
-/* Exposed to screen readers only, removed from visual layout */
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -45,7 +41,6 @@ body.white-turn {
     border: 0;
 }
 
-/* Menu starts visible (ID > class specificity); JS takes over after */
 #screen-menu {
     display: flex;
     height: 100vh;
@@ -68,7 +63,6 @@ body.white-turn {
     z-index: -1;
 }
 
-/* display set by JS via inline style - layout properties only here */
 #screen-game {
     height: 100vh;
     overflow: hidden;
@@ -88,9 +82,6 @@ body.white-turn {
     pointer-events: none;
 }
 
-/* Shared icon buttons */
-
-/* shared by all icon buttons */
 .icon-btn {
     border: none;
     background-color: transparent;
@@ -107,8 +98,6 @@ body.white-turn {
 .icon-btn:active {
     transform: scale(0.97);
 }
-
-/* Main menu */
 
 .menu-main {
     display: flex;
@@ -203,8 +192,6 @@ body.white-turn {
     margin: 0;
 }
 
-/* Rulebook screen */
-
 #screen-rulebook {
     flex-direction: column;
     align-items: center;
@@ -277,9 +264,6 @@ body.white-turn {
     margin: 0.3em 0;
 }
 
-/* Board */
-
-/* Prevent images from being dragged or selected */
 img {
     user-select: none;
     -webkit-user-drag: none;
@@ -299,14 +283,12 @@ img {
     flex-direction: column;
 }
 
-/* Forces col labels to sit below the board, not below row labels */
 #col-labels {
     display: flex;
     flex-direction: row;
     grid-column: 2;
 }
 
-/* Shared styles for row and column index labels */
 .board-label {
     display: flex;
     align-items: center;
@@ -318,13 +300,11 @@ img {
     user-select: none;
 }
 
-/* Row labels match cell height with narrower width */
 .row-label {
     height: calc(var(--board-size) / 11);
     width: calc(var(--board-size) / 11 * 0.6);
 }
 
-/* Column labels match cell width with shorter height */
 .col-label {
     width: calc(var(--board-size) / 11);
     height: calc(var(--board-size) / 11 * 0.6);
@@ -340,7 +320,6 @@ img {
     border-radius: calc(var(--board-size) * 0.005);
 }
 
-/* terrain SVGs fill the whole cell */
 .cell img {
     display: block;
     width: 100%;
@@ -468,8 +447,6 @@ img {
     margin-top: calc(var(--board-size) * 0.006);
 }
 
-/* Game over overlay */
-
 #game-over-overlay {
     position: fixed;
     top: 0;
@@ -529,8 +506,6 @@ img {
     background-image: url("assets/button-watch-replay.svg");
 }
 
-/* Back button */
-
 #btn-back {
     display: none;
     position: fixed;
@@ -543,8 +518,6 @@ img {
     z-index: 50;
 }
 
-/* Back to portfolio button (main menu only) */
-
 #btn-back-portfolio {
     position: fixed;
     top: clamp(8px, calc(var(--board-size) * 0.03), 30px);
@@ -556,9 +529,6 @@ img {
     z-index: 50;
 }
 
-/* Replay screen */
-
-/* display set by JS via inline style - layout properties only here */
 #screen-replay {
     height: 100vh;
     overflow: hidden;
@@ -614,14 +584,12 @@ img {
     flex-direction: column;
 }
 
-/* Forces replay col labels below the board, not below row labels */
 #replay-col-labels {
     display: flex;
     flex-direction: row;
     grid-column: 2;
 }
 
-/* Override label sizing to use --replay-board-size */
 #replay-row-labels .row-label {
     height: calc(var(--replay-board-size) / 11);
     width: calc(var(--replay-board-size) / 11 * 0.6);
@@ -690,8 +658,6 @@ img {
     display: none;
 }
 
-/* Confirm modal */
-
 #confirm-modal {
     position: fixed;
     inset: 0;
@@ -745,3 +711,25 @@ img {
     background-image: url("assets/button-no.svg");
 }
 
+.text-btn {
+    font-family: "K2D", sans-serif;
+    font-weight: 800;
+    font-size: clamp(0.7rem, calc(var(--menu-size) * 0.02), 1rem);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #FFF8F1;
+    background-color: #242424;
+    border: none;
+    border-radius: clamp(6px, calc(var(--menu-size) * 0.012), 10px);
+    padding: clamp(8px, calc(var(--menu-size) * 0.016), 14px) clamp(20px, calc(var(--menu-size) * 0.04), 40px);
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.text-btn:hover {
+    transform: scale(1.04);
+}
+
+.text-btn:active {
+    transform: scale(0.97);
+}

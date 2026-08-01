@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Applies the saved theme (if the logo's been toggled before) before
-       anything renders, so there's no flash of the wrong theme on load -->
+
   <script>
     (function () {
-      // Presence of the key means dark — light (the default) needs no
-      // value at all, so the common case costs zero bytes of storage.
+
       if (localStorage.getItem('t') !== null) {
         document.documentElement.classList.add('dark');
       }
     })();
   </script>
-  <!-- Google tag (gtag.js) -->
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6WZL3FE204"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -31,18 +29,15 @@
 </head>
 <body>
 
-  <!-- ── PRINT-ONLY HEADER — screen never sees this, only a printed page does ── -->
   <div class="print-only print-header">
     <h1>Ruaridh Murdoch</h1>
     <p>ruaridhm16@gmail.com &nbsp;·&nbsp; ruaridhmurdoch.com &nbsp;·&nbsp; linkedin.com/in/ruaridh-murdoch-399ba4260</p>
   </div>
 
-  <!-- ── PRINT-ONLY FULL PORTFOLIO PDF — pages are rendered in by JS as images ── -->
   <div class="print-only print-pdf-pages" id="printPdfPages"></div>
 
-  <!-- ── HERO ── -->
   <div class="hero">
-    <!-- ── SKILLS TICKER — sits in the top padding gap, spanning logo to PDF panel ── -->
+
     <div class="skills-ticker" aria-hidden="true">
       <div class="skills-ticker-track">
         <div class="skills-ticker-group">
@@ -122,7 +117,6 @@
       </div>
     </div>
 
-    <!-- ── PDF PANEL ── -->
     <div class="pdf-panel" id="pdfPanel">
       <div class="pdf-viewer" id="pdfViewer">
         <div class="pdf-canvas-wrap" id="pdfCanvasWrap">
@@ -145,16 +139,16 @@
         </div>
         <div class="pdf-controls" id="pdfControls" style="display:none;">
           <span class="pdf-page-info" id="pdfPageInfo">1 / 1</span>
+          <span class="pdf-hint">Click left or right to turn pages</span>
         </div>
       </div>
-      <a href="Display_Portfolio.pdf" target="_blank" class="pdf-mobile-btn">View Full Portfolio</a>
+      <a href="Display_Portfolio.pdf" target="_blank" class="pdf-mobile-btn">Read Full Portfolio</a>
       <div class="pdf-footer-row">
-        <span class="pdf-hint">Click left or right to turn pages</span>
+        <a href="Display_Portfolio.pdf" target="_blank" class="pdf-fullscreen-btn">Open in Fullscreen</a>
         <a href="Ruaridh_Murdoch_Portfolio.pdf" download class="download-link portfolio-dl-link">Download Portfolio</a>
       </div>
     </div>
 
-    <!-- Scroll hint — clicking scrolls to projects -->
     <a class="scroll-hint" id="scrollHint" href="#projects">
       <span>Scroll for more</span>
       <svg class="chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
@@ -163,7 +157,6 @@
 
   <hr class="divider" />
 
-  <!-- ── CAROUSEL ── -->
   <div class="carousel-section" id="projects">
     <div class="carousel-header">
       <div class="carousel-heading">My favourite projects</div>
@@ -178,7 +171,6 @@
     </div>
   </div>
 
-  <!-- ── PRINT-ONLY SKILLS LIST — same content as the ticker, laid out plainly ── -->
   <div class="print-only print-skills">
     <h2>Skills</h2>
     <p>
@@ -190,7 +182,6 @@
     </p>
   </div>
 
-  <!-- ── ALL OF MY PROJECTS ── -->
   <div class="files-toggle-wrap">
     <div class="files-heading">All of my projects</div>
     <div class="files-inner" id="filesInner"></div>
@@ -204,12 +195,25 @@
     </div>
   </div>
 
+  <div class="feedback-section" id="feedback">
+    <div class="files-heading">Get in touch</div>
+    <p class="feedback-sub">Have a suggestion, found a bug, or just want to say hi? Send it straight to my inbox.</p>
+    <form class="feedback-form" id="feedbackForm">
+      <input type="checkbox" name="botcheck" class="feedback-honeypot" tabindex="-1" autocomplete="off">
+      <textarea id="feedbackMessage" name="message" placeholder="Type your message here…" required></textarea>
+      <div class="feedback-row">
+        <input type="email" id="feedbackEmail" name="email" placeholder="Your email (optional, leave blank to stay anonymous)">
+        <p class="feedback-status" id="feedbackStatus"></p>
+        <button type="submit" class="card-btn primary feedback-submit" id="feedbackSubmit">Send</button>
+      </div>
+    </form>
+  </div>
+
   <a class="site-updated" id="siteUpdated" href="https://github.com/ruaridhm16/Portfolio-Website" target="_blank" rel="noopener" data-repo="https://github.com/ruaridhm16/Portfolio-Website">
     <span class="site-updated-date" data-tooltip="View on GitHub">Last updated…</span>
     <span class="site-updated-title" data-tooltip="View on GitHub"></span>
   </a>
 
-  <!-- ── FOOTER ── -->
   <footer class="site-footer">
     <p>&copy; <span id="year"></span> Ruaridh Murdoch. All rights reserved.</p>
     <div class="footer-links">
@@ -218,6 +222,27 @@
       <a href="mailto:ruaridhm16@gmail.com">Email</a>
     </div>
   </footer>
+
+  <div class="project-overlay" id="projectOverlay" aria-hidden="true">
+    <div class="project-overlay-panel">
+      <div id="projectOverlayHost"></div>
+    </div>
+  </div>
+
+  <div class="image-overlay" id="imageOverlay" aria-hidden="true">
+    <div class="image-overlay-frame">
+      <div class="image-overlay-scroll">
+        <div class="image-overlay-caption">
+          <p class="image-overlay-title" id="imageOverlayTitle"></p>
+          <p class="image-overlay-desc" id="imageOverlayDesc"></p>
+        </div>
+        <img id="imageOverlayImg" alt="">
+      </div>
+      <button class="image-overlay-close" id="imageOverlayClose" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+      </button>
+    </div>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>

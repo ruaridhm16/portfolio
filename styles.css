@@ -26,20 +26,16 @@ html.dark {
   --shadow: #000000;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scrollbar-gutter: stable; }
 
-/* ── KEYBOARD FOCUS ── */
-/* :focus-visible only shows for keyboard/non-pointer focus, so mouse
-   clicks stay exactly as before */
 a:focus-visible, button:focus-visible,
-.card:focus-visible, .file-row:focus-visible,
+.file-row:focus-visible, .card-img[data-image]:focus-visible,
 .card-btn:focus-visible, .file-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* ── REDUCED MOTION ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -58,7 +54,6 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* ── SKILLS TICKER ── */
 .skills-ticker {
   position: absolute; top: 44px; left: 72px; right: 72px; overflow: hidden; z-index: 1;
   mask-image: linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent);
@@ -78,11 +73,11 @@ body {
   padding: 0 18px;
 }
 
-/* ── HERO ── */
 .hero {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 1.6fr;
+
+  grid-template-columns: 1fr 1.35fr;
   padding: 110px 72px 72px;
   gap: 64px;
   align-items: center;
@@ -135,7 +130,6 @@ h1 { font-size: clamp(38px, 4.5vw, 58px); font-weight: 700; letter-spacing: -2px
 .desc + .desc { margin-top: 12px; }
 h1 + .desc { margin-top: 20px; }
 
-/* ── DOWNLOAD LINKS ── */
 .download-link { position: relative; display: inline-block; cursor: pointer; text-decoration: none; transition: opacity 0.2s, transform 0.2s; }
 .download-link:hover { opacity: 1; transform: translateY(-2px); }
 
@@ -150,11 +144,51 @@ h1 + .desc { margin-top: 20px; }
 }
 .cv-link { font-size: clamp(19px, 2.2vw, 27px); font-weight: 500; color: var(--accent); letter-spacing: -0.2px; opacity: 0.8; }
 
-/* ── SOCIAL ICONS ── */
 .social-icons { display: flex; gap: 18px; margin-top: 20px; }
 .social-icons a { position: relative; color: var(--mid); display: flex; transition: color 0.2s, transform 0.2s; }
 .social-icons a:hover { color: var(--accent); transform: translateY(-2px); }
 .social-icons svg { width: 42px; height: 42px; }
+
+.feedback-section { margin: 0 72px; padding-top: 20px; padding-bottom: 48px; border-top: 1px solid var(--border); }
+.feedback-sub { margin: -8px 0 20px; font-size: 13px; font-weight: 400; color: var(--mid); line-height: 1.6; }
+
+.feedback-form { display: flex; flex-direction: column; gap: 12px; position: relative; }
+.feedback-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+.feedback-form textarea,
+.feedback-form input[type="email"] {
+  width: 100%; box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; font-weight: 500; color: var(--black);
+  background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.feedback-form textarea::placeholder,
+.feedback-form input[type="email"]::placeholder { color: var(--mid); opacity: 0.6; }
+.feedback-form textarea:focus,
+.feedback-form input[type="email"]:focus {
+  outline: none; border-color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent);
+}
+.feedback-form textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+.feedback-row { display: flex; align-items: center; gap: 12px; }
+.feedback-row input[type="email"] { flex: 1; min-width: 0; }
+.feedback-status { flex-shrink: 0; margin: 0; font-size: 12px; font-weight: 500; color: var(--mid); }
+.feedback-status.error { color: #e5484d; }
+.feedback-status.success { color: var(--accent); }
+
+@media (max-width: 640px) {
+  .feedback-row { flex-direction: column; align-items: stretch; }
+  .feedback-row input[type="email"] { order: 1; }
+  .feedback-status { order: 2; }
+  .feedback-submit { order: 3; }
+}
+
+.feedback-submit { padding: 9px 22px; cursor: pointer; flex-shrink: 0; }
+.feedback-submit:disabled { opacity: 0.5; cursor: default; }
+
 .site-updated {
   position: relative;
   display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
@@ -170,8 +204,7 @@ h1 + .desc { margin-top: 20px; }
   font-weight: 400;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-/* Each half gets its own tooltip, biased away from the edge it sits near
-   so it never hangs off the side of the screen */
+
 .site-updated-date[data-tooltip]::after { left: 0; transform: translateY(4px); }
 .site-updated-date[data-tooltip]:hover::after,
 .site-updated-date[data-tooltip].tap-armed::after { opacity: 1; transform: translateY(0); }
@@ -179,7 +212,6 @@ h1 + .desc { margin-top: 20px; }
 .site-updated-title[data-tooltip]:hover::after,
 .site-updated-title[data-tooltip].tap-armed::after { opacity: 1; transform: translateY(0); }
 
-/* ── GENERIC TOOLTIPS ── */
 [data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -205,7 +237,6 @@ h1 + .desc { margin-top: 20px; }
   transform: translateX(-50%) translateY(0);
 }
 
-/* Social icons sit at the top of the hero, so their tooltip goes below instead */
 .social-icons [data-tooltip]::after {
   bottom: auto;
   top: calc(100% + 10px);
@@ -216,7 +247,6 @@ h1 + .desc { margin-top: 20px; }
   transform: translateX(-50%) translateY(0);
 }
 
-/* ── PDF PANEL ── */
 .pdf-panel { width: 100%; display: flex; flex-direction: column; }
 
 .pdf-viewer {
@@ -247,7 +277,6 @@ html.dark .pdf-canvas-wrap { background: #1a1a1a; }
 #pdfCanvas { transition: opacity 0.2s ease; }
 #pdfCanvas.hide { opacity: 0; }
 
-/* ── CLICK ZONES — arrows adapt to light/dark content ── */
 .pdf-zone {
   position: absolute; top: 0; bottom: 0;
   width: 38%;
@@ -262,7 +291,6 @@ html.dark .pdf-canvas-wrap { background: #1a1a1a; }
 .pdf-zone.next { right: 0; justify-content: flex-end; padding-right: 14px; }
 .pdf-zone.hidden-btn { cursor: default; pointer-events: none; }
 
-/* Arrow pill — visible on any background */
 .pdf-zone-icon {
   display: flex; align-items: center; justify-content: center;
   width: 30px; height: 30px;
@@ -275,7 +303,16 @@ html.dark .pdf-canvas-wrap { background: #1a1a1a; }
 }
 .pdf-zone:hover .pdf-zone-icon { background: rgba(0,0,0,0.38); }
 
-/* Loading overlay */
+.pdf-fullscreen-btn {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--mid);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.pdf-fullscreen-btn:hover { color: var(--accent); }
+
 .pdf-loading {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
@@ -296,18 +333,16 @@ html.dark .pdf-loading { background: #1a1a1a; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Controls bar */
 .pdf-controls {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 16px;
+  padding: 7px 14px;
   border-top: 1px solid var(--border);
   background: var(--bg); flex-shrink: 0;
   transition: background 0.3s, border-color 0.3s;
 }
 .pdf-page-info { font-size: 11px; font-weight: 600; color: var(--mid); letter-spacing: 0.04em; }
 
-/* Footer row */
-.pdf-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+.pdf-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
 .pdf-hint { font-size: 12px; font-weight: 500; color: var(--mid); letter-spacing: 0.01em; }
 
 .pdf-mobile-btn {
@@ -323,7 +358,6 @@ html.dark .pdf-loading { background: #1a1a1a; }
 .pdf-mobile-btn:hover { border-color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); }
 .portfolio-dl-link { font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: -0.1px; opacity: 0.8; }
 
-/* ── SCROLL HINT — clickable ── */
 .scroll-hint {
   position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -333,26 +367,23 @@ html.dark .pdf-loading { background: #1a1a1a; }
 }
 .scroll-hint:hover { color: var(--accent); }
 
-/* ── DIVIDER ── */
 .divider { border: none; border-top: 1px solid var(--border); margin: 0 72px; }
 
-/* ── CAROUSEL ── */
 .carousel-section { padding: 60px 72px 48px; }
 .carousel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
 .carousel-heading { font-size: 22px; font-weight: 700; letter-spacing: -0.7px; color: var(--black); }
 
-/* Native horizontal scroll — no JS-driven snapping, just real momentum */
 .embla {
   overflow-x: auto; overflow-y: hidden;
-  margin: 0 -72px; padding: 0 72px 4px;
+
+  margin: 0 -72px; padding: 4px 72px 4px;
   scrollbar-width: none;
 }
 .embla::-webkit-scrollbar { display: none; }
-.embla__container { display: flex; gap: 16px; }
-.embla__slide { flex: 0 0 300px; min-width: 0; opacity: 0; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease; }
+.embla__container { display: flex; gap: 20px; }
+.embla__slide { flex: 0 0 380px; min-width: 0; opacity: 0; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease; }
 .embla__slide.in { opacity: 1; transform: translateY(0); }
 
-/* ── CUSTOM SCROLLBAR ── */
 .carousel-scrollbar {
   position: relative;
   height: 5px; border-radius: 3px;
@@ -378,13 +409,85 @@ html.dark .carousel-scrollbar { background: #222; }
   border: 1px solid var(--border); border-radius: 12px;
   overflow: hidden; height: 100%; display: flex; flex-direction: column;
   background: var(--bg);
-  cursor: pointer;
   transition: box-shadow 0.2s, transform 0.2s, background 0.3s, border-color 0.3s;
 }
-.card:hover, .card.tap-armed { box-shadow: 4px 4px 0 0 var(--shadow); transform: translate(-2px, -2px); }
-.card-img { width: 100%; aspect-ratio: 3/2; overflow: hidden; background: var(--surface); }
+.card:hover { box-shadow: 4px 4px 0 0 var(--shadow); transform: translate(-2px, -2px); }
+.card-img { position: relative; width: 100%; aspect-ratio: 3/2; overflow: hidden; background: var(--surface); }
 html.dark .card-img { background: #222; }
+.card-img[data-image] { cursor: pointer; }
 .card-img-inner { width: 100%; height: 100%; background-size: cover; background-position: center; }
+
+.card-img-hint {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  z-index: 2;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: none;
+}
+.card-img[data-image]:hover .card-img-hint {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s;
+}
+
+.card-img:has(.card-img-badges .sim-badge:hover) .card-img-hint {
+  opacity: 0;
+  transform: translateY(4px);
+  transition-delay: 0s;
+}
+
+.card-img-badges {
+  position: absolute;
+  top: 12px; left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.sim-badge {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sim-badge::before {
+  content: '';
+  position: absolute;
+
+  inset: 0;
+
+  background: #332f99;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 50%, 100% 100%, 0 100%);
+  opacity: 0;
+  transition: opacity 0.15s, inset 0.15s;
+}
+.sim-badge:hover::before { opacity: 1; inset: 0 -4px -4px 0; }
+
+.sim-badge-face {
+  display: block;
+  padding: 5px 16px 5px 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+
+  clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 50%, 100% 100%, 0 100%);
+}
 .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
 .card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
 .card-title { font-size: 13px; font-weight: 600; color: var(--black); line-height: 1.3; margin-bottom: 6px; }
@@ -402,7 +505,9 @@ html.dark .card-img { background: #222; }
 .card-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
 .card-btn.primary:hover { box-shadow: 3px 3px 0 0 var(--shadow); }
 
-/* ── FILES ── */
+.card-btn.sim-btn { border: 2px solid var(--accent); color: var(--accent); background: transparent; padding: 5px 11px; }
+.card-btn.sim-btn:hover { background: var(--accent); color: #fff; box-shadow: 2px 2px 0 0 var(--shadow); }
+
 .files-toggle-wrap { margin: 0 72px; border-top: 1px solid var(--border); }
 .files-heading {
   width: 100%; padding: 20px 0;
@@ -437,9 +542,6 @@ html.dark .card-img { background: #222; }
 .file-row:hover .file-name,
 .file-row.tap-armed .file-name { color: var(--accent); }
 
-/* Mobile-only inline expand — the floating preview card doesn't make sense
-   on touch, so a tap opens this in place instead, pushing rows below it
-   down rather than overlapping anything */
 .file-expand { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
 .file-row.tap-armed .file-expand { max-height: 320px; }
 .file-expand-inner { display: flex; gap: 14px; padding: 0 14px 16px; }
@@ -451,7 +553,6 @@ html.dark .card-img { background: #222; }
 html.dark .file-expand-img { background-color: #222; }
 .file-expand-desc { font-size: 12px; color: var(--mid); line-height: 1.5; }
 
-/* Floating hover preview — a small card that appears beside the row, no layout shift */
 .file-preview-card {
   position: fixed; z-index: 50; width: 300px;
   border: 1px solid var(--border); border-radius: 12px;
@@ -489,7 +590,6 @@ html.dark .tag { background: #222; color: #555; }
 
 .loading { padding: 48px 72px; font-size: 12px; font-weight: 500; color: #ccc; }
 
-/* ── FOOTER ── */
 .site-footer {
   border-top: 1px solid var(--border);
   padding: 24px 72px;
@@ -504,16 +604,12 @@ html.dark .tag { background: #222; color: #555; }
 @media (max-width: 860px) {
   .hero { grid-template-columns: 1fr; min-height: unset; padding: 48px 28px; gap: 44px; }
 
-  /* Smaller ticker text, and more breathing room before the logo below it */
   .skills-ticker { left: 28px; right: 28px; top: 16px; }
   .skills-ticker-group span { font-size: 10px; }
   .logo { margin-top: 32px; }
 
-  /* Not enough vertical room to justify it, and it's easy to bump by accident */
   .scroll-hint { display: none; }
 
-  /* The cramped inline viewer isn't usable at this width — link out to the
-     full PDF and let the phone's own viewer (pinch-zoom, real scrolling) handle it */
   .pdf-viewer { display: none; }
   .pdf-hint { display: none; }
   .pdf-footer-row { justify-content: center; }
@@ -522,22 +618,17 @@ html.dark .tag { background: #222; color: #555; }
   .divider { margin: 0 28px; }
   .carousel-section { padding: 72px 28px 56px; }
   .files-toggle-wrap { margin: 0 28px; }
+  .feedback-section { margin: 0 28px; }
   .site-footer { padding: 32px 28px; }
   .site-updated { margin: 32px 28px 0; padding-bottom: 24px; }
 
-  /* Featured projects stack instead of scrolling sideways */
   .embla { overflow: visible; margin: 0; padding: 0; }
   .embla__container { flex-direction: column; gap: 20px; }
   .embla__slide { flex: 0 0 auto; width: 100%; }
   .carousel-scrollbar { display: none; }
 
-  /* The floating hover-preview card is a desktop-only concept — belt and
-     suspenders on top of the JS gating so it can never overlap a row here */
   .file-preview-card { display: none !important; }
 
-  /* No cursor to justify a "lift toward you" shadow on tap — just the
-     accent-colour highlight, so the expand below never visually pokes
-     into the row above it */
   .file-row.tap-armed .file-row-main {
     box-shadow: none;
     transform: none;
@@ -546,17 +637,115 @@ html.dark .tag { background: #222; color: #555; }
   .tags { display: none; }
 }
 
-/* Genuine touch devices only — a resized desktop window shouldn't lose
-   this button, only an actual phone/tablet should */
 @media (hover: none) and (pointer: coarse) {
   .portfolio-dl-link { display: none; }
 }
 
-/* ── PRINT ── */
+.project-overlay {
+  position: fixed; inset: 0;
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.project-overlay.open { opacity: 1; pointer-events: auto; }
+
+.project-overlay-panel {
+  width: 100%; max-width: 1100px;
+  max-height: calc(100vh - 16px);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transform: translateY(18px) scale(0.96);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s, border-color 0.3s;
+}
+.project-overlay.open .project-overlay-panel { transform: translateY(0) scale(1); }
+html.dark .project-overlay-panel { background: #222; }
+
+.image-overlay {
+  position: fixed; inset: 0;
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.image-overlay.open { opacity: 1; pointer-events: auto; }
+
+.image-overlay-frame {
+  position: relative;
+
+  width: min(90vw, 900px, calc((100vh - 80px) * 1.5));
+  transform: translateY(18px) scale(0.96);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.image-overlay.open .image-overlay-frame { transform: translateY(0) scale(1); }
+
+.image-overlay-scroll {
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.image-overlay-caption {
+  padding: 12px 16px;
+  background: var(--surface);
+  transition: background 0.3s ease;
+}
+
+.image-overlay-title {
+  margin: 0 0 4px;
+  color: var(--black);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.image-overlay-desc {
+  margin: 0;
+  color: var(--mid);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+.image-overlay-desc[hidden] { display: none; }
+
+.image-overlay img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  background: var(--surface);
+}
+
+.image-overlay-close {
+  position: absolute;
+  top: -14px; right: -14px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.image-overlay-close:hover { border-color: #fff; background: rgba(0, 0, 0, 0.55); }
+
 .print-only { display: none; }
 
 @media print {
-  /* Force a plain light/dark-free page — ink-friendly regardless of the toggle */
+
   :root, html.dark {
     --black: #111; --mid: #444; --border: #ccc;
     --bg: #fff; --shadow: #ccc; --surface: #eee;
@@ -575,15 +764,12 @@ html.dark .tag { background: #222; color: #555; }
   .print-skills h2 { font-size: 18px; margin-bottom: 10px; }
   .print-skills p { font-size: 12px; line-height: 1.8; color: var(--mid); }
 
-  /* Everything interactive-only or web-only has no place on paper */
   .skills-ticker, .scroll-hint, .pdf-panel, .carousel-scrollbar,
   .file-preview-card, .file-row .file-actions,
-  .logo::after, [data-tooltip]::after, .site-updated {
+  .logo::after, [data-tooltip]::after, .site-updated, .project-overlay {
     display: none !important;
   }
 
-  /* Un-clip the featured-projects carousel so every card prints, not just
-     whatever was scrolled into view */
   .embla { overflow: visible !important; margin: 0 !important; padding: 0 !important; height: auto !important; }
   .embla__container {
     display: flex !important; flex-wrap: wrap !important;

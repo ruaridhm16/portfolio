@@ -1,34 +1,3 @@
-/**
- * @module tafl
- * @description Game logic for Hnefatafl (Copenhagen rules).
- * Pure functions only, no side effects and no DOM access.
- */
-
-/**
- * @typedef {Object} Cell
- * @property {string} terrain - The permanent terrain type of the cell
- * @property {string|null} piece - The piece occupying the cell
- */
-
-/**
- * @typedef {Array<Array<Cell>>} Board
- * The 11x11 grid of cells that makes up the board.
- */
-
-/**
- * @typedef {Object} GameState
- * @property {Board} board - The current board
- * @property {string} turn - Whose turn it is: "black" or "white"
- * @property {Array<Object>} history - One entry per move played,
- *     used to drive the replay screen
- * @property {Array<string>} positionHistory - Board strings for
- *     repetition detection
- * @property {string} status - "playing", "black_wins_capture",
- *     "black_wins_encirclement", "black_wins_repetition",
- *     "white_wins_corner", or "white_wins_exitfort"
- * @property {Array<{row: number, col: number, piece: string}>} [captures] -
- *     Captures from the most recent move, set by makeMove
- */
 
 const TERRAIN = Object.freeze({
     BLACK: "black",
@@ -68,95 +37,42 @@ const WHITE_DIAGONAL_START = [
     [4, 4], [4, 6], [6, 4], [6, 6]
 ];
 
-/**
- * Builds a single board cell from a terrain type and a piece.
- * @param {string} terrain - The permanent terrain type of the cell
- * @param {string|null} piece - The piece currently occupying the cell
- * @returns {Cell}
- */
 const makeCell = function (terrain, piece) {
     return {piece, terrain};
 };
 
-/**
- * Returns true if the given position lies within the 11x11 board.
- * @param {number} row - Row index
- * @param {number} col - Column index
- * @returns {boolean}
- */
 const isInBounds = function (row, col) {
     return row >= 0 && row <= 10 && col >= 0 && col <= 10;
 };
 
-/**
- * True if (row, col) is one of the four corner squares.
- * @param {number} row - Row index (0-10)
- * @param {number} col - Column index (0-10)
- * @returns {boolean}
- */
 const isCorner = function (row, col) {
     return CORNERS.some(function (pos) {
         return pos[0] === row && pos[1] === col;
     });
 };
 
-/**
- * True if (row, col) is the throne square at the centre of the board.
- * @param {number} row - Row index (0-10)
- * @param {number} col - Column index (0-10)
- * @returns {boolean}
- */
 const isThrone = function (row, col) {
     return THRONE[0] === row && THRONE[1] === col;
 };
 
-/**
- * True if (row, col) is one of the attacker's starting squares.
- * @param {number} row - Row index (0-10)
- * @param {number} col - Column index (0-10)
- * @returns {boolean}
- */
 const isBlackStart = function (row, col) {
     return BLACK_START.some(function (pos) {
         return pos[0] === row && pos[1] === col;
     });
 };
 
-/**
- * True if (row, col) is one of the defender's straight starting
- * squares (the four squares next to the throne).
- * @param {number} row - Row index (0-10)
- * @param {number} col - Column index (0-10)
- * @returns {boolean}
- */
 const isWhiteStart = function (row, col) {
     return WHITE_START.some(function (pos) {
         return pos[0] === row && pos[1] === col;
     });
 };
 
-/**
- * True if (row, col) is one of the defender's diagonal starting
- * squares (the four squares diagonally next to the throne).
- * @param {number} row - Row index (0-10)
- * @param {number} col - Column index (0-10)
- * @returns {boolean}
- */
 const isWhiteDiagonalStart = function (row, col) {
     return WHITE_DIAGONAL_START.some(function (pos) {
         return pos[0] === row && pos[1] === col;
     });
 };
 
-/**
- * Returns every square a piece at (row, col) can slide to in a
- * straight line, stopping at the first piece or restricted square
- * in each direction.
- * @param {Board} board - The current board
- * @param {number} row - Row index of the piece (0-10)
- * @param {number} col - Column index of the piece (0-10)
- * @returns {Array<Array<number>>} Array of [row, col] positions
- */
 const getLegalMoves = function (board, row, col) {
     const piece = board[row][col].piece;
     const directions = ORTHOGONAL_DIRECTIONS;
@@ -187,11 +103,6 @@ const getLegalMoves = function (board, row, col) {
     }, []);
 };
 
-/**
- * Returns an array of integers from 0 to n-1.
- * @param {number} n - The length of the range
- * @returns {Array<number>}
- */
 const makeRange = function (n) {
     return Object.keys(Array.apply(null, {length: n})).map(
         function (key) {
@@ -200,10 +111,6 @@ const makeRange = function (n) {
     );
 };
 
-/**
- * Creates the starting board, with every piece in its setup position.
- * @returns {Board}
- */
 const createBoard = function () {
     return makeRange(11).map(function (row) {
         return makeRange(11).map(function (col) {
@@ -237,14 +144,6 @@ const createBoard = function () {
     });
 };
 
-/**
- * Serialises a board to a compact string for position comparison.
- * B = black, W = white, K = king, . = empty.
- * Exported for unit testing only.
- * @private
- * @param {Board} board - The board to serialise
- * @returns {string} 121-character position key
- */
 const boardToString = function (board) {
     return board.map(function (row) {
         return row.map(function (cell) {
@@ -262,10 +161,6 @@ const boardToString = function (board) {
     }).join("");
 };
 
-/**
- * Creates the initial game state.
- * @returns {GameState}
- */
 const createGame = function () {
     return {
         board: createBoard(),
@@ -276,16 +171,6 @@ const createGame = function () {
     };
 };
 
-/**
- * Moves a piece from one position to another, returning a new board.
- * @private
- * @param {Board} board - The current board
- * @param {number} fromRow - Row index of the piece to move
- * @param {number} fromCol - Column index of the piece to move
- * @param {number} toRow - Row index of the destination
- * @param {number} toCol - Column index of the destination
- * @returns {Board} New board with the piece moved
- */
 const movePiece = function (board, fromRow, fromCol, toRow, toCol) {
     const piece = board[fromRow][fromCol].piece;
     return board.map(function (row, r) {
@@ -301,12 +186,6 @@ const movePiece = function (board, fromRow, fromCol, toRow, toCol) {
     });
 };
 
-/**
- * Returns the opposite turn.
- * @private
- * @param {string} turn - The current turn ("black" or "white")
- * @returns {string} The next turn
- */
 const switchTurn = function (turn) {
     return (
         turn === "black"
@@ -315,13 +194,6 @@ const switchTurn = function (turn) {
     );
 };
 
-/**
- * Returns true if piece belongs to the player whose turn it is,
- * i.e. whether they're allowed to select and move it.
- * @param {string|null} piece - The piece type
- * @param {string} turn - "black" or "white"
- * @returns {boolean}
- */
 const isAllyPiece = function (piece, turn) {
     if (turn === "black") {
         return piece === PIECE.BLACK;
@@ -329,13 +201,6 @@ const isAllyPiece = function (piece, turn) {
     return piece === PIECE.WHITE || piece === PIECE.KING;
 };
 
-/**
- * Returns true if piece belongs to the opposite side from turn.
- * Includes the king as an enemy of black (used in shieldwall).
- * @param {string|null} piece - The piece type
- * @param {string} turn - "black" or "white"
- * @returns {boolean}
- */
 const isEnemyPiece = function (piece, turn) {
     if (piece === PIECE.EMPTY) {
         return false;
@@ -343,27 +208,10 @@ const isEnemyPiece = function (piece, turn) {
     return !isAllyPiece(piece, turn);
 };
 
-/**
- * Returns true if piece is a capturable enemy (excludes king).
- * @param {string|null} piece - The piece type
- * @param {string} turn - "black" or "white"
- * @returns {boolean}
- */
 const isCapturable = function (piece, turn) {
     return isEnemyPiece(piece, turn) && piece !== PIECE.KING;
 };
 
-/**
- * Returns true if the square at (row, col) is hostile to targetPiece
- * for a sandwich capture.
- * Corners are always hostile. Throne is always hostile to black;
- * hostile to white only when empty.
- * @param {Board} board - The current board
- * @param {number} row - Row index
- * @param {number} col - Column index
- * @param {string|null} targetPiece - The piece being captured
- * @returns {boolean}
- */
 const isHostileTo = function (board, row, col, targetPiece) {
     if (isCorner(row, col)) {
         return true;
@@ -377,13 +225,6 @@ const isHostileTo = function (board, row, col, targetPiece) {
     return false;
 };
 
-/**
- * Returns a new board with the piece at (row, col) removed.
- * @param {Board} board - The current board
- * @param {number} row - Row index
- * @param {number} col - Column index
- * @returns {Board} New board with piece removed
- */
 const removePieceAt = function (board, row, col) {
     return board.map(function (rowArr, r) {
         return rowArr.map(function (cell, c) {
@@ -395,17 +236,6 @@ const removePieceAt = function (board, row, col) {
     });
 };
 
-/**
- * Checks standard sandwich captures in all 4 directions from the
- * square the moving piece just landed on. A neighbour is captured
- * if it is sandwiched between the mover and an ally piece or a
- * hostile square on the opposite side. The king is excluded here.
- * @param {Board} board - Board after the move
- * @param {number} toRow - Destination row of the moved piece
- * @param {number} toCol - Destination column of the moved piece
- * @param {string} turn - The side that just moved
- * @returns {Board} New board with captures applied
- */
 const checkStandardCaptures = function (board, toRow, toCol, turn) {
     const dirs = ORTHOGONAL_DIRECTIONS;
     return dirs.reduce(function (currentBoard, dir) {
@@ -439,11 +269,6 @@ const checkStandardCaptures = function (board, toRow, toCol, turn) {
     }, board);
 };
 
-/**
- * Finds the king's position on the board.
- * @param {Board} board - The current board
- * @returns {Array|null} [row, col] or null if not found
- */
 const findKing = function (board) {
     return board.reduce(function (found, rowArr, r) {
         return rowArr.reduce(function (inner, cell, c) {
@@ -455,16 +280,6 @@ const findKing = function (board) {
     }, null);
 };
 
-/**
- * Returns true if the square at (row, col) counts as a side closing
- * in on the king for capture: a black piece, a corner, or the throne.
- * The throne always counts (even when occupied), because it acts as
- * an extra hostile side whenever the king stands next to it.
- * @param {Board} board - The current board
- * @param {number} row - Row index
- * @param {number} col - Column index
- * @returns {boolean}
- */
 const isKingCaptureSide = function (board, row, col) {
     if (!isInBounds(row, col)) {
         return false;
@@ -478,13 +293,6 @@ const isKingCaptureSide = function (board, row, col) {
     return board[row][col].piece === PIECE.BLACK;
 };
 
-/**
- * Checks if the king is surrounded on all 4 sides by black pieces
- * or hostile squares, and removes him if so. The king cannot be
- * captured on the board edge.
- * @param {Board} board - The current board
- * @returns {Board} New board with king removed if captured
- */
 const checkKingCapture = function (board) {
     const pos = findKing(board);
     if (pos === null) {
@@ -508,14 +316,6 @@ const checkKingCapture = function (board) {
     return board;
 };
 
-/**
- * Finds contiguous groups of enemy pieces in a row of cells.
- * Returns an array of groups, each group being an array of
- * indices into the row where enemy pieces sit.
- * @param {Array<Cell>} cells - A row or column of cells
- * @param {string} turn - The attacking side
- * @returns {Array<Array<number>>} Array of index groups
- */
 const findShieldwallGroups = function (cells, turn) {
     return cells.reduce(function (groups, cell, i) {
         if (!isEnemyPiece(cell.piece, turn)) {
@@ -536,16 +336,6 @@ const findShieldwallGroups = function (cells, turn) {
     }, []);
 };
 
-/**
- * Removes enemy pieces from a valid shieldwall group on a
- * horizontal edge. King pieces are never removed.
- * @param {Board} board - The current board
- * @param {Array<number>} group - Indices of the group
- * @param {number} edgeR - Edge row (0 or 10)
- * @param {number} inR - Inward row (1 or 9)
- * @param {string} turn - The attacking side
- * @returns {Board} New board with captures applied
- */
 const captureHorizontalGroup = function (board, group, edgeR, inR, turn) {
     if (group.length < 2) {
         return board;
@@ -580,16 +370,6 @@ const captureHorizontalGroup = function (board, group, edgeR, inR, turn) {
     }, board);
 };
 
-/**
- * Removes enemy pieces from a valid shieldwall group on a
- * vertical edge. King pieces are never removed.
- * @param {Board} board - The current board
- * @param {Array<number>} group - Indices of the group
- * @param {number} edgeC - Edge column (0 or 10)
- * @param {number} inC - Inward column (1 or 9)
- * @param {string} turn - The attacking side
- * @returns {Board} New board with captures applied
- */
 const captureVerticalGroup = function (board, group, edgeC, inC, turn) {
     if (group.length < 2) {
         return board;
@@ -624,14 +404,6 @@ const captureVerticalGroup = function (board, group, edgeC, inC, turn) {
     }, board);
 };
 
-/**
- * Applies shieldwall captures along one horizontal board edge.
- * @param {Board} board - The current board
- * @param {number} edgeR - The edge row (0 or 10)
- * @param {number} inR - The inward row (1 or 9)
- * @param {string} turn - The side that just moved (the attacker)
- * @returns {Board} New board with shieldwall captures applied
- */
 const checkHorizontalShieldwall = function (board, edgeR, inR, turn) {
     const edgeRow = board[edgeR];
     const groups = findShieldwallGroups(edgeRow, turn);
@@ -646,14 +418,6 @@ const checkHorizontalShieldwall = function (board, edgeR, inR, turn) {
     }, board);
 };
 
-/**
- * Applies shieldwall captures along one vertical board edge.
- * @param {Board} board - The current board
- * @param {number} edgeC - The edge column (0 or 10)
- * @param {number} inC - The inward column (1 or 9)
- * @param {string} turn - The side that just moved (the attacker)
- * @returns {Board} New board with shieldwall captures applied
- */
 const checkVerticalShieldwall = function (board, edgeC, inC, turn) {
     const edgeCol = board.map(function (row) {
         return row[edgeC];
@@ -670,12 +434,6 @@ const checkVerticalShieldwall = function (board, edgeC, inC, turn) {
     }, board);
 };
 
-/**
- * Checks all four board edges for shieldwall captures.
- * @param {Board} board - The current board
- * @param {string} turn - The side that just moved (the attacker)
- * @returns {Board} New board with all shieldwall captures applied
- */
 const checkShieldwallCaptures = function (board, turn) {
     const edges = [
         {edge: 0, horizontal: true, inward: 1},
@@ -701,18 +459,6 @@ const checkShieldwallCaptures = function (board, turn) {
     }, board);
 };
 
-/**
- * Checks all captures triggered by moving a piece to (toRow, toCol).
- * Applies standard sandwich captures, shieldwall captures, and (on
- * black's turn) king capture. Returns a new board with all captured
- * pieces removed.
- * @private
- * @param {Board} board - Board after the move
- * @param {number} toRow - Destination row of the moved piece
- * @param {number} toCol - Destination column of the moved piece
- * @param {string} turn - The side that just moved ("black" or "white")
- * @returns {Board} New board with all captures applied
- */
 const checkCaptures = function (board, toRow, toCol, turn) {
     let result = checkStandardCaptures(board, toRow, toCol, turn);
     result = checkShieldwallCaptures(result, turn);
@@ -722,16 +468,6 @@ const checkCaptures = function (board, toRow, toCol, turn) {
     return result;
 };
 
-/**
- * Finds every empty square connected to (row, col) without crossing
- * a piece. Returns the visited set with any newly found squares
- * appended; the original array is never mutated.
- * @param {Board} board - The current board
- * @param {Array<number>} visited - Cell keys already visited
- * @param {number} row - Current row
- * @param {number} col - Current column
- * @returns {Array<number>} Updated visited array
- */
 const floodFillReachable = function (board, visited, row, col) {
     if (!isInBounds(row, col)) {
         return visited;
@@ -750,12 +486,6 @@ const floodFillReachable = function (board, visited, row, col) {
     return floodFillReachable(board, v3, row, col + 1);
 };
 
-/**
- * Returns true if all white and king pieces are completely enclosed
- * by black pieces with no empty square reachable from the board edge.
- * @param {Board} board - The current board
- * @returns {boolean}
- */
 const isEncircled = function (board) {
     const edgeIndices = makeRange(11);
     const visited = edgeIndices.reduce(
@@ -788,19 +518,6 @@ const isEncircled = function (board) {
     });
 };
 
-/**
- * Finds empty squares reachable from (row, col) without crossing a
- * piece, except the seed square (kr, kc), which is included even
- * though the king stands there. Any other occupied square, attacker
- * or defender, blocks the search the same way.
- * @param {Board} board - The current board
- * @param {Array<number>} visited - Cell keys already visited
- * @param {number} row - Current row
- * @param {number} col - Current column
- * @param {number} kr - King's row, the seed of the search
- * @param {number} kc - King's column, the seed of the search
- * @returns {Array<number>} Updated visited array
- */
 const floodFillRegion = function (board, visited, row, col, kr, kc) {
     if (!isInBounds(row, col)) {
         return visited;
@@ -820,14 +537,6 @@ const floodFillRegion = function (board, visited, row, col, kr, kc) {
     return floodFillRegion(board, v3, row, col + 1, kr, kc);
 };
 
-/**
- * Returns true if the exit fort win condition is met: the king
- * stands on the board edge, has at least one legal move, and the
- * open space around it, walled in by its own defenders, cannot be
- * reached by any attacker in a single move.
- * @param {Board} board - The current board
- * @returns {boolean}
- */
 const isExitFort = function (board) {
     const pos = findKing(board);
     if (pos === null) {
@@ -863,18 +572,6 @@ const isExitFort = function (board) {
     return !blackCanEnter;
 };
 
-/**
- * Checks the current win condition after a move and capture
- * resolution. Returns a specific status string encoding the winner
- * and the reason, or "playing" if the game continues.
- * @private
- * @param {Board} board - The current board
- * @param {string} turn - The side that just moved
- * @param {Array<string>} positionHistory - All board strings so far
- * @returns {string} "playing", "white_wins_corner",
- *     "white_wins_exitfort", "black_wins_capture",
- *     "black_wins_encirclement", or "black_wins_repetition"
- */
 const checkWinCondition = function (board, turn, positionHistory) {
     const kingPos = findKing(board);
     if (turn === "white") {
@@ -906,17 +603,6 @@ const checkWinCondition = function (board, turn, positionHistory) {
     return "playing";
 };
 
-/**
- * Plays a full turn: moves the piece, applies any captures, checks
- * the win condition, and switches turns.
- * @param {GameState} game - The current game state
- * @param {number} fromRow - Row index of the piece to move
- * @param {number} fromCol - Column index of the piece to move
- * @param {number} toRow - Row index of the destination
- * @param {number} toCol - Column index of the destination
- * @returns {GameState} New game state, with this move's captures
- *     attached for the UI to animate
- */
 const makeMove = function (game, fromRow, fromCol, toRow, toCol) {
     const piece = game.board[fromRow][fromCol].piece;
     const boardAfterMove = movePiece(
@@ -976,13 +662,6 @@ const makeMove = function (game, fromRow, fromCol, toRow, toCol) {
     };
 };
 
-/**
- * Returns all positions of pieces belonging to the given side.
- * @param {Board} board - The current board
- * @param {string} side - "black" or "white"
- * @returns {Array<{row: number, col: number, piece: string}>}
- *     Array of positions with their piece type
- */
 const getPieces = function (board, side) {
     return board.reduce(function (pieces, row, r) {
         return pieces.concat(
@@ -998,16 +677,6 @@ const getPieces = function (board, side) {
     }, []);
 };
 
-/**
- * Returns true if moving the piece at (fromRow, fromCol) to
- * (toRow, toCol) is a legal move in the current game state.
- * @param {GameState} game - The current game state
- * @param {number} fromRow - Row index of the piece to move
- * @param {number} fromCol - Column index of the piece to move
- * @param {number} toRow - Row index of the destination
- * @param {number} toCol - Column index of the destination
- * @returns {boolean}
- */
 const isLegalMove = function (game, fromRow, fromCol, toRow, toCol) {
     const moves = getLegalMoves(game.board, fromRow, fromCol);
     return moves.some(function (move) {
