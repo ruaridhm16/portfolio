@@ -187,6 +187,7 @@ h1 + .desc { margin-top: 20px; }
 .feedback-status { flex-shrink: 0; margin: 0; font-size: 12px; font-weight: 500; color: var(--mid); }
 .feedback-status.error { color: #e5484d; }
 .feedback-status.success { color: var(--accent); }
+.feedback-hint { margin: 6px 0 0; font-size: 12px; font-weight: 400; color: var(--mid); opacity: 0.7; }
 
 @media (max-width: 640px) {
   .feedback-row { flex-direction: column; align-items: stretch; }
@@ -614,6 +615,23 @@ html.dark .tag { background: #222; color: #555; }
   .pdf-fullscreen-btn { display: none; }
   .pdf-footer-row { justify-content: center; }
   .pdf-mobile-btn { display: block; }
+
+  /* Styled to match .pdf-mobile-btn exactly, since on mobile this becomes
+     the same kind of button, stacked directly above it. */
+  .cv-link {
+    display: block;
+    width: 100%; box-sizing: border-box; text-align: center;
+    padding: 14px 20px; margin: 0 0 12px;
+    border: 1px solid var(--border); border-radius: 10px;
+    background: var(--bg); color: var(--black);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px; font-weight: 600; letter-spacing: normal; opacity: 1;
+    align-self: stretch;
+  }
+  .cv-link:hover { border-color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); opacity: 1; transform: none; }
+
+  /* Moved into .pdf-panel by JS on mobile, to sit below both buttons */
+  .pdf-panel .social-icons { justify-content: center; margin-top: 20px; }
 
   .divider { margin: 0 28px; }
   .carousel-section { padding: 72px 28px 56px; }

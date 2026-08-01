@@ -200,14 +200,27 @@ export function init(root = document, onClose = null) {
         const mainStyle = getComputedStyle(main);
         const availableWidth =
             main.clientWidth - parseFloat(mainStyle.paddingLeft) - parseFloat(mainStyle.paddingRight);
-        let targetWidth = Math.min(960, availableWidth);
-        let targetHeight = targetWidth * (videoHeight / videoWidth);
 
-        const otherContentHeight = contentRoot.scrollHeight - startRect.height;
-        const maxStageHeight = Math.max(200, window.innerHeight - otherContentHeight - 56);
-        if (targetHeight > maxStageHeight) {
-            targetHeight = maxStageHeight;
-            targetWidth = targetHeight * (videoWidth / videoHeight);
+        let targetWidth, targetHeight;
+        if (window.matchMedia("(max-width: 640px)").matches) {
+            // main has flex:1, so it always fills the viewport regardless of
+            // content — scrollHeight-based measurement (used below for
+            // desktop) can't detect the space freed up by hiding #info etc.
+            // here, so the header height is measured directly instead.
+            const headerEl = root.querySelector("header");
+            const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 0;
+            const mainPaddingBottom = parseFloat(mainStyle.paddingBottom) || 0;
+            targetWidth = availableWidth;
+            targetHeight = Math.max(200, window.innerHeight - headerHeight - mainPaddingBottom - 8);
+        } else {
+            const otherContentHeight = contentRoot.scrollHeight - startRect.height;
+            const maxStageHeight = Math.max(200, window.innerHeight - otherContentHeight - 56);
+            targetWidth = Math.min(960, availableWidth);
+            targetHeight = targetWidth * (videoHeight / videoWidth);
+            if (targetHeight > maxStageHeight) {
+                targetHeight = maxStageHeight;
+                targetWidth = targetHeight * (videoWidth / videoHeight);
+            }
         }
 
         stage.style.width = `${targetWidth}px`;

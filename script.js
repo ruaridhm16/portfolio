@@ -663,6 +663,7 @@ function initDarkMode() {
 function initCVFeedback() {
   const link = document.querySelector('.cv-link');
   if (!link) return;
+  if (isMobileViewport()) return;
   const colors = ['#4C47E2', '#FF7A59', '#2DD4BF', '#FBBF24', '#F472B6'];
 
   link.addEventListener('click', () => {
@@ -1058,6 +1059,15 @@ function initRepoUpdated() {
   });
 }
 
+function initMobileHeroLayout() {
+  if (!isMobileViewport()) return;
+  const cvLink = document.querySelector('.cv-link');
+  const socialIcons = document.querySelector('.social-icons');
+  const pdfPanel = document.getElementById('pdfPanel');
+  if (cvLink) cvLink.textContent = 'View CV';
+  if (socialIcons && pdfPanel) pdfPanel.appendChild(socialIcons);
+}
+
 initDarkMode();
 initEmailCopy();
 initSkillsTicker();
@@ -1065,6 +1075,7 @@ initTouchSafetyTaps();
 initEasedScroll();
 initCVFeedback();
 initFeedbackForm();
+initMobileHeroLayout();
 
 const cachedProjectCount = localStorage.getItem('pc');
 if (cachedProjectCount) document.getElementById('projectCount').textContent = cachedProjectCount;
