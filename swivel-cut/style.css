@@ -266,7 +266,8 @@ canvas.drawable {
 }
 
 #stabilizeBtn,
-.stabilize-row {
+.stabilize-row,
+#repeatBtn {
     display: none;
 }
 

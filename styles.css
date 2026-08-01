@@ -602,7 +602,7 @@ html.dark .tag { background: #222; color: #555; }
 .site-footer .footer-links a:hover { color: var(--accent); }
 
 @media (max-width: 860px) {
-  .hero { grid-template-columns: 1fr; min-height: unset; padding: 48px 28px; gap: 44px; }
+  .hero { grid-template-columns: 1fr; min-height: unset; padding: 48px 28px; gap: 12px; }
 
   .skills-ticker { left: 28px; right: 28px; top: 16px; }
   .skills-ticker-group span { font-size: 10px; }
@@ -621,7 +621,7 @@ html.dark .tag { background: #222; color: #555; }
   .cv-link {
     display: block;
     width: 100%; box-sizing: border-box; text-align: center;
-    padding: 14px 20px; margin: 0 0 12px;
+    padding: 14px 20px; margin: 28px 0 0;
     border: 1px solid var(--border); border-radius: 10px;
     background: var(--bg); color: var(--black);
     font-family: 'Plus Jakarta Sans', sans-serif;
