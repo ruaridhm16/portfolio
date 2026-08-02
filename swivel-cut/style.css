@@ -348,9 +348,6 @@ button:disabled {
         display: none;
     }
 
-    /* The fixed close button sits in the same corner as the header's
-       GitHub button at this width, so the GitHub link moves to the
-       bottom of the page instead of fighting it for space. */
     .header-actions .github-btn {
         display: none;
     }

@@ -139,18 +139,18 @@ function calcCentre() {
   html += `</div>`;
 
   if (discriminant < 0) {
-    html += `<div class="warning">Belt too short for these pulleys — choose a longer belt.</div>`;
+    html += `<div class="warning">Belt too short for these pulleys. Choose a longer belt.</div>`;
   } else {
     const C = (A + Math.sqrt(discriminant)) / 16;
     if (C < (r1 + r2 + 5)) {
-      html += `<div class="warning">Centre distance ${C.toFixed(1)}mm may be too small — pulleys could clash.</div>`;
+      html += `<div class="warning">Centre distance ${C.toFixed(1)}mm may be too small, pulleys could clash.</div>`;
     }
     html += `<div class="metric-grid" style="margin-top:10px">`;
     html += metricCard('Centre distance', C.toFixed(1), 'mm');
     html += metricCard('Belt teeth engaged (driver)', Math.floor(t1/2 * (1 - (D2-D1)/(2*C))*2).toString(), 'teeth');
     html += `</div>`;
     const minTeeth = Math.min(t1, t2);
-    if (minTeeth < 12) html += `<div class="warning">Small pulley has ${minTeeth} teeth — engagement may be low. Aim for 6+ teeth in contact.</div>`;
+    if (minTeeth < 12) html += `<div class="warning">Small pulley has ${minTeeth} teeth, engagement may be low. Aim for 6+ teeth in contact.</div>`;
   }
 
   document.getElementById('centre-results').innerHTML = html;
@@ -184,8 +184,8 @@ function calcBelt() {
   html += `</div>`;
 
   const err = Math.abs(nearest - L);
-  if (err > 10) html += `<div class="warning">Nearest standard belt is ${err.toFixed(0)}mm off — allow adjustment in your mount for tensioning.</div>`;
-  else html += `<div style="font-size:12px; color: var(--color-text-secondary); margin-top:8px;">Standard ${nearest}mm belt is ${err.toFixed(1)}mm off — build in ~${Math.ceil(err/2)+5}mm of adjustment.</div>`;
+  if (err > 10) html += `<div class="warning">Nearest standard belt is ${err.toFixed(0)}mm off, allow adjustment in your mount for tensioning.</div>`;
+  else html += `<div style="font-size:12px; color: var(--color-text-secondary); margin-top:8px;">Standard ${nearest}mm belt is ${err.toFixed(1)}mm off, build in ~${Math.ceil(err/2)+5}mm of adjustment.</div>`;
 
   document.getElementById('belt-results').innerHTML = html;
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <script>
+    (function () {
+      if (localStorage.getItem('t') !== null) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="logo-light.png" media="(prefers-color-scheme: light)" />
+  <link rel="icon" href="logo-dark.png" media="(prefers-color-scheme: dark)" />
+  <title>Page not found | Ruaridh Murdoch</title>
+  <meta name="robots" content="noindex" />
+
+  <link rel="preload" href="misc/fonts/PlusJakartaSans-Variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <main class="error-page">
+    <button class="logo" id="logoBtn" type="button" aria-label="Toggle dark mode"></button>
+    <p class="error-code">404</p>
+    <h1>Page not found</h1>
+    <p class="desc">This page doesn't exist. It might have moved, or the link's just wrong.</p>
+    <a href="/" class="card-btn primary error-home-link">Back to the homepage</a>
+  </main>
+
+  <script>
+    var logoBtn = document.getElementById('logoBtn');
+    function syncLabel(isDark) {
+      logoBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+    syncLabel(document.documentElement.classList.contains('dark'));
+    logoBtn.addEventListener('click', function () {
+      var isDark = document.documentElement.classList.toggle('dark');
+      if (isDark) localStorage.setItem('t', '');
+      else localStorage.removeItem('t');
+      syncLabel(isDark);
+    });
+  </script>
+</body>
+</html>

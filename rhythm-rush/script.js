@@ -174,8 +174,9 @@ export function init(root = document, onClose = null) {
     const hideCameraBtn = root.getElementById("btn-hide-camera");
     const closeBtn = root.getElementById("btn-close");
     const mainEl = root.querySelector("main");
-
-    const contentRoot = root.host || document.documentElement;
+    const headerEl = root.querySelector("header");
+    const infoEl = root.getElementById("info");
+    const captionEl = root.getElementById("stage-caption");
 
     let running = false;
     let targetLandmarks = null;
@@ -190,6 +191,16 @@ export function init(root = document, onClose = null) {
         }
     });
 
+    function measuredMaxStageHeight(buffer) {
+
+        const mainStyle = getComputedStyle(stage.parentElement);
+        const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 0;
+        const infoHeight = infoEl && getComputedStyle(infoEl).display !== "none" ? infoEl.getBoundingClientRect().height : 0;
+        const captionHeight = captionEl && getComputedStyle(captionEl).display !== "none" ? captionEl.getBoundingClientRect().height : 0;
+        const mainPaddingV = (parseFloat(mainStyle.paddingTop) || 0) + (parseFloat(mainStyle.paddingBottom) || 0);
+        return Math.max(200, window.innerHeight - headerHeight - infoHeight - captionHeight - mainPaddingV - buffer);
+    }
+
     function growStageToVideo(videoWidth, videoHeight) {
         const startRect = stage.getBoundingClientRect();
         stage.style.width = `${startRect.width}px`;
@@ -203,18 +214,10 @@ export function init(root = document, onClose = null) {
 
         let targetWidth, targetHeight;
         if (window.matchMedia("(max-width: 640px)").matches) {
-            // main has flex:1, so it always fills the viewport regardless of
-            // content — scrollHeight-based measurement (used below for
-            // desktop) can't detect the space freed up by hiding #info etc.
-            // here, so the header height is measured directly instead.
-            const headerEl = root.querySelector("header");
-            const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 0;
-            const mainPaddingBottom = parseFloat(mainStyle.paddingBottom) || 0;
             targetWidth = availableWidth;
-            targetHeight = Math.max(200, window.innerHeight - headerHeight - mainPaddingBottom - 8);
+            targetHeight = measuredMaxStageHeight(8);
         } else {
-            const otherContentHeight = contentRoot.scrollHeight - startRect.height;
-            const maxStageHeight = Math.max(200, window.innerHeight - otherContentHeight - 56);
+            const maxStageHeight = measuredMaxStageHeight(16);
             targetWidth = Math.min(960, availableWidth);
             targetHeight = targetWidth * (videoHeight / videoWidth);
             if (targetHeight > maxStageHeight) {

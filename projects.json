@@ -12,7 +12,12 @@
   "file": "projects/Project_Swivelcut.pdf",
   "website": "",
   "repo": "https://github.com/ruaridhm16/SwivelCut-Device",
-  "simulator": "swivel-cut/"
+  "simulator": "swivel-cut/",
+  "collaborators": [
+  { "name": "Mayli Jones", "linkedin": "https://www.linkedin.com/in/maylijones/" },
+  { "name": "Rhys Wijeratne", "linkedin": "https://www.linkedin.com/in/rhyswijeratne/" },
+  { "name": "Arda Kancal", "linkedin": "https://www.linkedin.com/in/arda-kancal/" }
+  ]
 },
   {
   "title": "Swivelcut Research",
@@ -25,7 +30,12 @@
   "featured": true,
   "image": "projects/Project_Image_PDE.png",
   "file": "projects/Project_Swivelcut_Research.pdf",
-  "website": ""
+  "website": "",
+  "collaborators": [
+  { "name": "Mayli Jones", "linkedin": "https://www.linkedin.com/in/maylijones/" },
+  { "name": "Rhys Wijeratne", "linkedin": "https://www.linkedin.com/in/rhyswijeratne/" },
+  { "name": "Arda Kancal", "linkedin": "https://www.linkedin.com/in/arda-kancal/" }
+  ]
 },
   {
     "title": "Hnefatafl",
@@ -41,7 +51,7 @@
     "file": "",
     "website": "hnefatafl/",
     "repo": "https://github.com/ruaridhm16/Hnefatafl-Game"
-  },
+},
   {
     "title": "Teach-by-Touch Robotic Arm",
     "desc": "Physically move joints to record a sequence, insert a cartridge, press play. Custom DC motors, 3D-printed gearboxes, no programming needed.",
@@ -53,8 +63,11 @@
     "featured": true,
     "image": "projects/Project_Image_Gizmo.png",
     "file": "projects/Project_Gizmo.pdf",
-    "website": ""
-  },
+    "website": "",
+    "collaborators": [
+    { "name": "Coe Ishikawa", "linkedin": "https://www.linkedin.com/in/coe-ishikawa-05124a22b/" }
+    ]
+},
   {
   "title": "Prosthetic Running Blade",
   "desc": "Designed and stress-analysed a CFRP running blade in Ansys. Iterated geometry using theory to pass fatigue, frequency, and mass criteria.",
@@ -92,7 +105,12 @@
     "featured": true,
     "image": "projects/Project_Image_Group_Thermo_Battery.png",
     "file": "projects/Project_Group_Thermo_Battery.pdf",
-    "website": ""
+    "website": "",
+    "collaborators": [
+    { "name": "Mayli Jones", "linkedin": "https://www.linkedin.com/in/maylijones/" },
+    { "name": "Will Purcell", "linkedin": "https://www.linkedin.com/in/wepurcell/" },
+    { "name": "Tim Spawforth", "linkedin": "https://www.linkedin.com/in/timothy-spawforth-80a992332/" }
+    ]
   },
   {
     "title": "Airline Seat Research",
@@ -144,7 +162,13 @@
     "featured": false,
     "image": "projects/Project_Image_HCD.png",
     "file": "projects/Project_HCD.pdf",
-    "website": ""
+    "website": "",
+    "collaborators": [
+    { "name": "Aidan Ryder", "linkedin": "https://www.linkedin.com/in/aidan-ryder-b848aa266/" },
+    { "name": "Ikem Enebeli", "linkedin": "https://www.linkedin.com/in/ikem-e/" },
+    { "name": "Yousuf Shahabuddin", "linkedin": "https://www.linkedin.com/in/yousuf-shb/" },
+    { "name": "Amarie Fasoro", "linkedin": "https://www.linkedin.com/in/amarie-fasoro-8104a42bb/" }
+    ]
   },
   {
     "title": "Rhythm Rush",
@@ -158,7 +182,13 @@
     "image": "projects/Project_Image_Rhythm_Rush.png",
     "file": "projects/Project_Rhythm_Rush.pdf",
     "simulator": "rhythm-rush/",
-    "repo": "https://github.com/ruaridhm16/Rhythm-Rush-Concept"
+    "repo": "https://github.com/ruaridhm16/Rhythm-Rush-Concept",
+    "collaborators": [
+    { "name": "Aidan Ryder", "linkedin": "https://www.linkedin.com/in/aidan-ryder-b848aa266/" },
+    { "name": "Ikem Enebeli", "linkedin": "https://www.linkedin.com/in/ikem-e/" },
+    { "name": "Yousuf Shahabuddin", "linkedin": "https://www.linkedin.com/in/yousuf-shb/" },
+    { "name": "Amarie Fasoro", "linkedin": "https://www.linkedin.com/in/amarie-fasoro-8104a42bb/" }
+    ]
   },
   {
     "title": "Reverse Engineered Hand Mixer",
@@ -223,7 +253,11 @@
     "image": "https://img.itch.zone/aW1hZ2UvMTk0NDkyNi8xMTQzODA4NC5wbmc=/794x1000/0X8bjq.png",
     "file": "",
     "website": "https://ruaridhm16.itch.io/duck-jam",
-    "repo": "https://github.com/ruaridhm16/Duck-Jam-Game"
+    "repo": "https://github.com/ruaridhm16/Duck-Jam-Game",
+    "collaborators": [
+    { "name": "Finlay Kalkman", "linkedin": "https://www.linkedin.com/in/finlay-kalkman-5807a7334/" },
+    { "name": "Abhiram Reddy", "linkedin": "https://www.linkedin.com/in/abhiram-meda-reddy/" }
+    ]
   },
   {
     "title": "Abyssal",
@@ -237,7 +271,11 @@
     "image": "https://img.itch.zone/aW1hZ2UvMjU0ODk4Ny8xNTE2NzI0OC5wbmc=/794x1000/BbIYJF.png",
     "file": "",
     "website": "https://ruaridhm16.itch.io/abyssal",
-    "repo": "https://github.com/ruaridhm16/Abyssal-Game"
+    "repo": "https://github.com/ruaridhm16/Abyssal-Game",
+    "collaborators": [
+    { "name": "Finlay Kalkman", "linkedin": "https://www.linkedin.com/in/finlay-kalkman-5807a7334/" },
+    { "name": "Abhiram Reddy", "linkedin": "https://www.linkedin.com/in/abhiram-meda-reddy/" }
+    ]
   },
   {
     "title": "Dodgy Double Decker",

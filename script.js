@@ -127,6 +127,16 @@ document.addEventListener('keydown', e => {
 function tagsHtml(tags) {
   return (tags || []).map(t => `<span class="tag ${t.style}">${t.label}</span>`).join('');
 }
+
+function collabByline(p) {
+  const collabs = p.collaborators;
+  if (!collabs || !collabs.length) return '';
+  const links = collabs.map(c => `<a href="${c.linkedin}" target="_blank" rel="noopener">${c.name}</a>`);
+  const joined = links.length === 1
+    ? links[0]
+    : links.slice(0, -1).join(', ') + ' &amp; ' + links[links.length - 1];
+  return `<p class="collab-byline">with ${joined}</p>`;
+}
 const FILE_ICON = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3h8l4 4v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 3v4a2 2 0 0 0 2 2h4"/><path d="M4 8v11a2 2 0 0 0 2 2h9"/></svg>`;
 const WEB_ICON  = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10z"/></svg>`;
 const GAME_ICON = `<svg class="file-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9h12a4 4 0 0 1 4 4l1 5a2.5 2.5 0 0 1-4.5 1.8L16 17H8l-2.5 2.8A2.5 2.5 0 0 1 1 18l1-5a4 4 0 0 1 4-4Z"/><line x1="7.5" y1="12.5" x2="7.5" y2="15.5"/><line x1="6" y1="14" x2="9" y2="14"/><circle cx="16.5" cy="12.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="18.5" cy="14.5" r="0.9" fill="currentColor" stroke="none"/></svg>`;
@@ -185,6 +195,12 @@ const projectOverlay = document.getElementById('projectOverlay');
 const projectOverlayHost = document.getElementById('projectOverlayHost');
 const projectOverlayShadow = projectOverlayHost.attachShadow({ mode: 'open' });
 
+const pageLandmarks = [document.querySelector('main'), document.querySelector('footer')].filter(Boolean);
+
+function setBackgroundInert(isInert) {
+  pageLandmarks.forEach(el => { el.inert = isInert; });
+}
+
 const overlayContentCache = new Map();
 const overlayModuleCache = new Map();
 let overlayCleanup = null;
@@ -212,9 +228,12 @@ async function fetchOverlayContent(url) {
 
 async function openProjectOverlay(url) {
   clearTimeout(overlayCloseTimer);
+  lastFocusedTrigger = document.activeElement;
   projectOverlay.classList.add('open');
   projectOverlay.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+  setBackgroundInert(true);
+  projectOverlayPanel.focus();
 
   try {
     const { bodyHTML, css } = await fetchOverlayContent(url);
@@ -250,6 +269,7 @@ function closeProjectOverlay() {
   projectOverlay.classList.remove('open');
   projectOverlay.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
+  setBackgroundInert(false);
   if (overlayCleanup) {
     overlayCleanup();
     overlayCleanup = null;
@@ -258,13 +278,14 @@ function closeProjectOverlay() {
   overlayCloseTimer = setTimeout(() => {
     projectOverlayShadow.innerHTML = '';
   }, 300);
+  if (lastFocusedTrigger) {
+    lastFocusedTrigger.focus();
+    lastFocusedTrigger = null;
+  }
 }
 
 projectOverlay.addEventListener('click', e => {
   if (e.target === projectOverlay) closeProjectOverlay();
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && projectOverlay.classList.contains('open')) closeProjectOverlay();
 });
 
 document.addEventListener('click', e => {
@@ -282,25 +303,86 @@ const imageOverlayClose = document.getElementById('imageOverlayClose');
 const imageOverlayTitle = document.getElementById('imageOverlayTitle');
 const imageOverlayDesc = document.getElementById('imageOverlayDesc');
 const imageOverlayActions = document.getElementById('imageOverlayActions');
+const imageOverlayCollab = document.getElementById('imageOverlayCollab');
+const projectOverlayPanel = document.querySelector('.project-overlay-panel');
+const imageOverlayFrame = document.querySelector('.image-overlay-frame');
 
-function openImageOverlay(src, title, desc, actionsHTML) {
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function getFocusable(...roots) {
+  return roots
+    .filter(Boolean)
+    .flatMap(root => [...root.querySelectorAll(FOCUSABLE_SELECTOR)])
+    .filter(el => el.getClientRects().length > 0);
+}
+
+function getDeepActiveElement() {
+  let el = document.activeElement;
+  while (el && el.shadowRoot && el.shadowRoot.activeElement) {
+    el = el.shadowRoot.activeElement;
+  }
+  return el;
+}
+
+let lastFocusedTrigger = null;
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Tab') return;
+  let focusable;
+  if (projectOverlay.classList.contains('open')) {
+    focusable = getFocusable(projectOverlayPanel, projectOverlayShadow);
+  } else if (imageOverlay.classList.contains('open')) {
+    focusable = getFocusable(imageOverlayFrame);
+  } else {
+    return;
+  }
+  if (!focusable.length) { e.preventDefault(); return; }
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  const active = getDeepActiveElement();
+  if (e.shiftKey && active === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && active === last) {
+    e.preventDefault();
+    first.focus();
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (projectOverlay.classList.contains('open')) closeProjectOverlay();
+  else if (imageOverlay.classList.contains('open')) closeImageOverlay();
+});
+
+function openImageOverlay(src, title, desc, actionsHTML, collabHTML) {
   imageOverlayImg.src = src || '';
   imageOverlayImg.alt = title || '';
   imageOverlayImg.hidden = !src;
   imageOverlayTitle.textContent = title || '';
+  imageOverlayCollab.innerHTML = collabHTML || '';
+  imageOverlayCollab.hidden = !collabHTML;
   imageOverlayDesc.textContent = desc || '';
   imageOverlayDesc.hidden = !desc;
   imageOverlayActions.innerHTML = actionsHTML || '';
   imageOverlayActions.hidden = !actionsHTML;
+  lastFocusedTrigger = document.activeElement;
   imageOverlay.classList.add('open');
   imageOverlay.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+  setBackgroundInert(true);
+  imageOverlayFrame.focus();
 }
 
 function closeImageOverlay() {
   imageOverlay.classList.remove('open');
   imageOverlay.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
+  setBackgroundInert(false);
+  if (lastFocusedTrigger) {
+    lastFocusedTrigger.focus();
+    lastFocusedTrigger = null;
+  }
 }
 
 document.addEventListener('click', e => {
@@ -321,9 +403,7 @@ document.addEventListener('keydown', e => {
   if (trigger && (e.key === 'Enter' || e.key === ' ')) {
     e.preventDefault();
     openImageOverlay(trigger.dataset.image, trigger.closest('.card')?.getAttribute('aria-label'), trigger.dataset.desc);
-    return;
   }
-  if (e.key === 'Escape' && imageOverlay.classList.contains('open')) closeImageOverlay();
 });
 
 function renderCarousel(projects) {
@@ -338,7 +418,6 @@ function renderCarousel(projects) {
   }
 
   featured.forEach(p => {
-    const imgStyle = p.image ? `background-image:url('${p.image}')` : '';
     const game = isGame(p);
 
     const buttons = [];
@@ -380,18 +459,36 @@ function renderCarousel(projects) {
         <div class="card" aria-label="${p.title}">
           <div class="card-img"${p.image ? ` data-image="${p.image}" data-desc="${p.desc || ''}" role="button" tabindex="0" aria-label="Expand image"` : ''}>
             ${badges.length ? `<div class="card-img-badges">${badges.join('')}</div>` : ''}
-            <div class="card-img-inner" style="${imgStyle}"></div>
+            <div class="card-img-inner"${p.image ? ` data-bg="${p.image}"` : ''}></div>
             ${p.image ? '<span class="card-img-hint">Expand image</span>' : ''}
           </div>
           <div class="card-body">
             <div class="card-tags">${tagsHtml(p.tags)}</div>
             <div class="card-title">${p.title}</div>
+            ${collabByline(p)}
             <div class="card-desc">${p.desc}</div>
             <div class="card-actions">${actions}</div>
           </div>
         </div>
       </div>`);
   });
+
+  initLazyCardImages(container);
+}
+
+function initLazyCardImages(container) {
+  const targets = container.querySelectorAll('.card-img-inner[data-bg]');
+  if (!targets.length) return;
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      el.style.backgroundImage = `url('${el.dataset.bg}')`;
+      el.removeAttribute('data-bg');
+      obs.unobserve(el);
+    });
+  }, { rootMargin: '300px' });
+  targets.forEach(el => observer.observe(el));
 }
 
 function renderFiles(projects) {
@@ -438,6 +535,7 @@ function renderFiles(projects) {
       }
 
       const actions = buttons.join('');
+      const collab = collabByline(p);
 
       return `<div class="file-row" tabindex="0" role="link" aria-label="${p.title}" data-title="${p.title}" data-desc="${p.desc || ''}" data-image="${p.image || ''}" data-website="${p.website || ''}" data-file="${p.file || ''}">
         <div class="file-row-main">
@@ -445,23 +543,25 @@ function renderFiles(projects) {
           <div class="tags">${tagsHtml(p.tags)}</div>
           <div class="file-actions">${actions}</div>
         </div>
+        ${collab ? `<div class="file-collab" hidden>${collab}</div>` : ''}
       </div>`;
     }).join('');
 
     container.insertAdjacentHTML(
       'beforeend',
-      `<div class="file-group"><div class="group-label">${groupName}</div>${rows}</div>`
+      `<div class="file-group"><h3 class="group-label">${groupName}</h3>${rows}</div>`
     );
   });
 
   function activateRow(row) {
+    const collabHTML = row.querySelector('.file-collab')?.innerHTML || '';
     if (isMobileViewport()) {
       const actionsHTML = row.querySelector('.file-actions')?.innerHTML || '';
-      openImageOverlay(row.dataset.image, row.dataset.title, row.dataset.desc, actionsHTML);
+      openImageOverlay(row.dataset.image, row.dataset.title, row.dataset.desc, actionsHTML, collabHTML);
       return;
     }
     if (row.dataset.image) {
-      openImageOverlay(row.dataset.image, row.dataset.title, row.dataset.desc);
+      openImageOverlay(row.dataset.image, row.dataset.title, row.dataset.desc, '', collabHTML);
       return;
     }
     const url = row.dataset.website || row.dataset.file;
@@ -488,11 +588,12 @@ function renderFiles(projects) {
 function initFilePreview() {
 
   if (isMobileViewport()) return;
-  const card  = document.getElementById('filePreviewCard');
-  const img   = document.getElementById('filePreviewImg');
-  const title = document.getElementById('filePreviewTitle');
-  const desc  = document.getElementById('filePreviewDesc');
-  const zone  = document.getElementById('filesInner');
+  const card   = document.getElementById('filePreviewCard');
+  const img    = document.getElementById('filePreviewImg');
+  const title  = document.getElementById('filePreviewTitle');
+  const collab = document.getElementById('filePreviewCollab');
+  const desc   = document.getElementById('filePreviewDesc');
+  const zone   = document.getElementById('filesInner');
 
   let warm = false;
   let warmupTimer = null;
@@ -502,6 +603,10 @@ function initFilePreview() {
   function renderCard(row) {
     if (!row || !row.dataset.desc) return;
     title.textContent = row.dataset.title;
+
+    const collabText = row.querySelector('.file-collab')?.textContent.trim() || '';
+    collab.textContent = collabText;
+    collab.hidden = !collabText;
     desc.textContent  = row.dataset.desc;
     if (row.dataset.image) {
       img.style.backgroundImage = `url('${row.dataset.image}')`;
@@ -651,12 +756,20 @@ function initCarousel() {
 }
 
 function initDarkMode() {
-  document.getElementById('logoBtn').addEventListener('click', () => {
+  const logoBtn = document.getElementById('logoBtn');
+
+  function syncLabel(isDark) {
+    logoBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  syncLabel(document.documentElement.classList.contains('dark'));
+
+  logoBtn.addEventListener('click', () => {
     const isDark = document.documentElement.classList.toggle('dark');
 
     if (isDark) localStorage.setItem('t', '');
     else localStorage.removeItem('t');
     document.getElementById('projectOverlayHost')?.classList.toggle('dark', isDark);
+    syncLabel(isDark);
   });
 }
 
