@@ -190,6 +190,7 @@ function isMobileViewport() {
 }
 
 const SIMULATOR_PAGES = new Set();
+const DISABLED_SIMULATORS = new Set(['swivel-cut/']);
 
 const projectOverlay = document.getElementById('projectOverlay');
 const projectOverlayHost = document.getElementById('projectOverlayHost');
@@ -422,7 +423,9 @@ function renderCarousel(projects) {
 
     const buttons = [];
 
-    if (p.simulator) {
+    const simulatorLive = p.simulator && !DISABLED_SIMULATORS.has(p.simulator);
+
+    if (simulatorLive) {
       buttons.push(
         `<a href="${p.simulator}" target="_blank" class="card-btn sim-btn">Simulator</a>`
       );
@@ -451,7 +454,7 @@ function renderCarousel(projects) {
     const actions = buttons.join('');
 
     const badges = [];
-    if (p.simulator) badges.push(`<a href="${p.simulator}" target="_blank" class="sim-badge"><span class="sim-badge-face">Try it live</span></a>`);
+    if (simulatorLive) badges.push(`<a href="${p.simulator}" target="_blank" class="sim-badge"><span class="sim-badge-face">Try it live</span></a>`);
     if (game && p.website && !isExternal(p.website)) badges.push(`<a href="${p.website}" class="sim-badge"><span class="sim-badge-face">Play now</span></a>`);
 
     container.insertAdjacentHTML('beforeend', `
@@ -508,7 +511,7 @@ function renderFiles(projects) {
 
       const buttons = [];
 
-      if (p.simulator) {
+      if (p.simulator && !DISABLED_SIMULATORS.has(p.simulator)) {
       buttons.push(
         `<a href="${p.simulator}" target="_blank" class="card-btn sim-btn">Simulator</a>`
       );
@@ -1092,7 +1095,7 @@ async function loadProjects() {
     const res = await fetch('projects.json');
     if (!res.ok) throw new Error();
     const projects = await res.json();
-    projects.forEach(p => { if (p.simulator) SIMULATOR_PAGES.add(p.simulator); });
+    projects.forEach(p => { if (p.simulator && !DISABLED_SIMULATORS.has(p.simulator)) SIMULATOR_PAGES.add(p.simulator); });
     renderCarousel(projects);
     renderFiles(projects);
     initCarousel();
